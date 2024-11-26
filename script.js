@@ -107,6 +107,13 @@ function animate() {
   requestAnimationFrame(animate);
   stars.rotation.x += 0.0005;
   stars.rotation.y += 0.0005;
+
+  // Adjust opacity based on scroll position
+  const scrollY = window.scrollY || window.pageYOffset;
+  const maxScroll = window.innerHeight;
+  const opacity = Math.max(1 - scrollY / maxScroll, 0);
+  renderer.domElement.style.opacity = opacity;
+
   renderer.render(scene, camera);
 }
 animate();
@@ -114,9 +121,13 @@ animate();
 window.addEventListener('resize', onWindowResize, false);
 
 function onWindowResize(){
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  renderer.setSize(width, height);
 }
 
 // Particles.js Initialization for Tutoring Section
@@ -237,17 +248,40 @@ window.addEventListener('scroll', () => {
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.from('#about .about-image', {
-  scrollTrigger: '#about',
+  scrollTrigger: {
+    trigger: '#about',
+    start: 'top center'
+  },
   x: -200,
   opacity: 0,
   duration: 1
 });
 
 gsap.from('#about .about-text', {
-  scrollTrigger: '#about',
+  scrollTrigger: {
+    trigger: '#about',
+    start: 'top center'
+  },
   x: 200,
   opacity: 0,
   duration: 1
+});
+
+gsap.from('.timeline-item', {
+  scrollTrigger: {
+    trigger: '#experience',
+    start: 'top center'
+  },
+  y: 100,
+  opacity: 0,
+  duration: 1,
+  stagger: 0.2
+});
+
+// Fix for Navigation Menu Cut-off
+window.addEventListener('load', () => {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.style.maxWidth = '100%';
 });
 
 // Set Current Year in Footer
