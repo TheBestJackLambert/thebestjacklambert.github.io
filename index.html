@@ -24,7 +24,9 @@
     <ul class="nav-links">
       <li><a href="#hero" class="nav-link">Home</a></li>
       <li><a href="#about" class="nav-link">About Me</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
       <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#tutoring" class="nav-link">Tutoring</a></li>
       <li><a href="#contact" class="nav-link">Contact</a></li>
     </ul>
     <div class="burger">
@@ -36,12 +38,12 @@
 
   <!-- Hero Section with Animated Background -->
   <section id="hero">
+    <!-- Three.js 3D Background -->
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <h1>Jack</h1>
       <h2><span id="typed"></span></h2>
     </div>
-    <!-- Three.js 3D Background -->
-    <canvas id="hero-canvas"></canvas>
   </section>
 
   <!-- About Me Section -->
@@ -53,8 +55,23 @@
           <img src="https://source.unsplash.com/400x400/?portrait" alt="Jack's Photo">
         </div>
         <div class="about-text">
-          <p>Hello! I'm Jack,a high schooler in the magnet program at Wheeler High School who loves physics, engineering, and solving problems.</p>
+          <p>Hello! I'm Jack, a high school student in the magnet program at Wheeler High School who loves physics, engineering, and solving problems.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience">
+    <div class="container">
+      <h2 data-aos="fade-up">Experience</h2>
+      <div class="experience-content" data-aos="fade-up" data-aos-delay="200">
+        <!-- Experience Item -->
+        <div class="experience-item">
+          <h3>Intern at Georgia Tech Research Institute</h3>
+          <p>During my time at GTRI, I worked on projects involving signal processing and electronic circuit design.</p>
+        </div>
+        <!-- Add more experience items as needed -->
       </div>
     </div>
   </section>
@@ -68,13 +85,22 @@
         <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="100">
           <img src="https://source.unsplash.com/400x300/?code" alt="Project 1">
           <div class="project-info">
-            <h3>Theramin1</h3>
-            <p>During my time at the Georgia Tech Research Institute, one of the projects I took on was making a theramin from scratch.</p>
+            <h3>Theremin from Scratch</h3>
+            <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
             <a href="#" class="btn">View Project</a>
           </div>
         </div>
         <!-- Add more project cards as needed -->
       </div>
+    </div>
+  </section>
+
+  <!-- Tutoring Section -->
+  <section id="tutoring">
+    <div class="container">
+      <h2 data-aos="fade-up">Tutoring Services</h2>
+      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics, mathematics, and programming. Whether you're struggling with homework or preparing for exams, I'm here to help you succeed.</p>
+      <a href="#contact" class="btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</a>
     </div>
   </section>
 
@@ -89,7 +115,7 @@
   <section id="contact">
     <div class="container">
       <h2 data-aos="fade-up">Get In Touch</h2>
-      <p data-aos="fade-up" data-aos-delay="200">Feel free to reach out for collaborations or just a friendly chat.</p>
+      <p data-aos="fade-up" data-aos-delay="200">Feel free to reach out for collaborations, tutoring, or just a friendly chat.</p>
       <div class="contact-links" data-aos="fade-up" data-aos-delay="300">
         <a href="mailto:thebestjacklambert@gmail.com">Email</a>
         <a href="https://github.com/thebestjacklambert">GitHub</a>
@@ -100,7 +126,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Jack</p>
+    <p>&copy; <span id="current-year"></span> Jack</p>
   </footer>
 
   <!-- Back to Top Button -->
