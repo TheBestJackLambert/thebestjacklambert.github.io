@@ -52,7 +52,7 @@
       <h2 data-aos="fade-up">About Me</h2>
       <div class="about-content" data-aos="fade-up" data-aos-delay="200">
         <div class="about-image">
-          <img src="https://source.unsplash.com/400x400/?portrait" alt="Jack's Photo">
+          <img src="images/your-photo.jpg" alt="Jack's Photo">
         </div>
         <div class="about-text">
           <p>Hello! I'm Jack, a high school student in the magnet program at Wheeler High School who loves physics, engineering, and solving problems.</p>
@@ -61,17 +61,21 @@
     </div>
   </section>
 
-  <!-- Experience Section -->
+  <!-- Experience Section with Timeline -->
   <section id="experience">
     <div class="container">
       <h2 data-aos="fade-up">Experience</h2>
-      <div class="experience-content" data-aos="fade-up" data-aos-delay="200">
-        <!-- Experience Item -->
-        <div class="experience-item">
-          <h3>Intern at Georgia Tech Research Institute</h3>
-          <p>During my time at GTRI, I worked on projects involving signal processing and electronic circuit design.</p>
+      <div class="timeline">
+        <!-- Experience Item 1 -->
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="timeline-icon"></div>
+          <div class="timeline-content">
+            <h3>Intern at Georgia Tech Research Institute</h3>
+            <span>June 2021 - August 2021</span>
+            <p>Worked on projects involving signal processing and electronic circuit design.</p>
+          </div>
         </div>
-        <!-- Add more experience items as needed -->
+        <!-- Add more experience items here -->
       </div>
     </div>
   </section>
@@ -85,7 +89,7 @@
         <div class="project-card" data-aos="fade-up" data-aos-delay="100">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="https://source.unsplash.com/400x300/?electronics" alt="Theremin Project">
+              <img src="images/project1.jpg" alt="Theremin Project">
             </div>
             <div class="flip-card-back">
               <h3>Theremin from Scratch</h3>
@@ -94,45 +98,7 @@
             </div>
           </div>
         </div>
-        <!-- Project Card 2 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://source.unsplash.com/400x300/?robotics" alt="Robotics Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>RWifi Detector</h3>
-              <p>Created a wifi detector that can successfully detect wheteher a wifi signal is present or not up to 50 ft away</p>
-              <a href="#" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 3 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://source.unsplash.com/400x300/?app" alt="App Development Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Nasa mini payload </h3>
-              <p>Worked as the engineering lead in a group of 10 to design and construct a device that can detect the strength of gps and wifi signals in high altitudes</p>
-              <a href="#" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 4 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://source.unsplash.com/400x300/?physics" alt="Physics Simulation Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>python libraries</h3>
-              <p>still in progress</p>
-              <a href="#" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
+        <!-- Add more project cards here -->
       </div>
     </div>
   </section>
@@ -143,10 +109,24 @@
     <div id="particles-js"></div>
     <div class="container">
       <h2 data-aos="fade-up">Tutoring Services</h2>
-      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics and mathematics, feel free to reach out!</p>
-      <a href="#contact" class="btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</a>
+      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics, mathematics, and programming. Whether you're struggling with homework or preparing for exams, I'm here to help you succeed.</p>
+      <button class="btn" id="tutoring-btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</button>
     </div>
   </section>
+
+  <!-- Email Modal -->
+  <div id="email-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Contact Me for Tutoring</h2>
+      <form id="contact-form">
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+        <input type="email" id="email" name="email" placeholder="Your Email" required>
+        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Parallax Section -->
   <section id="parallax">
@@ -185,6 +165,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- Particles.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- GSAP Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
   <!-- Include Your JavaScript File -->
   <script src="script.js"></script>
 </body>
