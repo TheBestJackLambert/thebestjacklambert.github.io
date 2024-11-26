@@ -76,30 +76,74 @@
     </div>
   </section>
 
-  <!-- Projects Section with Interactive Cards -->
+  <!-- Projects Section with Flip Animation Cards -->
   <section id="projects">
     <div class="container">
       <h2 data-aos="fade-up">My Projects</h2>
       <div class="projects-grid">
-        <!-- Project Card -->
-        <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="100">
-          <img src="https://source.unsplash.com/400x300/?code" alt="Project 1">
-          <div class="project-info">
-            <h3>Theremin from Scratch</h3>
-            <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
-            <a href="#" class="btn">View Project</a>
+        <!-- Project Card 1 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="https://source.unsplash.com/400x300/?electronics" alt="Theremin Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Theremin from Scratch</h3>
+              <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
+              <a href="#" class="btn">View Project</a>
+            </div>
           </div>
         </div>
-        <!-- Add more project cards as needed -->
+        <!-- Project Card 2 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="https://source.unsplash.com/400x300/?robotics" alt="Robotics Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>RWifi Detector</h3>
+              <p>Created a wifi detector that can successfully detect wheteher a wifi signal is present or not up to 50 ft away</p>
+              <a href="#" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 3 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="https://source.unsplash.com/400x300/?app" alt="App Development Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Nasa mini payload </h3>
+              <p>Worked as the engineering lead in a group of 10 to design and construct a device that can detect the strength of gps and wifi signals in high altitudes</p>
+              <a href="#" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 4 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="https://source.unsplash.com/400x300/?physics" alt="Physics Simulation Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>python libraries</h3>
+              <p>still in progress</p>
+              <a href="#" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Tutoring Section -->
+  <!-- Tutoring Section with Particle Animation -->
   <section id="tutoring">
+    <!-- Particles.js Background -->
+    <div id="particles-js"></div>
     <div class="container">
       <h2 data-aos="fade-up">Tutoring Services</h2>
-      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics, mathematics, and programming. Whether you're struggling with homework or preparing for exams, I'm here to help you succeed.</p>
+      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics and mathematics, feel free to reach out!</p>
       <a href="#contact" class="btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</a>
     </div>
   </section>
@@ -139,6 +183,8 @@
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <!-- Include Your JavaScript File -->
   <script src="script.js"></script>
 </body>
