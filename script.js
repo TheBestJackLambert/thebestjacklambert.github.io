@@ -20,7 +20,7 @@ hoverElements.forEach(elem => {
 
 // Typed.js Initialization
 var typed = new Typed('#typed', {
-  strings: ['Physics Enthusiast', 'Aspiring Engineer', 'Problem Solver'],
+  strings: ['Physics Enthusiast', 'Chess Lover', 'Problem Solver', 'Awesome dude'],
   typeSpeed: 50,
   backSpeed: 50,
   loop: true
