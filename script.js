@@ -20,7 +20,7 @@ hoverElements.forEach(elem => {
 
 // Typed.js Initialization
 var typed = new Typed('#typed', {
-  strings: ['Developer', 'Designer', 'Creator'],
+  strings: ['Physics Enthusiast', 'Aspiring Engineer', 'Problem Solver'],
   typeSpeed: 50,
   backSpeed: 50,
   loop: true
@@ -76,7 +76,7 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
 
 // Three.js Animated Background
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('hero-canvas'),
@@ -89,10 +89,10 @@ const starGeometry = new THREE.BufferGeometry();
 const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
 
 const starVertices = [];
-for (let i = 0; i < 10000; i++) {
+for (let i = 0; i < 6000; i++) {
   const x = (Math.random() - 0.5) * 2000;
   const y = (Math.random() - 0.5) * 2000;
-  const z = -Math.random() * 2000;
+  const z = (Math.random() - 0.5) * 2000;
   starVertices.push(x, y, z);
 }
 starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
@@ -117,3 +117,6 @@ function onWindowResize(){
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
+// Set Current Year in Footer
+document.getElementById('current-year').textContent = new Date().getFullYear();
