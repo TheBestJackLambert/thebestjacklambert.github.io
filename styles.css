@@ -207,18 +207,21 @@ nav .nav-links li a:hover {
 }
 
 .timeline-item {
-  position: relative;
-  width: 50%;
+  position: absolute;
+  width: 45%;
   padding: 20px;
 }
 
 .timeline-item:nth-child(odd) {
   left: 0;
   text-align: right;
+  padding-right: 5%;
 }
 
 .timeline-item:nth-child(even) {
-  left: 50%;
+  left: 55%;
+  text-align: left;
+  padding-left: 5%;
 }
 
 .timeline-icon {
@@ -255,15 +258,19 @@ nav .nav-links li a:hover {
   }
 
   .timeline-item {
+    position: relative;
     width: 100%;
     padding-left: 50px;
     padding-right: 25px;
+    margin-bottom: 50px;
   }
 
   .timeline-item:nth-child(odd),
   .timeline-item:nth-child(even) {
     left: 0;
     text-align: left;
+    padding-left: 50px;
+    padding-right: 25px;
   }
 
   .timeline-icon {
@@ -379,40 +386,50 @@ nav .nav-links li a:hover {
   z-index: -1;
 }
 
+#tutoring .container {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
 /* Fancy Button for Tutoring */
 .fancy-btn {
   position: relative;
   overflow: hidden;
   color: var(--text-color);
   padding: 15px 30px;
-  background: var(--primary-color);
+  background: linear-gradient(45deg, #e94560, #0f3460);
   border: none;
   border-radius: 50px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
+  display: inline-block;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
 }
 
 .fancy-btn:hover {
-  background: var(--text-color);
-  color: var(--primary-color);
+  background: linear-gradient(45deg, #0f3460, #e94560);
+  color: var(--text-color);
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.7);
 }
 
 .fancy-btn::before {
   content: '';
   position: absolute;
-  left: -50px;
-  top: -50px;
-  width: 100px;
-  height: 100px;
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0);
-  border-radius: 50%;
-  transition: transform 0.5s;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, transparent, var(--primary-color));
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
 }
 
 .fancy-btn:hover::before {
-  transform: scale(2);
+  opacity: 0.3;
+  transform: scale(1.5);
 }
 
 /* Modal Styles */
