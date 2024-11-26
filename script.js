@@ -117,6 +117,54 @@ function onWindowResize(){
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
+// Existing JavaScript code remains the same up to the Particles.js initialization
+
+// Particles.js Initialization for Tutoring Section
+particlesJS('particles-js',
+  {
+    "particles": {
+      "number": {
+        "value": 60,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffffff"
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "opacity": {
+        "value": 0.5
+      },
+      "size": {
+        "value": 3
+      },
+      "line_linked": {
+        "enable": false
+      },
+      "move": {
+        "enable": true,
+        "speed": 2
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": false
+        },
+        "onclick": {
+          "enable": false
+        }
+      }
+    },
+    "retina_detect": true
+  }
+);
 
 // Set Current Year in Footer
 document.getElementById('current-year').textContent = new Date().getFullYear();
+
