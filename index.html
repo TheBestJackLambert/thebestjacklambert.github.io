@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Jack | Portfolio</title>
+  <title>Jack Lambert | Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -41,7 +41,7 @@
     <!-- Three.js 3D Background -->
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
-      <h1>Jack</h1>
+      <h1>Jack Lambert</h1>
       <h2><span id="typed"></span></h2>
     </div>
   </section>
@@ -52,10 +52,10 @@
       <h2 data-aos="fade-up">About Me</h2>
       <div class="about-content" data-aos="fade-up" data-aos-delay="200">
         <div class="about-image">
-          <img src="images/your-photo.jpg" alt="Jack's Photo">
+          <img src="images/jack-photo.jpg" alt="Jack's Photo">
         </div>
         <div class="about-text">
-          <p>Hello! I'm Jack, a high school student in the magnet program at Wheeler High School who loves physics, engineering, and solving problems.</p>
+          <p>Hello! I'm Jack Lambert, a passionate high school student enrolled in the magnet program at Wheeler High School. I have a deep love for physics, engineering, and solving complex problems. My journey in technology began at a young age, and I've been building and creating ever since.</p>
         </div>
       </div>
     </div>
@@ -76,6 +76,16 @@
           </div>
         </div>
         <!-- Add more experience items here -->
+        <!-- Example Experience Item 2 -->
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="timeline-icon"></div>
+          <div class="timeline-content">
+            <h3>President of Robotics Club</h3>
+            <span>September 2020 - Present</span>
+            <p>Lead a team of students in designing and building robots for competitions.</p>
+          </div>
+        </div>
+        <!-- Continue adding more experience items -->
       </div>
     </div>
   </section>
@@ -89,16 +99,54 @@
         <div class="project-card" data-aos="fade-up" data-aos-delay="100">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="images/project1.jpg" alt="Theremin Project">
+              <img src="images/theremin.jpg" alt="Theremin Project">
             </div>
             <div class="flip-card-back">
               <h3>Theremin from Scratch</h3>
               <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
-              <a href="#" class="btn">View Project</a>
+              <a href="project1.html" class="btn">View Project</a>
             </div>
           </div>
         </div>
-        <!-- Add more project cards here -->
+        <!-- Project Card 2 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="images/robotics.jpg" alt="Robotics Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Robotics Challenge</h3>
+              <p>Participated in a robotics competition where I programmed autonomous robots.</p>
+              <a href="project2.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 3 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="images/app-development.jpg" alt="App Development Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Mobile App Development</h3>
+              <p>Developed a mobile app to help students manage their homework and schedules.</p>
+              <a href="project3.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 4 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="images/physics-simulation.jpg" alt="Physics Simulation Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Physics Simulation</h3>
+              <p>Created simulations to demonstrate complex physics concepts in an interactive way.</p>
+              <a href="project4.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -110,7 +158,7 @@
     <div class="container">
       <h2 data-aos="fade-up">Tutoring Services</h2>
       <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics, mathematics, and programming. Whether you're struggling with homework or preparing for exams, I'm here to help you succeed.</p>
-      <button class="btn" id="tutoring-btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</button>
+      <button class="btn fancy-btn" id="tutoring-btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</button>
     </div>
   </section>
 
@@ -123,7 +171,7 @@
         <input type="text" id="name" name="name" placeholder="Your Name" required>
         <input type="email" id="email" name="email" placeholder="Your Email" required>
         <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-        <button type="submit" class="btn">Send Message</button>
+        <button type="submit" class="btn fancy-btn">Send Message</button>
       </form>
     </div>
   </div>
@@ -150,7 +198,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; <span id="current-year"></span> Jack</p>
+    <p>&copy; <span id="current-year"></span> Jack Lambert</p>
   </footer>
 
   <!-- Back to Top Button -->
@@ -167,6 +215,7 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <!-- GSAP Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
   <!-- Include Your JavaScript File -->
   <script src="script.js"></script>
 </body>
