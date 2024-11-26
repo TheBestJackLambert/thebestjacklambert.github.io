@@ -4,6 +4,7 @@ const cursor = document.querySelector('.cursor');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
+  createParticle(e.clientX, e.clientY);
 });
 
 // Cursor Expand on Hover
@@ -20,7 +21,7 @@ hoverElements.forEach(elem => {
 
 // Typed.js Initialization
 var typed = new Typed('#typed', {
-  strings: ['Physics Enthusiast', 'Chess Lover', 'Problem Solver', 'Awesome dude'],
+  strings: ['Physics Enthusiast', 'Aspiring Engineer', 'Problem Solver'],
   typeSpeed: 50,
   backSpeed: 50,
   loop: true
@@ -60,7 +61,7 @@ const backToTop = document.querySelector('.back-to-top');
 
 window.addEventListener('scroll', () => {
   if (window.pageYOffset > 300) {
-    backToTop.style.display = 'block';
+    backToTop.style.display = 'flex';
   } else {
     backToTop.style.display = 'none';
   }
@@ -117,7 +118,6 @@ function onWindowResize(){
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-// Existing JavaScript code remains the same up to the Particles.js initialization
 
 // Particles.js Initialization for Tutoring Section
 particlesJS('particles-js',
@@ -165,6 +165,90 @@ particlesJS('particles-js',
   }
 );
 
+// Email Modal Functionality
+const modal = document.getElementById('email-modal');
+const tutoringBtn = document.getElementById('tutoring-btn');
+const closeBtn = document.querySelector('.close-btn');
+
+tutoringBtn.addEventListener('click', () => {
+  modal.style.display = 'block';
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target == modal) {
+    modal.style.display = 'none';
+  }
+});
+
+// Form Submission
+const contactForm = document.getElementById('contact-form');
+
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // Handle form submission
+  alert('Thank you for your message! I will get back to you soon.');
+  modal.style.display = 'none';
+  contactForm.reset();
+});
+
+// Floating Particles Following Cursor
+function createParticle(x, y) {
+  const particle = document.createElement('div');
+  particle.classList.add('particle');
+  document.body.appendChild(particle);
+
+  particle.style.left = x + 'px';
+  particle.style.top = y + 'px';
+
+  const size = Math.random() * 5 + 5;
+  particle.style.width = size + 'px';
+  particle.style.height = size + 'px';
+
+  particle.style.transition = 'transform 0.5s ease-out, opacity 0.5s';
+  particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
+  particle.style.opacity = 0;
+
+  setTimeout(() => {
+    particle.remove();
+  }, 500);
+}
+
+// Dynamic Background Color Change with GSAP
+window.addEventListener('scroll', () => {
+  const scrollPosition = window.pageYOffset;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollPercentage = scrollPosition / maxScroll;
+
+  const startColor = { r: 13, g: 13, b: 13 }; // #0d0d0d
+  const endColor = { r: 22, g: 33, b: 62 }; // #16213e
+
+  const r = Math.round(startColor.r + (endColor.r - startColor.r) * scrollPercentage);
+  const g = Math.round(startColor.g + (endColor.g - startColor.g) * scrollPercentage);
+  const b = Math.round(startColor.b + (endColor.b - startColor.b) * scrollPercentage);
+
+  document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+});
+
+// GSAP Scroll-triggered Animations
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from('#about .about-image', {
+  scrollTrigger: '#about',
+  x: -200,
+  opacity: 0,
+  duration: 1
+});
+
+gsap.from('#about .about-text', {
+  scrollTrigger: '#about',
+  x: 200,
+  opacity: 0,
+  duration: 1
+});
+
 // Set Current Year in Footer
 document.getElementById('current-year').textContent = new Date().getFullYear();
-
