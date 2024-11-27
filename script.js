@@ -195,16 +195,28 @@ window.addEventListener('click', (e) => {
   }
 });
 
+<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+
 // Form Submission
 const contactForm = document.getElementById('contact-form');
-
+<form action="https://formspree.io/f/your-form-id" method="POST" onsubmit="modal.style.display='none'">
+  <!-- form fields -->
+</form>
+(function(){
+    emailjs.init("YOUR_USER_ID");
+})();
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  // Handle form submission
-  alert('Thank you for your message! I will get back to you soon.');
-  modal.style.display = 'none';
-  contactForm.reset();
+  emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', contactForm)
+    .then(function() {
+      alert('Thank you for your message! I will get back to you soon.');
+      modal.style.display = 'none';
+      contactForm.reset();
+    }, function(error) {
+      alert('Oops! Something went wrong. Please try again later.');
+    });
 });
+
 
 // Floating Particles Following Cursor
 function createParticle(x, y) {
