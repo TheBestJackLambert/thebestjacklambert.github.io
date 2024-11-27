@@ -74,8 +74,8 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
   glare: true,
   "max-glare": 0.2,
 });
+
 // Three.js Background for Hero Section with Enhanced Constellations
-// Three.js Background for Hero Section with Recognizable Constellations
 
 // Initialize Scene, Camera, and Renderer
 const sceneHero = new THREE.Scene();
@@ -85,7 +85,7 @@ const cameraHero = new THREE.PerspectiveCamera(
   1,
   10000
 );
-cameraHero.position.z = 2000;
+cameraHero.position.z = 1000; // Adjusted for better view of constellations
 
 const rendererHero = new THREE.WebGLRenderer({
   canvas: document.getElementById('hero-canvas'),
@@ -94,7 +94,7 @@ const rendererHero = new THREE.WebGLRenderer({
 });
 rendererHero.setSize(window.innerWidth, window.innerHeight);
 rendererHero.setPixelRatio(window.devicePixelRatio);
-rendererHero.setClearColor(0x000000, 0); // Transparent background
+rendererHero.setClearColor(0x000000, 0); // Transparent background 
 
 // Background Star Shader Material
 const backgroundStarVertexShader = `
@@ -181,18 +181,19 @@ function cloneShaderMaterial(material) {
   return newMaterial;
 }
 
-// Define Real Constellations
+// Define Constellations
 const constellationsData = [
+  // Orion
   {
     name: 'Orion',
     stars: [
-      { name: 'Betelgeuse', position: new THREE.Vector3(-50, 80, -200) },
-      { name: 'Bellatrix', position: new THREE.Vector3(50, 80, -200) },
-      { name: 'Alnitak', position: new THREE.Vector3(-70, 0, -200) },
-      { name: 'Alnilam', position: new THREE.Vector3(0, 0, -200) },
-      { name: 'Mintaka', position: new THREE.Vector3(70, 0, -200) },
-      { name: 'Saiph', position: new THREE.Vector3(-50, -80, -200) },
-      { name: 'Rigel', position: new THREE.Vector3(50, -80, -200) },
+      { name: 'Betelgeuse', position: new THREE.Vector3(-500, 300, -1000) },
+      { name: 'Bellatrix', position: new THREE.Vector3(-300, 300, -1000) },
+      { name: 'Alnitak', position: new THREE.Vector3(-500, 100, -1000) },
+      { name: 'Alnilam', position: new THREE.Vector3(-400, 100, -1000) },
+      { name: 'Mintaka', position: new THREE.Vector3(-300, 100, -1000) },
+      { name: 'Saiph', position: new THREE.Vector3(-500, -100, -1000) },
+      { name: 'Rigel', position: new THREE.Vector3(-300, -100, -1000) },
     ],
     connections: [
       ['Betelgeuse', 'Bellatrix'],
@@ -205,10 +206,65 @@ const constellationsData = [
       ['Saiph', 'Rigel'],
     ],
   },
-  // Define other constellations similarly (Ursa Major, Cassiopeia, Leo)
+  // Ursa Major
+  {
+    name: 'Ursa Major',
+    stars: [
+      { name: 'Dubhe', position: new THREE.Vector3(500, 300, -1000) },
+      { name: 'Merak', position: new THREE.Vector3(600, 200, -1000) },
+      { name: 'Phecda', position: new THREE.Vector3(700, 100, -1000) },
+      { name: 'Megrez', position: new THREE.Vector3(800, 200, -1000) },
+      { name: 'Alioth', position: new THREE.Vector3(900, 300, -1000) },
+      { name: 'Mizar', position: new THREE.Vector3(1000, 200, -1000) },
+      { name: 'Alkaid', position: new THREE.Vector3(1100, 100, -1000) },
+    ],
+    connections: [
+      ['Dubhe', 'Merak'],
+      ['Merak', 'Phecda'],
+      ['Phecda', 'Megrez'],
+      ['Megrez', 'Alioth'],
+      ['Alioth', 'Mizar'],
+      ['Mizar', 'Alkaid'],
+    ],
+  },
+  // Cassiopeia
+  {
+    name: 'Cassiopeia',
+    stars: [
+      { name: 'Schedar', position: new THREE.Vector3(-800, -200, -1000) },
+      { name: 'Caph', position: new THREE.Vector3(-600, -100, -1000) },
+      { name: 'Gamma Cas', position: new THREE.Vector3(-400, -200, -1000) },
+      { name: 'Ruchbah', position: new THREE.Vector3(-600, -300, -1000) },
+      { name: 'Segin', position: new THREE.Vector3(-800, -400, -1000) },
+    ],
+    connections: [
+      ['Schedar', 'Caph'],
+      ['Caph', 'Gamma Cas'],
+      ['Gamma Cas', 'Ruchbah'],
+      ['Ruchbah', 'Segin'],
+    ],
+  },
+  // Leo
+  {
+    name: 'Leo',
+    stars: [
+      { name: 'Regulus', position: new THREE.Vector3(0, 500, -1000) },
+      { name: 'Denebola', position: new THREE.Vector3(200, 300, -1000) },
+      { name: 'Zosma', position: new THREE.Vector3(100, 200, -1000) },
+      { name: 'Algieba', position: new THREE.Vector3(-100, 300, -1000) },
+      { name: 'Adhafera', position: new THREE.Vector3(-200, 200, -1000) },
+    ],
+    connections: [
+      ['Regulus', 'Algieba'],
+      ['Algieba', 'Adhafera'],
+      ['Adhafera', 'Zosma'],
+      ['Zosma', 'Denebola'],
+    ],
+  },
+  // Add more constellations if needed
 ];
 
-// Add Constellations
+// Rest of your code for adding constellations
 const constellationMeshes = [];
 
 constellationsData.forEach((constellation) => {
@@ -216,12 +272,12 @@ constellationsData.forEach((constellation) => {
   const starGeometry = new THREE.BufferGeometry();
   const starPositions = [];
   const starSizes = [];
-  
+
   constellation.stars.forEach((star) => {
     starPositions.push(star.position.x, star.position.y, star.position.z);
-    starSizes.push(2); // Standard size
+    starSizes.push(5); // Increased size for better visibility
   });
-  
+
   starGeometry.setAttribute(
     'position',
     new THREE.Float32BufferAttribute(starPositions, 3)
@@ -230,20 +286,20 @@ constellationsData.forEach((constellation) => {
     'size',
     new THREE.Float32BufferAttribute(starSizes, 1)
   );
-  
+
   const starMaterialClone = cloneShaderMaterial(baseConstellationStarMaterial);
-  
+
   const starPoints = new THREE.Points(starGeometry, starMaterialClone);
   sceneHero.add(starPoints);
-  
+
   // Create Constellation Lines
   const lineGeometry = new THREE.BufferGeometry();
   const linePositions = [];
-  
+
   constellation.connections.forEach((connection) => {
     const startStar = constellation.stars.find((star) => star.name === connection[0]);
     const endStar = constellation.stars.find((star) => star.name === connection[1]);
-  
+
     linePositions.push(
       startStar.position.x,
       startStar.position.y,
@@ -253,27 +309,26 @@ constellationsData.forEach((constellation) => {
       endStar.position.z
     );
   });
-  
+
   lineGeometry.setAttribute(
     'position',
     new THREE.Float32BufferAttribute(linePositions, 3)
   );
-  
+
   const lineMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
     transparent: true,
     opacity: 0, // Start invisible
   });
-  
+
   const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
   sceneHero.add(linesMesh);
-  
+
   // Store for later reference
   constellationMeshes.push({
     name: constellation.name,
     stars: starPoints,
     lines: linesMesh,
-    starPositions: starPositions,
     starMaterial: starMaterialClone,
     lineMaterial: lineMaterial,
   });
@@ -304,32 +359,12 @@ function animateHero() {
   raycaster.setFromCamera(mouse, cameraHero);
 
   // Increase the detection radius
-  raycaster.params.Points.threshold = 50;
+  raycaster.params.Points.threshold = 100; // Increased from 50 to 100
 
   // Check each constellation
   constellationMeshes.forEach((mesh) => {
-    // Adjust the positions for rotation
-    const rotatedStarPositions = [];
-    for (let i = 0; i < mesh.starPositions.length; i += 3) {
-      const position = new THREE.Vector3(
-        mesh.starPositions[i],
-        mesh.starPositions[i + 1],
-        mesh.starPositions[i + 2]
-      );
-      position.applyAxisAngle(new THREE.Vector3(0, 1, 0), mesh.stars.rotation.y);
-
-      rotatedStarPositions.push(position.x, position.y, position.z);
-    }
-
-    // Create a temporary geometry with rotated positions
-    const tempGeometry = new THREE.BufferGeometry();
-    tempGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(rotatedStarPositions, 3)
-    );
-
-    // Check for intersections
-    const intersects = raycaster.intersectObject(new THREE.Points(tempGeometry, mesh.stars.material));
+    // Directly check for intersections with mesh.stars
+    const intersects = raycaster.intersectObject(mesh.stars);
 
     if (intersects.length > 0) {
       // Cursor is near this constellation
@@ -366,7 +401,6 @@ window.addEventListener('resize', () => {
   cameraHero.updateProjectionMatrix();
   rendererHero.setSize(window.innerWidth, window.innerHeight);
 });
-
 
 
 // Three.js Background for Achievements Section
