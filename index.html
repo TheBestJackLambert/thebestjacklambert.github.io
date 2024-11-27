@@ -28,6 +28,7 @@
       <li><a href="#about" class="nav-link">About Me</a></li>
       <li><a href="#experience" class="nav-link">Experience</a></li>
       <li><a href="#achievements" class="nav-link">Achievements</a></li>
+      <li><a href="#quote" class="nav-link">Quote</a></li> <!-- New Navigation Link -->
       <li><a href="#projects" class="nav-link">Projects</a></li>
       <li><a href="#tutoring" class="nav-link">Tutoring</a></li>
       <li><a href="#resources" class="nav-link">Resources</a></li>
@@ -65,7 +66,7 @@
     </div>
   </section>
 
-   <!-- Experience Section with Timeline -->
+  <!-- Experience Section with Timeline -->
   <section id="experience">
     <div class="container">
       <h2 data-aos="fade-up">Experience</h2>
@@ -152,10 +153,10 @@
           <button class="accordion-header">Competitions</button>
           <div class="accordion-content">
             <div class="awards-grid">
-              <div class="award-badge">
+              <div class="award-badge" data-title="Top 5 Georgia Tech Physics Competition Placement">
                 <span>Top 5 Georgia Tech Physics Competition Placement</span>
               </div>
-              <div class="award-badge">
+              <div class="award-badge" data-title="19/21 On Georgia Tech Math Competition (similar difficulty to AMC)">
                 <span>19/21 On Georgia Tech Math Competition (similar difficulty to AMC)</span>
               </div>
               <!-- Add more award badges here -->
@@ -165,6 +166,19 @@
       </div>
     </div>
   </section>
+
+  <!-- **New** Quote Section -->
+  <section id="quote" class="quote-section">
+    <div class="container">
+      <div class="quote-content" data-aos="fade-up">
+        <blockquote>
+          <p>"The man who loves walking cherishes every step of the journey. The man who loves the destination overlooks the beauty along the path."</p>
+          <footer>— Unknown</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+  <!-- End of Quote Section -->
 
   <!-- Projects Section with Flip Animation Cards -->
   <section id="projects">
@@ -208,7 +222,7 @@
             </div>
             <div class="flip-card-back">
               <h3>GT NASA Payload Competition</h3>
-              <p>Participated in the GT NASA Payload Competition by creating a high-altitude GPS tester to analyze signal strength</p>
+              <p>Participated in the GT NASA Payload Competition by creating a high-altitude GPS tester to analyze signal strength.</p>
               <a href="project3.html" class="btn">View Project</a>
             </div>
           </div>
@@ -222,7 +236,7 @@
             </div>
             <div class="flip-card-back">
               <h3>Stock Market Tracker</h3>
-              <p>Created a tool to track virtual economies in video games with markets similar to real world ones.</p>
+              <p>Created a tool to track virtual economies in video games with markets similar to real-world ones.</p>
               <a href="project4.html" class="btn">View Project</a>
             </div>
           </div>
@@ -264,15 +278,15 @@
       <h2>Contact Me for Tutoring</h2>
       <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
         <div class="form-group">
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" required placeholder=" ">
           <label for="name">Your Name</label>
         </div>
         <div class="form-group">
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" required placeholder=" ">
           <label for="email">Your Email</label>
         </div>
         <div class="form-group">
-          <textarea id="message" name="message" required></textarea>
+          <textarea id="message" name="message" required placeholder=" "></textarea>
           <label for="message">Your Message</label>
         </div>
         <button type="submit" class="btn fancy-btn">Send Message</button>
