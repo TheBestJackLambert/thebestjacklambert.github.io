@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jack Lambert | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700&display=swap" rel="stylesheet">
+  <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 </head>
 <body>
 
+  <!-- Custom Cursor -->
   <div class="cursor"></div>
 
-  <!-- Navigation -->
+  <!-- Navigation Bar -->
   <nav>
     <div class="logo">
       <img src="images/logo.png" alt="Jack's Logo">
@@ -35,8 +40,9 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero Section with Animated Background -->
   <section id="hero">
+    <!-- Three.js 3D Background -->
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <h1>Jack Lambert</h1>
@@ -44,7 +50,7 @@
     </div>
   </section>
 
-  <!-- About Section -->
+  <!-- About Me Section -->
   <section id="about">
     <div class="container">
       <h2 data-aos="fade-up">About Me</h2>
@@ -59,126 +65,270 @@
     </div>
   </section>
 
-  <!-- Experience Section -->
+   <!-- Experience Section with Timeline -->
   <section id="experience">
     <div class="container">
       <h2 data-aos="fade-up">Experience</h2>
       <div class="timeline">
+        <!-- Experience Item 1 -->
         <div class="timeline-item left" data-aos="fade-up" data-aos-delay="100">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
-            <h3>NASA Mini Payload Competition</h3>
+            <h3>Nasa Mini Payload Competion</h3>
             <span>September 2024 - Present</span>
-            <p>Engineering lead for a team of 10 for a project focusing on finding dead zones for GPS and cell signals at high altitudes.</p>
+            <p>Engineering lead for a team of 10 for a project focusing on finding dead zones for GPS and cell signals at high altitutes.</p>
+
           </div>
         </div>
+        <!-- Experience Item 2 -->
         <div class="timeline-item right" data-aos="fade-up" data-aos-delay="200">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
-            <h3>Intern at Georgia Tech Research Institute</h3>
+            h3>Intern at Georgia Tech Research Institute</h3>
             <span>June 2024 - July 2024</span>
-            <p>Interned in CIPHER laboratories in the Quantum Computing Division with a focus on digital signal processing.</p>
+            <p>Interned in CIPHER labratories in the Quantum Computing Division with a focus on digigital signal processing.</p>
           </div>
         </div>
-        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="300">
+        <!-- Add more experience items here, alternating 'left' and 'right' -->
+         <div class="timeline-item left" data-aos="fade-up" data-aos-delay="200">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
-            <h3>Physics Team Varsity Captain</h3>
+            h3>Physics Team Varisty Captain</h3>
             <span>January 2024 - Present</span>
-            <p>Organized weekly physics activities, managed logistics for events, and created/answered questions for the team.</p>
+            <p>As the Varsity Captain, my duties include, organize weekly physics activities, manager logistics for events, and answering/creating difficult questions for the team.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Achievements Section -->
-  <section id="achievements">
-    <canvas id="achievements-canvas"></canvas>
-    <div class="container">
-      <h2 data-aos="fade-up">Achievements</h2>
-      <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-header">Classes Taken</button>
-          <div class="accordion-content">
-            <ul>
-              <li><i class="fas fa-check-circle"></i> AP Physics C</li>
-              <li><i class="fas fa-check-circle"></i> AP Calculus BC</li>
-              <li><i class="fas fa-check-circle"></i> Advanced Robotics</li>
-              <li><i class="fas fa-check-circle"></i> Electrical Engineering Fundamentals</li>
-            </ul>
-          </div>
+  <!-- ments Section with Stars Background -->
+ <!-- Achievements Section with Stars Background -->
+<section id="achievements">
+  <canvas id="achievements-canvas"></canvas>
+  <div class="container">
+    <h2 data-aos="fade-up">Achievements</h2>
+    <div class="accordion">
+      <!-- Accordion Item 1 -->
+      <div class="accordion-item">
+        <button class="accordion-header">Classes Taken</button>
+        <div class="accordion-content">
+          <ul>
+            <li><i class="fas fa-check-circle"></i> AP Physics C</li>
+            <li><i class="fas fa-check-circle"></i> AP Calculus BC</li>
+            <li><i class="fas fa-check-circle"></i> Advanced Robotics</li>
+            <li><i class="fas fa-check-circle"></i> Electrical Engineering Fundamentals</li>
+          </ul>
         </div>
-        <div class="accordion-item">
-          <button class="accordion-header">Test Scores</button>
-          <div class="accordion-content">
-            <div class="progress-bar">
-              <span>SAT: 1540</span>
-              <div class="progress">
-                <div class="progress-fill" data-percentage="98%"></div>
-              </div>
-            </div>
-            <div class="progress-bar">
-              <span>ACT: 35</span>
-              <div class="progress">
-                <div class="progress-fill" data-percentage="97%"></div>
-              </div>
+      </div>
+      <!-- Accordion Item 2 -->
+      <div class="accordion-item">
+        <button class="accordion-header">Test Scores</button>
+        <div class="accordion-content">
+          <div class="progress-bar">
+            <span>SAT: 1540</span>
+            <div class="progress">
+              <div class="progress-fill" data-percentage="98%"></div>
             </div>
           </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">Awards</button>
-          <div class="accordion-content">
-            <div class="awards-grid">
-              <div class="award-badge">
-                <img src="images/award1.png" alt="Science Olympiad Gold Medalist">
-                <span>Science Olympiad Gold Medalist</span>
-              </div>
-              <div class="award-badge">
-                <img src="images/award2.png" alt="National Merit Semifinalist">
-                <span>National Merit Semifinalist</span>
-              </div>
+          <div class="progress-bar">
+            <span>ACT: 35</span>
+            <div class="progress">
+              <div class="progress-fill" data-percentage="97%"></div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Accordion Item 3 -->
+      <div class="accordion-item">
+        <button class="accordion-header">Awards</button>
+        <div class="accordion-content">
+          <div class="awards-grid">
+            <div class="award-badge">
+              <img src="images/award1.png" alt="Science Olympiad Gold Medalist">
+              <span>Science Olympiad Gold Medalist</span>
+            </div>
+            <div class="award-badge">
+              <img src="images/award2.png" alt="National Merit Semifinalist">
+              <span>National Merit Semifinalist</span>
+            </div>
+            <!-- Add more award badges here -->
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Projects Section -->
-  <section id="projects">
+  <!-- Projects Section with Flip Animation Cards -->
+   <section id="projects">
     <div class="container">
       <h2 data-aos="fade-up">My Projects</h2>
       <div class="projects-grid">
+        <!-- Project Card 1 -->
         <div class="project-card" data-aos="fade-up" data-aos-delay="100">
           <div class="flip-card-inner">
             <div class="flip-card-front">
+              <h1>Theramin Project</h1>
               <img src="images/theremin.jpg" alt="Theremin Project">
             </div>
             <div class="flip-card-back">
               <h3>Theremin from Scratch</h3>
-              <p>Built a theremin using analog circuits to create a hands-free musical instrument.</p>
+              <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
+              <a href="project1.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 2 -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h1>Wifi Detector</h1>
+              <img src="images/robotics.jpg" alt="Robotics Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Robotics Challenge</h3>
+              <p>Participated in a robotics competition where I programmed autonomous robots.</p>
+              <a href="project2.html" class="btn">View Project</a>
             </div>
           </div>
         </div>
         <div class="project-card" data-aos="fade-up" data-aos-delay="200">
           <div class="flip-card-inner">
             <div class="flip-card-front">
+              <h1>High Altitude GPS Tester</h1>
               <img src="images/robotics.jpg" alt="Robotics Project">
             </div>
             <div class="flip-card-back">
-              <h3>WiFi Detector</h3>
+              <h3>GT Nasa Payload Competition</h3>
               <p>Participated in a robotics competition where I programmed autonomous robots.</p>
+              <a href="project2.html" class="btn">View Project</a>
             </div>
           </div>
         </div>
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h1>Video Game Stock Market Tracker</h1>
+              <img src="images/robotics.jpg" alt="Robotics Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Stock Market Tracker</h3>
+              <p>Participated in a robotics competition where I programmed autonomous robots.</p>
+              <a href="project2.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h1>Python Library</h1>
+              <img src="images/robotics.jpg" alt="Robotics Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Matrix operations and simple QOL change Python Library</h3>
+              <p>Participated in a robotics competition where I programmed autonomous robots.</p>
+              <a href="project2.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Continue adding project cards as needed -->
       </div>
     </div>
   </section>
 
-  <!-- Scripts -->
+
+  <!-- Tutoring Section with Particle Animation -->
+  <section id="tutoring">
+    <!-- Particles.js Background -->
+    <div id="particles-js"></div>
+    <div class="container">
+      <h2 data-aos="fade-up">Tutoring Services</h2>
+      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics, mathematics, and programming. Whether you're struggling with homework or preparing for exams, I'm here to help you succeed.</p>
+      <button class="btn fancy-btn" id="tutoring-btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</button>
+    </div>
+  </section>
+
+  <!-- Email Modal -->
+  <div id="email-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Contact Me for Tutoring</h2>
+      <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+        <div class="form-group">
+          <input type="text" id="name" name="name" required>
+          <label for="name">Your Name</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" required>
+          <label for="email">Your Email</label>
+        </div>
+        <div class="form-group">
+          <textarea id="message" name="message" required></textarea>
+          <label for="message">Your Message</label>
+        </div>
+        <button type="submit" class="btn fancy-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resources Section with Flip Cards -->
+  <section id="resources">
+    <div class="container">
+      <h2 data-aos="fade-up">Resources</h2>
+      <p data-aos="fade-up" data-aos-delay="100">Here are some helpful resources that I recommend for studying physics, math, and engineering.</p>
+      <div class="resources-grid" data-aos="fade-up" data-aos-delay="200">
+        <!-- Resource Card 1 -->
+        <div class="resource-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h3>Physics Classroom</h3>
+            </div>
+            <div class="flip-card-back">
+              <p>An interactive platform for learning physics concepts.</p>
+              <a href="https://www.physicsclassroom.com" target="_blank" class="btn">Visit Site</a>
+            </div>
+          </div>
+        </div>
+        <!-- Continue adding resource cards -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <h2 data-aos="fade-up">Get In Touch</h2>
+      <p data-aos="fade-up" data-aos-delay="200">Feel free to reach out for collaborations, tutoring, or just a friendly chat.</p>
+      <div class="contact-links" data-aos="fade-up" data-aos-delay="300">
+        <a href="mailto:thebestjacklambert@gmail.com">Email</a>
+        <a href="https://github.com/thebestjacklambert">GitHub</a>
+        <a href="https://www.linkedin.com/in/jack-lambert-8b8646272/">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; <span id="current-year"></span> Jack Lambert</p>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#hero" class="back-to-top"><i class="arrow up"></i></a>
+
+  <!-- JavaScript Files -->
+  <!-- External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+  <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- GSAP Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
+  <!-- Include Your JavaScript File -->
   <script src="script.js"></script>
 </body>
 </html>
