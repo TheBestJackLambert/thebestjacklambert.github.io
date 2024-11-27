@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Jack Lambert | Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jack Lambert | Portfolio</title>
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="styles.css">
   <!-- Google Fonts -->
@@ -42,7 +42,6 @@
 
   <!-- Hero Section with Animated Background -->
   <section id="hero">
-    <!-- Three.js 3D Background -->
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <h1>Jack Lambert</h1>
@@ -65,21 +64,19 @@
     </div>
   </section>
 
-   <!-- Experience Section with Timeline -->
+  <!-- Experience Section -->
   <section id="experience">
     <div class="container">
       <h2 data-aos="fade-up">Experience</h2>
       <div class="timeline">
-        <!-- Experience Item 1 -->
         <div class="timeline-item left" data-aos="fade-up" data-aos-delay="100">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
-            <h3>Nasa Mini Payload Competion</h3>
+            <h3>Nasa Mini Payload Competition</h3>
             <span>September 2024 - Present</span>
             <p>Engineering lead for a team of 10 for a project focusing on finding dead zones for GPS and cell signals at high altitudes.</p>
           </div>
         </div>
-        <!-- Experience Item 2 -->
         <div class="timeline-item right" data-aos="fade-up" data-aos-delay="200">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
@@ -88,40 +85,37 @@
             <p>Interned in CIPHER laboratories in the Quantum Computing Division with a focus on digital signal processing.</p>
           </div>
         </div>
-        <!-- Experience Item 3 -->
-        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="200">
+        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="300">
           <div class="timeline-icon"></div>
           <div class="timeline-content">
             <h3>Physics Team Varsity Captain</h3>
             <span>January 2024 - Present</span>
-            <p>As the Varsity Captain, my duties include organizing weekly physics activities, managing logistics for events, and answering/creating difficult questions for the team.</p>
+            <p>Organizing weekly physics activities, managing logistics for events, and creating challenging questions for the team.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-
   <!-- Achievements Section with Stars Background -->
 <!-- Achievements Section with Stars Background -->
-<section id="achievements">
-  <div id="achievements-canvas-wrapper">
-    <canvas id="achievements-canvas"></canvas>
-  </div>
-  <div class="container">
-    <h2 data-aos="fade-up">Achievements</h2>
-    <div class="accordion">
-      <!-- Accordion Content -->
-      <div class="accordion-item">
-        <button class="accordion-header">Classes Taken</button>
-        <div class="accordion-content">
-          <ul>
-            <li><i class="fas fa-check-circle"></i> AP Physics C</li>
-            <li><i class="fas fa-check-circle"></i> AP Calculus BC</li>
-            <li><i class="fas fa-check-circle"></i> Advanced Robotics</li>
-            <li><i class="fas fa-check-circle"></i> Electrical Engineering Fundamentals</li>
-          </ul>
+ <section id="achievements">
+    <div id="achievements-canvas-wrapper">
+      <canvas id="achievements-canvas"></canvas>
+    </div>
+    <div class="container">
+      <h2 data-aos="fade-up">Achievements</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">Classes Taken</button>
+          <div class="accordion-content">
+            <ul>
+              <li><i class="fas fa-check-circle"></i> AP Physics C</li>
+              <li><i class="fas fa-check-circle"></i> AP Calculus BC</li>
+              <li><i class="fas fa-check-circle"></i> Advanced Robotics</li>
+              <li><i class="fas fa-check-circle"></i> Electrical Engineering Fundamentals</li>
+            </ul>
+          </div>
         </div>
-        <!-- Accordion Item 2 -->
         <div class="accordion-item">
           <button class="accordion-header">Test Scores</button>
           <div class="accordion-content">
@@ -139,7 +133,6 @@
             </div>
           </div>
         </div>
-        <!-- Accordion Item 3 -->
         <div class="accordion-item">
           <button class="accordion-header">Awards</button>
           <div class="accordion-content">
@@ -152,7 +145,6 @@
                 <img src="images/award2.png" alt="National Merit Semifinalist">
                 <span>National Merit Semifinalist</span>
               </div>
-              <!-- Add more award badges here -->
             </div>
           </div>
         </div>
@@ -315,22 +307,14 @@
     <p>&copy; <span id="current-year"></span> Jack Lambert</p>
   </footer>
 
-  <!-- Back to Top Button -->
   <a href="#hero" class="back-to-top"><i class="arrow up"></i></a>
 
   <!-- JavaScript Files -->
-  <!-- External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
-  <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- Particles.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <!-- GSAP Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
-  <!-- Include Your JavaScript File -->
   <script src="script.js"></script>
 </body>
 </html>
