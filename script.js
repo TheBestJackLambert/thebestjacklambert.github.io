@@ -174,21 +174,6 @@ function animateAchievements() {
   starsAchievements.rotation.x += 0.0005;
   starsAchievements.rotation.y += 0.0005;
 
-  // Adjust opacity based on scroll position
-  const achievementsSection = document.getElementById('achievements');
-  const rect = achievementsSection.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-  let opacity = 1;
-
-  if (rect.top > windowHeight || rect.bottom < 0) {
-    opacity = 0;
-  } else {
-    const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-    opacity = visibleHeight / rect.height;
-  }
-
-  rendererAchievements.domElement.style.opacity = opacity;
-
   rendererAchievements.render(sceneAchievements, cameraAchievements);
 }
 animateAchievements();
