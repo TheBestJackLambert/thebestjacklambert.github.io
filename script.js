@@ -77,13 +77,7 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
 
 // Three.js Animated Background for Hero Section
 // Three.js Animated Background for Achievements Section
-const sceneAchievements = new THREE.Scene();
-const cameraAchievements = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / document.getElementById("achievements").offsetHeight,
-  0.1,
-  1000
-);
+
 
 const rendererAchievements = new THREE.WebGLRenderer({
   canvas: document.getElementById("achievements-canvas"),
@@ -125,6 +119,7 @@ function animateAchievements() {
 
   rendererAchievements.render(sceneAchievements, cameraAchievements);
 }
+
 animateAchievements();
 
 window.addEventListener("resize", () => {
