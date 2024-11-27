@@ -76,32 +76,67 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
 });
 
 // Three.js Animated Background for Hero Section
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// Three.js Animated Background for Achievements Section
+const sceneAchievements = new THREE.Scene();
+const cameraAchievements = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / document.getElementById("achievements").offsetHeight,
+  0.1,
+  1000
+);
 
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById('hero-canvas'),
+const rendererAchievements = new THREE.WebGLRenderer({
+  canvas: document.getElementById("achievements-canvas"),
   alpha: true,
 });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
+rendererAchievements.setSize(
+  window.innerWidth,
+  document.getElementById("achievements").offsetHeight
+);
+rendererAchievements.setPixelRatio(window.devicePixelRatio);
 
-const starGeometry = new THREE.BufferGeometry();
-const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+const starGeometryAchievements = new THREE.BufferGeometry();
+const starMaterialAchievements = new THREE.PointsMaterial({ color: 0xffffff });
 
-const starVertices = [];
+const starVerticesAchievements = [];
 for (let i = 0; i < 6000; i++) {
   const x = (Math.random() - 0.5) * 2000;
   const y = (Math.random() - 0.5) * 2000;
   const z = (Math.random() - 0.5) * 2000;
-  starVertices.push(x, y, z);
+  starVerticesAchievements.push(x, y, z);
 }
-starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+starGeometryAchievements.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(starVerticesAchievements, 3)
+);
 
-const stars = new THREE.Points(starGeometry, starMaterial);
-scene.add(stars);
+const starsAchievements = new THREE.Points(
+  starGeometryAchievements,
+  starMaterialAchievements
+);
+sceneAchievements.add(starsAchievements);
 
-camera.position.z = 1;
+cameraAchievements.position.z = 1;
+
+function animateAchievements() {
+  requestAnimationFrame(animateAchievements);
+  starsAchievements.rotation.x += 0.0005;
+  starsAchievements.rotation.y += 0.0005;
+
+  rendererAchievements.render(sceneAchievements, cameraAchievements);
+}
+animateAchievements();
+
+window.addEventListener("resize", () => {
+  const width = window.innerWidth;
+  const height = document.getElementById("achievements").offsetHeight;
+
+  cameraAchievements.aspect = width / height;
+  cameraAchievements.updateProjectionMatrix();
+
+  rendererAchievements.setSize(width, height);
+});
+
 
 function animate() {
   requestAnimationFrame(animate);
