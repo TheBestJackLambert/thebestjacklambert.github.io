@@ -76,7 +76,6 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
 });
 
 // Three.js Background for Hero Section
-// Hero Section - Three.js Starry Background with Cursor Interaction
 const sceneHero = new THREE.Scene();
 const cameraHero = new THREE.PerspectiveCamera(
   75,
@@ -112,31 +111,14 @@ sceneHero.add(starsHero);
 
 cameraHero.position.z = 1;
 
-// Variables to track mouse position
-let mouseX = 0;
-let mouseY = 0;
-
-// Event listener to capture mouse movement
-document.addEventListener('mousemove', (event) => {
-  mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-  mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-});
-
 function animateHero() {
   requestAnimationFrame(animateHero);
-
-  // Smooth rotation animation
   starsHero.rotation.x += 0.0005;
   starsHero.rotation.y += 0.0005;
-
-  // React to mouse movement
-  starsHero.rotation.x += (mouseY * 0.1 - starsHero.rotation.x) * 0.05;
-  starsHero.rotation.y += (mouseX * 0.1 - starsHero.rotation.y) * 0.05;
 
   rendererHero.render(sceneHero, cameraHero);
 }
 animateHero();
-
 
 // Resize Handler for Hero Section
 window.addEventListener("resize", () => {
