@@ -313,11 +313,11 @@ nav .nav-links li a:hover {
 #achievements {
   position: relative;
   padding: 100px 0;
-  background: var(--bg-color);
   color: var(--text-color);
+  z-index: 1;
 }
 
-#achievements canvas {
+#achievements-canvas-wrapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -325,6 +325,13 @@ nav .nav-links li a:hover {
   height: 100%;
   z-index: -1;
 }
+
+#achievements-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 
 #achievements .container {
   width: 80%;
