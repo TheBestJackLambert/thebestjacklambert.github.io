@@ -75,9 +75,66 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
   "max-glare": 0.2,
 });
 
-// Three.js Animated Background for Hero Section
-// Three.js Animated Background for Achievements Section
+// Three.js Background for Hero Section
+const sceneHero = new THREE.Scene();
+const cameraHero = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 
+const rendererHero = new THREE.WebGLRenderer({
+  canvas: document.getElementById("hero-canvas"),
+  alpha: true,
+});
+rendererHero.setSize(window.innerWidth, window.innerHeight);
+rendererHero.setPixelRatio(window.devicePixelRatio);
+
+const starGeometryHero = new THREE.BufferGeometry();
+const starMaterialHero = new THREE.PointsMaterial({ color: 0xffffff });
+
+const starVerticesHero = [];
+for (let i = 0; i < 6000; i++) {
+  const x = (Math.random() - 0.5) * 2000;
+  const y = (Math.random() - 0.5) * 2000;
+  const z = (Math.random() - 0.5) * 2000;
+  starVerticesHero.push(x, y, z);
+}
+starGeometryHero.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(starVerticesHero, 3)
+);
+
+const starsHero = new THREE.Points(starGeometryHero, starMaterialHero);
+sceneHero.add(starsHero);
+
+cameraHero.position.z = 1;
+
+function animateHero() {
+  requestAnimationFrame(animateHero);
+  starsHero.rotation.x += 0.0005;
+  starsHero.rotation.y += 0.0005;
+
+  rendererHero.render(sceneHero, cameraHero);
+}
+animateHero();
+
+// Resize Handler for Hero Section
+window.addEventListener("resize", () => {
+  cameraHero.aspect = window.innerWidth / window.innerHeight;
+  cameraHero.updateProjectionMatrix();
+  rendererHero.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Three.js Background for Achievements Section
+const sceneAchievements = new THREE.Scene();
+const cameraAchievements = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / document.getElementById("achievements").offsetHeight,
+  0.1,
+  1000
+);
 
 const rendererAchievements = new THREE.WebGLRenderer({
   canvas: document.getElementById("achievements-canvas"),
@@ -119,74 +176,15 @@ function animateAchievements() {
 
   rendererAchievements.render(sceneAchievements, cameraAchievements);
 }
-
 animateAchievements();
 
+// Resize Handler for Achievements Section
 window.addEventListener("resize", () => {
-  const width = window.innerWidth;
-  const height = document.getElementById("achievements").offsetHeight;
-
-  cameraAchievements.aspect = width / height;
+  const achievementsHeight = document.getElementById("achievements").offsetHeight;
+  cameraAchievements.aspect = window.innerWidth / achievementsHeight;
   cameraAchievements.updateProjectionMatrix();
-
-  rendererAchievements.setSize(width, height);
+  rendererAchievements.setSize(window.innerWidth, achievementsHeight);
 });
-
-
-function animate() {
-  requestAnimationFrame(animate);
-  stars.rotation.x += 0.0005;
-  stars.rotation.y += 0.0005;
-
-  // Adjust opacity based on scroll position
-  const scrollY = window.scrollY || window.pageYOffset;
-  const maxScroll = window.innerHeight;
-  const opacity = Math.max(1 - scrollY / maxScroll, 0);
-  renderer.domElement.style.opacity = opacity;
-
-  renderer.render(scene, camera);
-}
-animate();
-
-window.addEventListener('resize', onWindowResize, false);
-
-function onWindowResize(){
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(width, height);
-}
-
-// Three.js Animated Background for Achievements Section
-const sceneAchievements = new THREE.Scene();
-const cameraAchievements = new THREE.PerspectiveCamera(75, window.innerWidth / document.getElementById('achievements').offsetHeight, 0.1, 1000);
-
-const rendererAchievements = new THREE.WebGLRenderer({
-  canvas: document.getElementById('achievements-canvas'),
-  alpha: true,
-});
-rendererAchievements.setSize(window.innerWidth, document.getElementById('achievements').offsetHeight);
-rendererAchievements.setPixelRatio(window.devicePixelRatio);
-
-const starGeometryAchievements = new THREE.BufferGeometry();
-const starMaterialAchievements = new THREE.PointsMaterial({ color: 0xffffff });
-
-const starVerticesAchievements = [];
-for (let i = 0; i < 6000; i++) {
-  const x = (Math.random() - 0.5) * 2000;
-  const y = (Math.random() - 0.5) * 2000;
-  const z = (Math.random() - 0.5) * 2000;
-  starVerticesAchievements.push(x, y, z);
-}
-starGeometryAchievements.setAttribute('position', new THREE.Float32BufferAttribute(starVerticesAchievements, 3));
-
-const starsAchievements = new THREE.Points(starGeometryAchievements, starMaterialAchievements);
-sceneAchievements.add(starsAchievements);
-
-cameraAchievements.position.z = 1;
 
 function animateAchievements() {
   requestAnimationFrame(animateAchievements);
