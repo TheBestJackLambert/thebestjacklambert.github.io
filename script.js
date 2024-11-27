@@ -174,23 +174,6 @@ function animateAchievements() {
   starsAchievements.rotation.x += 0.0005;
   starsAchievements.rotation.y += 0.0005;
 
-  rendererAchievements.render(sceneAchievements, cameraAchievements);
-}
-animateAchievements();
-
-// Resize Handler for Achievements Section
-window.addEventListener("resize", () => {
-  const achievementsHeight = document.getElementById("achievements").offsetHeight;
-  cameraAchievements.aspect = window.innerWidth / achievementsHeight;
-  cameraAchievements.updateProjectionMatrix();
-  rendererAchievements.setSize(window.innerWidth, achievementsHeight);
-});
-
-function animateAchievements() {
-  requestAnimationFrame(animateAchievements);
-  starsAchievements.rotation.x += 0.0005;
-  starsAchievements.rotation.y += 0.0005;
-
   // Adjust opacity based on scroll position
   const achievementsSection = document.getElementById('achievements');
   const rect = achievementsSection.getBoundingClientRect();
@@ -210,17 +193,13 @@ function animateAchievements() {
 }
 animateAchievements();
 
-window.addEventListener('resize', onWindowResizeAchievements, false);
-
-function onWindowResizeAchievements(){
-  const width = window.innerWidth;
-  const height = document.getElementById('achievements').offsetHeight;
-
-  cameraAchievements.aspect = width / height;
+// Resize Handler for Achievements Section
+window.addEventListener('resize', () => {
+  const achievementsHeight = document.getElementById('achievements').offsetHeight;
+  cameraAchievements.aspect = window.innerWidth / achievementsHeight;
   cameraAchievements.updateProjectionMatrix();
-
-  rendererAchievements.setSize(width, height);
-}
+  rendererAchievements.setSize(window.innerWidth, achievementsHeight);
+});
 
 // Particles.js Initialization for Tutoring Section
 particlesJS('particles-js',
