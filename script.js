@@ -1,663 +1,247 @@
-// Custom Cursor
-const cursor = document.querySelector('.cursor');
-
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-  createParticle(e.clientX, e.clientY);
-});
-
-// Cursor Expand on Hover
-const hoverElements = document.querySelectorAll('a, .btn, .project-card');
-
-hoverElements.forEach(elem => {
-  elem.addEventListener('mouseover', () => {
-    cursor.classList.add('cursor-hover');
-  });
-  elem.addEventListener('mouseleave', () => {
-    cursor.classList.remove('cursor-hover');
-  });
-});
-
-// Typed.js Initialization
-var typed = new Typed('#typed', {
-  strings: ['Physics Enthusiast', 'Math Problem Destroyer', 'Awesome Guy'],
-  typeSpeed: 50,
-  backSpeed: 50,
-  loop: true
-});
-
-// AOS Initialization
-AOS.init({
-  duration: 1000,
-  once: true
-});
-
-// Mobile Navigation Toggle
-const burger = document.querySelector('.burger');
-const navLinks = document.querySelector('.nav-links');
-
-burger.addEventListener('click', () => {
-  navLinks.classList.toggle('nav-active');
-  burger.classList.toggle('toggle');
-});
-
-// Smooth Scrolling
-document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (navLinks.classList.contains('nav-active')) {
-      navLinks.classList.remove('nav-active');
-      burger.classList.remove('toggle');
-    }
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: 'smooth'
-    });
-  });
-});
-
-// Back to Top Button
-const backToTop = document.querySelector('.back-to-top');
-
-window.addEventListener('scroll', () => {
-  if (window.pageYOffset > 300) {
-    backToTop.style.display = 'flex';
-  } else {
-    backToTop.style.display = 'none';
-  }
-});
-
-// Vanilla Tilt Initialization for Project Cards
-VanillaTilt.init(document.querySelectorAll(".project-card"), {
-  max: 15,
-  speed: 400,
-  glare: true,
-  "max-glare": 0.2,
-});
-
-// Three.js Background for Hero Section with Enhanced Constellations
-
-// Initialize Scene, Camera, and Renderer
-const sceneHero = new THREE.Scene();
-const cameraHero = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  1,
-  10000
-);
-cameraHero.position.z = 1000; // Adjusted for better view of constellations
-
-const rendererHero = new THREE.WebGLRenderer({
-  canvas: document.getElementById('hero-canvas'),
-  alpha: true,
-  antialias: true,
-});
-rendererHero.setSize(window.innerWidth, window.innerHeight);
-rendererHero.setPixelRatio(window.devicePixelRatio);
-rendererHero.setClearColor(0x000000, 0); // Transparent background 
-
-// Background Star Shader Material
-const backgroundStarVertexShader = `
-  attribute float size;
-  void main() {
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    gl_PointSize = size * (300.0 / length(mvPosition.xyz));
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const backgroundStarFragmentShader = `
-  void main() {
-    gl_FragColor = vec4(1.0);
-  }
-`;
-
-const backgroundStarMaterial = new THREE.ShaderMaterial({
-  vertexShader: backgroundStarVertexShader,
-  fragmentShader: backgroundStarFragmentShader,
-  transparent: true,
-});
-
-// Create Random Background Stars
-const backgroundStarGeometry = new THREE.BufferGeometry();
-const backgroundStarVertices = [];
-const backgroundStarSizes = [];
-
-for (let i = 0; i < 5000; i++) {
-  const x = (Math.random() - 0.5) * 8000;
-  const y = (Math.random() - 0.5) * 8000;
-  const z = (Math.random() - 0.5) * 8000;
-  backgroundStarVertices.push(x, y, z);
-
-  // Random star sizes between 1 and 3
-  backgroundStarSizes.push(Math.random() * 2 + 1);
-}
-
-backgroundStarGeometry.setAttribute(
-  'position',
-  new THREE.Float32BufferAttribute(backgroundStarVertices, 3)
-);
-backgroundStarGeometry.setAttribute(
-  'size',
-  new THREE.Float32BufferAttribute(backgroundStarSizes, 1)
-);
-
-const backgroundStars = new THREE.Points(backgroundStarGeometry, backgroundStarMaterial);
-sceneHero.add(backgroundStars);
-
-// Constellation Star Shader Material
-const constellationStarVertexShader = `
-  uniform float highlight;
-  attribute float size;
-  void main() {
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    float adjustedSize = size * (1.0 + highlight * 2.0);
-    gl_PointSize = adjustedSize * (300.0 / length(mvPosition.xyz));
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const constellationStarFragmentShader = `
-  uniform float highlight;
-  void main() {
-    vec3 color = mix(vec3(1.0), vec3(1.0, 0.84, 0.0), highlight); // Gold when highlighted
-    gl_FragColor = vec4(color, 1.0);
-  }
-`;
-
-const baseConstellationStarMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    highlight: { value: 0 },
-  },
-  vertexShader: constellationStarVertexShader,
-  fragmentShader: constellationStarFragmentShader,
-  transparent: true,
-});
-
-// Function to Clone Shader Material
-function cloneShaderMaterial(material) {
-  const newMaterial = material.clone();
-  newMaterial.uniforms = THREE.UniformsUtils.clone(material.uniforms);
-  return newMaterial;
-}
-
-// Define Constellations
-const constellationsData = [
-  // Orion
-  {
-    name: 'Orion',
-    stars: [
-      { name: 'Betelgeuse', position: new THREE.Vector3(-500, 300, -1000) },
-      { name: 'Bellatrix', position: new THREE.Vector3(-300, 300, -1000) },
-      { name: 'Alnitak', position: new THREE.Vector3(-500, 100, -1000) },
-      { name: 'Alnilam', position: new THREE.Vector3(-400, 100, -1000) },
-      { name: 'Mintaka', position: new THREE.Vector3(-300, 100, -1000) },
-      { name: 'Saiph', position: new THREE.Vector3(-500, -100, -1000) },
-      { name: 'Rigel', position: new THREE.Vector3(-300, -100, -1000) },
-    ],
-    connections: [
-      ['Betelgeuse', 'Bellatrix'],
-      ['Betelgeuse', 'Alnitak'],
-      ['Alnitak', 'Alnilam'],
-      ['Alnilam', 'Mintaka'],
-      ['Bellatrix', 'Mintaka'],
-      ['Alnitak', 'Saiph'],
-      ['Mintaka', 'Rigel'],
-      ['Saiph', 'Rigel'],
-    ],
-  },
-  // Ursa Major
-  {
-    name: 'Ursa Major',
-    stars: [
-      { name: 'Dubhe', position: new THREE.Vector3(500, 300, -1000) },
-      { name: 'Merak', position: new THREE.Vector3(600, 200, -1000) },
-      { name: 'Phecda', position: new THREE.Vector3(700, 100, -1000) },
-      { name: 'Megrez', position: new THREE.Vector3(800, 200, -1000) },
-      { name: 'Alioth', position: new THREE.Vector3(900, 300, -1000) },
-      { name: 'Mizar', position: new THREE.Vector3(1000, 200, -1000) },
-      { name: 'Alkaid', position: new THREE.Vector3(1100, 100, -1000) },
-    ],
-    connections: [
-      ['Dubhe', 'Merak'],
-      ['Merak', 'Phecda'],
-      ['Phecda', 'Megrez'],
-      ['Megrez', 'Alioth'],
-      ['Alioth', 'Mizar'],
-      ['Mizar', 'Alkaid'],
-    ],
-  },
-  // Cassiopeia
-  {
-    name: 'Cassiopeia',
-    stars: [
-      { name: 'Schedar', position: new THREE.Vector3(-800, -200, -1000) },
-      { name: 'Caph', position: new THREE.Vector3(-600, -100, -1000) },
-      { name: 'Gamma Cas', position: new THREE.Vector3(-400, -200, -1000) },
-      { name: 'Ruchbah', position: new THREE.Vector3(-600, -300, -1000) },
-      { name: 'Segin', position: new THREE.Vector3(-800, -400, -1000) },
-    ],
-    connections: [
-      ['Schedar', 'Caph'],
-      ['Caph', 'Gamma Cas'],
-      ['Gamma Cas', 'Ruchbah'],
-      ['Ruchbah', 'Segin'],
-    ],
-  },
-  // Leo
-  {
-    name: 'Leo',
-    stars: [
-      { name: 'Regulus', position: new THREE.Vector3(0, 500, -1000) },
-      { name: 'Denebola', position: new THREE.Vector3(200, 300, -1000) },
-      { name: 'Zosma', position: new THREE.Vector3(100, 200, -1000) },
-      { name: 'Algieba', position: new THREE.Vector3(-100, 300, -1000) },
-      { name: 'Adhafera', position: new THREE.Vector3(-200, 200, -1000) },
-    ],
-    connections: [
-      ['Regulus', 'Algieba'],
-      ['Algieba', 'Adhafera'],
-      ['Adhafera', 'Zosma'],
-      ['Zosma', 'Denebola'],
-    ],
-  },
-  // Add more constellations if needed
-];
-
-// Rest of your code for adding constellations
-const constellationMeshes = [];
-
-constellationsData.forEach((constellation) => {
-  // Create Constellation Stars
-  const starGeometry = new THREE.BufferGeometry();
-  const starPositions = [];
-  const starSizes = [];
-
-  constellation.stars.forEach((star) => {
-    starPositions.push(star.position.x, star.position.y, star.position.z);
-    starSizes.push(5); // Increased size for better visibility
-  });
-
-  starGeometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(starPositions, 3)
-  );
-  starGeometry.setAttribute(
-    'size',
-    new THREE.Float32BufferAttribute(starSizes, 1)
-  );
-
-  const starMaterialClone = cloneShaderMaterial(baseConstellationStarMaterial);
-
-  const starPoints = new THREE.Points(starGeometry, starMaterialClone);
-  sceneHero.add(starPoints);
-
-  // Create Constellation Lines
-  const lineGeometry = new THREE.BufferGeometry();
-  const linePositions = [];
-
-  constellation.connections.forEach((connection) => {
-    const startStar = constellation.stars.find((star) => star.name === connection[0]);
-    const endStar = constellation.stars.find((star) => star.name === connection[1]);
-
-    linePositions.push(
-      startStar.position.x,
-      startStar.position.y,
-      startStar.position.z,
-      endStar.position.x,
-      endStar.position.y,
-      endStar.position.z
-    );
-  });
-
-  lineGeometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(linePositions, 3)
-  );
-
-  const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0, // Start invisible
-  });
-
-  const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
-  sceneHero.add(linesMesh);
-
-  // Store for later reference
-  constellationMeshes.push({
-    name: constellation.name,
-    stars: starPoints,
-    lines: linesMesh,
-    starMaterial: starMaterialClone,
-    lineMaterial: lineMaterial,
-  });
-});
-
-// Mouse and Raycaster for Interaction
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-document.addEventListener('mousemove', (event) => {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-});
-
-// Animation Loop
-function animateHero() {
-  requestAnimationFrame(animateHero);
-
-  // Rotate the stars and constellations
-  backgroundStars.rotation.y += 0.0002;
-
-  constellationMeshes.forEach((mesh) => {
-    mesh.stars.rotation.y += 0.0002;
-    mesh.lines.rotation.y += 0.0002;
-  });
-
-  // Update raycaster
-  raycaster.setFromCamera(mouse, cameraHero);
-
-  // Increase the detection radius
-  raycaster.params.Points.threshold = 100; // Increased from 50 to 100
-
-  // Check each constellation
-  constellationMeshes.forEach((mesh) => {
-    // Directly check for intersections with mesh.stars
-    const intersects = raycaster.intersectObject(mesh.stars);
-
-    if (intersects.length > 0) {
-      // Cursor is near this constellation
-      mesh.lineMaterial.opacity = THREE.MathUtils.clamp(mesh.lineMaterial.opacity + 0.1, 0, 1);
-      mesh.lineMaterial.color.lerp(new THREE.Color(0xffd700), 0.1); // Change to gold
-
-      // Increase star brightness and size
-      mesh.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
-        mesh.starMaterial.uniforms.highlight.value + 0.1,
-        0,
-        1
-      );
-    } else {
-      // Cursor is not near
-      mesh.lineMaterial.opacity = THREE.MathUtils.clamp(mesh.lineMaterial.opacity - 0.05, 0, 1);
-      mesh.lineMaterial.color.lerp(new THREE.Color(0xffffff), 0.1); // Change back to white
-
-      // Decrease star brightness and size
-      mesh.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
-        mesh.starMaterial.uniforms.highlight.value - 0.05,
-        0,
-        1
-      );
-    }
-  });
-
-  rendererHero.render(sceneHero, cameraHero);
-}
-animateHero();
-
-// Resize Handler for Responsiveness
-window.addEventListener('resize', () => {
-  cameraHero.aspect = window.innerWidth / window.innerHeight;
-  cameraHero.updateProjectionMatrix();
-  rendererHero.setSize(window.innerWidth, window.innerHeight);
-});
-
-
-// Three.js Background for Achievements Section
-const sceneAchievements = new THREE.Scene();
-const cameraAchievements = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / document.getElementById("achievements").offsetHeight,
-  0.1,
-  1000
-);
-
-const rendererAchievements = new THREE.WebGLRenderer({
-  canvas: document.getElementById("achievements-canvas"),
-  alpha: true,
-});
-rendererAchievements.setSize(
-  window.innerWidth,
-  document.getElementById("achievements").offsetHeight
-);
-rendererAchievements.setPixelRatio(window.devicePixelRatio);
-
-const starGeometryAchievements = new THREE.BufferGeometry();
-const starMaterialAchievements = new THREE.PointsMaterial({ color: 0xffffff });
-
-const starVerticesAchievements = [];
-for (let i = 0; i < 6000; i++) {
-  const x = (Math.random() - 0.5) * 2000;
-  const y = (Math.random() - 0.5) * 2000;
-  const z = (Math.random() - 0.5) * 2000;
-  starVerticesAchievements.push(x, y, z);
-}
-starGeometryAchievements.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(starVerticesAchievements, 3)
-);
-
-const starsAchievements = new THREE.Points(
-  starGeometryAchievements,
-  starMaterialAchievements
-);
-sceneAchievements.add(starsAchievements);
-
-cameraAchievements.position.z = 1;
-
-function animateAchievements() {
-  requestAnimationFrame(animateAchievements);
-  starsAchievements.rotation.x += 0.0005;
-  starsAchievements.rotation.y += 0.0005;
-
-  rendererAchievements.render(sceneAchievements, cameraAchievements);
-}
-animateAchievements();
-
-// Resize Handler for Achievements Section
-window.addEventListener('resize', () => {
-  const achievementsHeight = document.getElementById('achievements').offsetHeight;
-  cameraAchievements.aspect = window.innerWidth / achievementsHeight;
-  cameraAchievements.updateProjectionMatrix();
-  rendererAchievements.setSize(window.innerWidth, achievementsHeight);
-});
-
-// Particles.js Initialization for Tutoring Section
-particlesJS('particles-js',
-  {
-    "particles": {
-      "number": {
-        "value": 60,
-        "density": {
-          "enable": true,
-          "value_area": 800
-        }
-      },
-      "color": {
-        "value": "#ffffff"
-      },
-      "shape": {
-        "type": "circle"
-      },
-      "opacity": {
-        "value": 0.5
-      },
-      "size": {
-        "value": 3
-      },
-      "line_linked": {
-        "enable": false
-      },
-      "move": {
-        "enable": true,
-        "speed": 2
-      }
-    },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": false
-        },
-        "onclick": {
-          "enable": false
-        }
-      }
-    },
-    "retina_detect": true
-  }
-);
-
-// Email Modal Functionality
-const modal = document.getElementById('email-modal');
-const tutoringBtn = document.getElementById('tutoring-btn');
-const closeBtn = document.querySelector('.close-btn');
-
-tutoringBtn.addEventListener('click', () => {
-  modal.style.display = 'block';
-});
-
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if (e.target == modal) {
-    modal.style.display = 'none';
-  }
-});
-
-// Floating Particles Following Cursor
-function createParticle(x, y) {
-  const particle = document.createElement('div');
-  particle.classList.add('particle');
-  document.body.appendChild(particle);
-
-  particle.style.left = x + 'px';
-  particle.style.top = y + 'px';
-
-  const size = Math.random() * 5 + 5;
-  particle.style.width = size + 'px';
-  particle.style.height = size + 'px';
-
-  particle.style.transition = 'transform 0.5s ease-out, opacity 0.5s';
-  particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
-  particle.style.opacity = 0;
-
-  setTimeout(() => {
-    particle.remove();
-  }, 500);
-}
-
-// Dynamic Background Color Change with GSAP
-window.addEventListener('scroll', () => {
-  const scrollPosition = window.pageYOffset;
-  const maxScroll = document.body.scrollHeight - window.innerHeight;
-  const scrollPercentage = scrollPosition / maxScroll;
-
-  const startColor = { r: 13, g: 13, b: 13 }; // #0d0d0d
-  const endColor = { r: 22, g: 33, b: 62 }; // #16213e
-
-  const r = Math.round(startColor.r + (endColor.r - startColor.r) * scrollPercentage);
-  const g = Math.round(startColor.g + (endColor.g - startColor.g) * scrollPercentage);
-  const b = Math.round(startColor.b + (endColor.b - startColor.b) * scrollPercentage);
-
-  document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-});
-
-// GSAP Scroll-triggered Animations
-gsap.registerPlugin(ScrollTrigger);
-
-gsap.from('#about .about-image', {
-  scrollTrigger: {
-    trigger: '#about',
-    start: 'top center'
-  },
-  x: -200,
-  opacity: 0,
-  duration: 1
-});
-
-gsap.from('#about .about-text', {
-  scrollTrigger: {
-    trigger: '#about',
-    start: 'top center'
-  },
-  x: 200,
-  opacity: 0,
-  duration: 1
-});
-
-gsap.from('.timeline-item', {
-  scrollTrigger: {
-    trigger: '#experience',
-    start: 'top center'
-  },
-  y: 100,
-  opacity: 0,
-  duration: 1,
-  stagger: 0.2
-});
-
-// Accordion Functionality
-const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-accordionHeaders.forEach(header => {
-  header.addEventListener('click', () => {
-    const accordionItem = header.parentElement;
-    const accordionContent = header.nextElementSibling;
-    const openItem = document.querySelector('.accordion-item.active');
-
-    if (openItem && openItem !== accordionItem) {
-      openItem.classList.remove('active');
-      openItem.querySelector('.accordion-content').style.maxHeight = 0;
-    }
-
-    accordionItem.classList.toggle('active');
-    if (accordionItem.classList.contains('active')) {
-      accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
-    } else {
-      accordionContent.style.maxHeight = 0;
-    }
-  });
-});
-
-// Animate Progress Bars on Scroll
-const progressFills = document.querySelectorAll('.progress-fill');
-
-progressFills.forEach(fill => {
-  const percentage = fill.getAttribute('data-percentage');
-  fill.style.width = '0%';
-
-  gsap.to(fill, {
-    width: percentage,
-    scrollTrigger: {
-      trigger: fill,
-      start: 'top 80%',
-      toggleActions: 'play none none none',
-    },
-    duration: 1.5,
-    ease: 'power1.out',
-  });
-});
-
-// GSAP Animations for Resources Section
-gsap.from('#resources .resource-card', {
-  scrollTrigger: {
-    trigger: '#resources',
-    start: 'top center'
-  },
-  y: 100,
-  opacity: 0,
-  duration: 1,
-  stagger: 0.2
-});
-
-// Fix for Navigation Menu Cut-off
-window.addEventListener('load', () => {
-  const navLinks = document.querySelector('.nav-links');
-  navLinks.style.maxWidth = '100%';
-});
-
-// Set Current Year in Footer
-document.getElementById('current-year').textContent = new Date().getFullYear();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Portfolio</title>
+  
+  <!-- FontAwesome CDN for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  
+  <!-- AOS Library for Animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Three.js Post-processing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  
+  <!-- GSAP Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
+  
+  <!-- Typed.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  
+  <!-- Vanilla Tilt for Card Effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+  
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  
+</head>
+<body>
+  
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo">
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <h1>Welcome to My Portfolio</h1>
+      <h2 id="typed"></h2>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <h2 data-aos="fade-up">About Me</h2>
+      <div class="about-content">
+        <div class="about-image" data-aos="fade-right">
+          <img src="images/about.jpg" alt="About Image">
+        </div>
+        <div class="about-text" data-aos="fade-left">
+          <p>
+            Hello! I'm Jack, a passionate developer specializing in creating interactive and dynamic web experiences. With a strong foundation in physics and mathematics, I bring a unique perspective to problem-solving and design.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Experience Section -->
+  <section id="experience">
+    <div class="container">
+      <h2 data-aos="fade-up">Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item left" data-aos="fade-right">
+          <div class="timeline-content">
+            <h3>Software Engineer</h3>
+            <span>Company A | 2020 - Present</span>
+            <p>Developed and maintained web applications using modern JavaScript frameworks.</p>
+          </div>
+        </div>
+        <div class="timeline-item right" data-aos="fade-left">
+          <div class="timeline-content">
+            <h3>Junior Developer</h3>
+            <span>Company B | 2018 - 2020</span>
+            <p>Assisted in building responsive websites and implemented user-friendly interfaces.</p>
+          </div>
+        </div>
+        <!-- Add more timeline items as needed -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Achievements Section -->
+  <section id="achievements">
+    <div class="container">
+      <h2 data-aos="fade-up">Achievements</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">Academic Honors</div>
+          <div class="accordion-content">
+            <ul>
+              <li>Graduated with Honors from XYZ University.</li>
+              <li>Received the Best Research Paper Award in Physics.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">Certifications</div>
+          <div class="accordion-content">
+            <ul>
+              <li>Certified JavaScript Developer.</li>
+              <li>Completed Advanced Three.js Workshop.</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Add more accordion items as needed -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Projects Section -->
+  <section id="projects">
+    <div class="container">
+      <h2 data-aos="fade-up">Projects</h2>
+      <div class="projects-grid">
+        <!-- Project Card Example -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h1>Theremin Project</h1>
+              <img src="images/theremin.jpg" alt="Theremin Project">
+            </div>
+            <div class="flip-card-back">
+              <h3>Theremin from Scratch</h3>
+              <p>I built a theremin from scratch using analog circuits to create a hands-free musical instrument.</p>
+              <a href="project1.html" class="btn">View Project</a>
+            </div>
+          </div>
+        </div>
+        <!-- Repeat for other project cards -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Resources Section -->
+  <section id="resources">
+    <div class="container">
+      <h2 data-aos="fade-up">Resources</h2>
+      <p>Check out some of my favorite resources below.</p>
+      <div class="resources-grid">
+        <!-- Resource Card Example -->
+        <div class="resource-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h3>Three.js Documentation</h3>
+            </div>
+            <div class="flip-card-back">
+              <p>Comprehensive guide and API reference for Three.js.</p>
+              <a href="https://threejs.org/docs/" target="_blank" class="btn">View Resource</a>
+            </div>
+          </div>
+        </div>
+        <!-- Repeat for other resource cards -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Tutoring Section -->
+  <section id="tutoring">
+    <div id="particles-js"></div>
+    <div class="container">
+      <h2 data-aos="fade-up">Tutoring Services</h2>
+      <p>Need help with physics or mathematics? I'm here to assist you!</p>
+      <button id="tutoring-btn" class="fancy-btn" data-aos="fade-up">Contact Me</button>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <h2 data-aos="fade-up">Contact</h2>
+      <p>Feel free to reach out for collaborations, questions, or just a friendly chat!</p>
+      <div class="contact-links">
+        <a href="mailto:jack@example.com"><i class="fas fa-envelope"></i> Email</a>
+        <a href="https://github.com/jack" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://linkedin.com/in/jack" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Back to Top Button -->
+  <a href="#hero" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+  
+  <!-- Email Modal -->
+  <div id="email-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Contact Me</h2>
+      <form>
+        <div class="form-group">
+          <input type="text" id="name" required placeholder=" ">
+          <label for="name">Name</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" required placeholder=" ">
+          <label for="email">Email</label>
+        </div>
+        <div class="form-group">
+          <textarea id="message" rows="5" required placeholder=" "></textarea>
+          <label for="message">Message</label>
+        </div>
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; <span id="current-year"></span> Jack. All rights reserved.</p>
+  </footer>
+  
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
