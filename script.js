@@ -74,58 +74,300 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
   glare: true,
   "max-glare": 0.2,
 });
+// Three.js Background for Hero Section with Enhanced Constellations
+// Three.js Background for Hero Section with Recognizable Constellations
 
-// Three.js Background for Hero Section
+// Initialize Scene, Camera, and Renderer
 const sceneHero = new THREE.Scene();
 const cameraHero = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+  1,
+  10000
 );
+cameraHero.position.z = 2000;
 
 const rendererHero = new THREE.WebGLRenderer({
-  canvas: document.getElementById("hero-canvas"),
+  canvas: document.getElementById('hero-canvas'),
   alpha: true,
+  antialias: true,
 });
 rendererHero.setSize(window.innerWidth, window.innerHeight);
 rendererHero.setPixelRatio(window.devicePixelRatio);
+rendererHero.setClearColor(0x000000, 0); // Transparent background
 
-const starGeometryHero = new THREE.BufferGeometry();
-const starMaterialHero = new THREE.PointsMaterial({ color: 0xffffff });
+// Background Star Shader Material
+const backgroundStarVertexShader = `
+  attribute float size;
+  void main() {
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    gl_PointSize = size * (300.0 / length(mvPosition.xyz));
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
 
-const starVerticesHero = [];
-for (let i = 0; i < 6000; i++) {
-  const x = (Math.random() - 0.5) * 2000;
-  const y = (Math.random() - 0.5) * 2000;
-  const z = (Math.random() - 0.5) * 2000;
-  starVerticesHero.push(x, y, z);
+const backgroundStarFragmentShader = `
+  void main() {
+    gl_FragColor = vec4(1.0);
+  }
+`;
+
+const backgroundStarMaterial = new THREE.ShaderMaterial({
+  vertexShader: backgroundStarVertexShader,
+  fragmentShader: backgroundStarFragmentShader,
+  transparent: true,
+});
+
+// Create Random Background Stars
+const backgroundStarGeometry = new THREE.BufferGeometry();
+const backgroundStarVertices = [];
+const backgroundStarSizes = [];
+
+for (let i = 0; i < 5000; i++) {
+  const x = (Math.random() - 0.5) * 8000;
+  const y = (Math.random() - 0.5) * 8000;
+  const z = (Math.random() - 0.5) * 8000;
+  backgroundStarVertices.push(x, y, z);
+
+  // Random star sizes between 1 and 3
+  backgroundStarSizes.push(Math.random() * 2 + 1);
 }
-starGeometryHero.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(starVerticesHero, 3)
+
+backgroundStarGeometry.setAttribute(
+  'position',
+  new THREE.Float32BufferAttribute(backgroundStarVertices, 3)
+);
+backgroundStarGeometry.setAttribute(
+  'size',
+  new THREE.Float32BufferAttribute(backgroundStarSizes, 1)
 );
 
-const starsHero = new THREE.Points(starGeometryHero, starMaterialHero);
-sceneHero.add(starsHero);
+const backgroundStars = new THREE.Points(backgroundStarGeometry, backgroundStarMaterial);
+sceneHero.add(backgroundStars);
 
-cameraHero.position.z = 1;
+// Constellation Star Shader Material
+const constellationStarVertexShader = `
+  uniform float highlight;
+  attribute float size;
+  void main() {
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    float adjustedSize = size * (1.0 + highlight * 2.0);
+    gl_PointSize = adjustedSize * (300.0 / length(mvPosition.xyz));
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
 
+const constellationStarFragmentShader = `
+  uniform float highlight;
+  void main() {
+    vec3 color = mix(vec3(1.0), vec3(1.0, 0.84, 0.0), highlight); // Gold when highlighted
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+const baseConstellationStarMaterial = new THREE.ShaderMaterial({
+  uniforms: {
+    highlight: { value: 0 },
+  },
+  vertexShader: constellationStarVertexShader,
+  fragmentShader: constellationStarFragmentShader,
+  transparent: true,
+});
+
+// Function to Clone Shader Material
+function cloneShaderMaterial(material) {
+  const newMaterial = material.clone();
+  newMaterial.uniforms = THREE.UniformsUtils.clone(material.uniforms);
+  return newMaterial;
+}
+
+// Define Real Constellations
+const constellationsData = [
+  {
+    name: 'Orion',
+    stars: [
+      { name: 'Betelgeuse', position: new THREE.Vector3(-50, 80, -200) },
+      { name: 'Bellatrix', position: new THREE.Vector3(50, 80, -200) },
+      { name: 'Alnitak', position: new THREE.Vector3(-70, 0, -200) },
+      { name: 'Alnilam', position: new THREE.Vector3(0, 0, -200) },
+      { name: 'Mintaka', position: new THREE.Vector3(70, 0, -200) },
+      { name: 'Saiph', position: new THREE.Vector3(-50, -80, -200) },
+      { name: 'Rigel', position: new THREE.Vector3(50, -80, -200) },
+    ],
+    connections: [
+      ['Betelgeuse', 'Bellatrix'],
+      ['Betelgeuse', 'Alnitak'],
+      ['Alnitak', 'Alnilam'],
+      ['Alnilam', 'Mintaka'],
+      ['Bellatrix', 'Mintaka'],
+      ['Alnitak', 'Saiph'],
+      ['Mintaka', 'Rigel'],
+      ['Saiph', 'Rigel'],
+    ],
+  },
+  // Define other constellations similarly (Ursa Major, Cassiopeia, Leo)
+];
+
+// Add Constellations
+const constellationMeshes = [];
+
+constellationsData.forEach((constellation) => {
+  // Create Constellation Stars
+  const starGeometry = new THREE.BufferGeometry();
+  const starPositions = [];
+  const starSizes = [];
+  
+  constellation.stars.forEach((star) => {
+    starPositions.push(star.position.x, star.position.y, star.position.z);
+    starSizes.push(2); // Standard size
+  });
+  
+  starGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(starPositions, 3)
+  );
+  starGeometry.setAttribute(
+    'size',
+    new THREE.Float32BufferAttribute(starSizes, 1)
+  );
+  
+  const starMaterialClone = cloneShaderMaterial(baseConstellationStarMaterial);
+  
+  const starPoints = new THREE.Points(starGeometry, starMaterialClone);
+  sceneHero.add(starPoints);
+  
+  // Create Constellation Lines
+  const lineGeometry = new THREE.BufferGeometry();
+  const linePositions = [];
+  
+  constellation.connections.forEach((connection) => {
+    const startStar = constellation.stars.find((star) => star.name === connection[0]);
+    const endStar = constellation.stars.find((star) => star.name === connection[1]);
+  
+    linePositions.push(
+      startStar.position.x,
+      startStar.position.y,
+      startStar.position.z,
+      endStar.position.x,
+      endStar.position.y,
+      endStar.position.z
+    );
+  });
+  
+  lineGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(linePositions, 3)
+  );
+  
+  const lineMaterial = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0, // Start invisible
+  });
+  
+  const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+  sceneHero.add(linesMesh);
+  
+  // Store for later reference
+  constellationMeshes.push({
+    name: constellation.name,
+    stars: starPoints,
+    lines: linesMesh,
+    starPositions: starPositions,
+    starMaterial: starMaterialClone,
+    lineMaterial: lineMaterial,
+  });
+});
+
+// Mouse and Raycaster for Interaction
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+document.addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+});
+
+// Animation Loop
 function animateHero() {
   requestAnimationFrame(animateHero);
-  starsHero.rotation.x += 0.0005;
-  starsHero.rotation.y += 0.0005;
+
+  // Rotate the stars and constellations
+  backgroundStars.rotation.y += 0.0002;
+
+  constellationMeshes.forEach((mesh) => {
+    mesh.stars.rotation.y += 0.0002;
+    mesh.lines.rotation.y += 0.0002;
+  });
+
+  // Update raycaster
+  raycaster.setFromCamera(mouse, cameraHero);
+
+  // Increase the detection radius
+  raycaster.params.Points.threshold = 50;
+
+  // Check each constellation
+  constellationMeshes.forEach((mesh) => {
+    // Adjust the positions for rotation
+    const rotatedStarPositions = [];
+    for (let i = 0; i < mesh.starPositions.length; i += 3) {
+      const position = new THREE.Vector3(
+        mesh.starPositions[i],
+        mesh.starPositions[i + 1],
+        mesh.starPositions[i + 2]
+      );
+      position.applyAxisAngle(new THREE.Vector3(0, 1, 0), mesh.stars.rotation.y);
+
+      rotatedStarPositions.push(position.x, position.y, position.z);
+    }
+
+    // Create a temporary geometry with rotated positions
+    const tempGeometry = new THREE.BufferGeometry();
+    tempGeometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(rotatedStarPositions, 3)
+    );
+
+    // Check for intersections
+    const intersects = raycaster.intersectObject(new THREE.Points(tempGeometry, mesh.stars.material));
+
+    if (intersects.length > 0) {
+      // Cursor is near this constellation
+      mesh.lineMaterial.opacity = THREE.MathUtils.clamp(mesh.lineMaterial.opacity + 0.1, 0, 1);
+      mesh.lineMaterial.color.lerp(new THREE.Color(0xffd700), 0.1); // Change to gold
+
+      // Increase star brightness and size
+      mesh.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
+        mesh.starMaterial.uniforms.highlight.value + 0.1,
+        0,
+        1
+      );
+    } else {
+      // Cursor is not near
+      mesh.lineMaterial.opacity = THREE.MathUtils.clamp(mesh.lineMaterial.opacity - 0.05, 0, 1);
+      mesh.lineMaterial.color.lerp(new THREE.Color(0xffffff), 0.1); // Change back to white
+
+      // Decrease star brightness and size
+      mesh.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
+        mesh.starMaterial.uniforms.highlight.value - 0.05,
+        0,
+        1
+      );
+    }
+  });
 
   rendererHero.render(sceneHero, cameraHero);
 }
 animateHero();
 
-// Resize Handler for Hero Section
-window.addEventListener("resize", () => {
+// Resize Handler for Responsiveness
+window.addEventListener('resize', () => {
   cameraHero.aspect = window.innerWidth / window.innerHeight;
   cameraHero.updateProjectionMatrix();
   rendererHero.setSize(window.innerWidth, window.innerHeight);
 });
+
+
 
 // Three.js Background for Achievements Section
 const sceneAchievements = new THREE.Scene();
