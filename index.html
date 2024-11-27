@@ -19,7 +19,7 @@
   <!-- Navigation Bar -->
   <nav>
     <div class="logo">
-      <img src="logo.png" alt="Jack's Logo">
+      <img src="images/logo.png" alt="Jack's Logo">
     </div>
     <ul class="nav-links">
       <li><a href="#hero" class="nav-link">Home</a></li>
@@ -55,58 +55,39 @@
           <img src="images/jack-photo.jpg" alt="Jack's Photo">
         </div>
         <div class="about-text">
-          <p>Hello! I'm Jack Lambert, a  high school student enrolled in the magnet program at Wheeler High School. My hobbies include playing chess, cooking, and solving problems.</p>
+          <p>Hello! I'm Jack Lambert, a high school student enrolled in the magnet program at Wheeler High School. My hobbies include playing chess, cooking, and solving problems.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Experience Section with Timeline -->
-<section id="experience">
-  <div class="container">
-    <h2 data-aos="fade-up">Experience</h2>
-    <div class="timeline">
-      <!-- Experience Item 1 -->
-      <div class="timeline-item left" data-aos="fade-up" data-aos-delay="100">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-          <h3>Intern at Georgia Tech Research Institute</h3>
-          <span>June 2021 - August 2021</span>
-          <p>Worked on projects involving signal processing and electronic circuit design.</p>
+  <section id="experience">
+    <div class="container">
+      <h2 data-aos="fade-up">Experience</h2>
+      <div class="timeline">
+        <!-- Experience Item 1 -->
+        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="100">
+          <div class="timeline-icon"></div>
+          <div class="timeline-content">
+            <h3>Intern at Georgia Tech Research Institute</h3>
+            <span>June 2021 - August 2021</span>
+            <p>Worked on projects involving signal processing and electronic circuit design.</p>
+          </div>
         </div>
-      </div>
-      <!-- Experience Item 2 -->
-      <div class="timeline-item right" data-aos="fade-up" data-aos-delay="200">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-          <h3>President of Robotics Club</h3>
-          <span>September 2020 - Present</span>
-          <p>Lead a team of students in designing and building robots for competitions.</p>
+        <!-- Experience Item 2 -->
+        <div class="timeline-item right" data-aos="fade-up" data-aos-delay="200">
+          <div class="timeline-icon"></div>
+          <div class="timeline-content">
+            <h3>President of Robotics Club</h3>
+            <span>September 2020 - Present</span>
+            <p>Lead a team of students in designing and building robots for competitions.</p>
+          </div>
         </div>
+        <!-- Add more experience items here, alternating 'left' and 'right' -->
       </div>
-      <!-- Experience Item 3 -->
-      <div class="timeline-item left" data-aos="fade-up" data-aos-delay="300">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-          <h3>Volunteer at Local Science Museum</h3>
-          <span>January 2020 - May 2021</span>
-          <p>Assisted with interactive exhibits and educated visitors about physics concepts.</p>
-        </div>
-      </div>
-      <!-- Experience Item 4 -->
-      <div class="timeline-item right" data-aos="fade-up" data-aos-delay="400">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-          <h3>Math Tutor</h3>
-          <span>September 2019 - Present</span>
-          <p>Provide one-on-one tutoring to high school students in calculus and algebra.</p>
-        </div>
-      </div>
-      <!-- Add more experience items here, alternating 'left' and 'right' -->
     </div>
-  </div>
-</section>
-
+  </section>
 
   <!-- Projects Section with Flip Animation Cards -->
   <section id="projects">
@@ -139,32 +120,7 @@
             </div>
           </div>
         </div>
-        <!-- Project Card 3 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="images/app-development.jpg" alt="App Development Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Mobile App Development</h3>
-              <p>Developed a mobile app to help students manage their homework and schedules.</p>
-              <a href="project3.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 4 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="images/physics-simulation.jpg" alt="Physics Simulation Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Physics Simulation</h3>
-              <p>Created simulations to demonstrate complex physics concepts in an interactive way.</p>
-              <a href="project4.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
+        <!-- Continue adding project cards as needed -->
       </div>
     </div>
   </section>
@@ -185,28 +141,21 @@
     <div class="modal-content">
       <span class="close-btn">&times;</span>
       <h2>Contact Me for Tutoring</h2>
-      <!-- Email Modal -->
-        <div id="email-modal" class="modal">
-          <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Contact Me for Tutoring</h2>
-            <form id="contact-form">
-              <div class="form-group">
-                <input type="text" id="name" name="name" required>
-                <label for="name">Your Name</label>
-              </div>
-              <div class="form-group">
-                <input type="email" id="email" name="email" required>
-                <label for="email">Your Email</label>
-              </div>
-              <div class="form-group">
-                <textarea id="message" name="message" required></textarea>
-                <label for="message">Your Message</label>
-              </div>
-              <button type="submit" class="btn fancy-btn">Send Message</button>
-            </form>
-          </div>
+      <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+        <div class="form-group">
+          <input type="text" id="name" name="name" required>
+          <label for="name">Your Name</label>
         </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" required>
+          <label for="email">Your Email</label>
+        </div>
+        <div class="form-group">
+          <textarea id="message" name="message" required></textarea>
+          <label for="message">Your Message</label>
+        </div>
+        <button type="submit" class="btn fancy-btn">Send Message</button>
+      </form>
     </div>
   </div>
 
