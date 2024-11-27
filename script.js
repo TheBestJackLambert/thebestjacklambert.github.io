@@ -21,9 +21,9 @@ hoverElements.forEach(elem => {
 
 // Typed.js Initialization
 var typed = new Typed('#typed', {
-  strings: ['Physics Enthusiast', 'Math Problem Destroyer','Awesome Dude',],
+  strings: ['Physics Enthusiast', 'Aspiring Engineer', 'Problem Solver'],
   typeSpeed: 50,
-  backSpeed: 75,
+  backSpeed: 50,
   loop: true
 });
 
@@ -75,7 +75,7 @@ VanillaTilt.init(document.querySelectorAll(".project-card"), {
   "max-glare": 0.2,
 });
 
-// Three.js Animated Background
+// Three.js Animated Background for Hero Section
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -128,6 +128,70 @@ function onWindowResize(){
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
+}
+
+// Three.js Animated Background for Achievements Section
+const sceneAchievements = new THREE.Scene();
+const cameraAchievements = new THREE.PerspectiveCamera(75, window.innerWidth / document.getElementById('achievements').offsetHeight, 0.1, 1000);
+
+const rendererAchievements = new THREE.WebGLRenderer({
+  canvas: document.getElementById('achievements-canvas'),
+  alpha: true,
+});
+rendererAchievements.setSize(window.innerWidth, document.getElementById('achievements').offsetHeight);
+rendererAchievements.setPixelRatio(window.devicePixelRatio);
+
+const starGeometryAchievements = new THREE.BufferGeometry();
+const starMaterialAchievements = new THREE.PointsMaterial({ color: 0xffffff });
+
+const starVerticesAchievements = [];
+for (let i = 0; i < 6000; i++) {
+  const x = (Math.random() - 0.5) * 2000;
+  const y = (Math.random() - 0.5) * 2000;
+  const z = (Math.random() - 0.5) * 2000;
+  starVerticesAchievements.push(x, y, z);
+}
+starGeometryAchievements.setAttribute('position', new THREE.Float32BufferAttribute(starVerticesAchievements, 3));
+
+const starsAchievements = new THREE.Points(starGeometryAchievements, starMaterialAchievements);
+sceneAchievements.add(starsAchievements);
+
+cameraAchievements.position.z = 1;
+
+function animateAchievements() {
+  requestAnimationFrame(animateAchievements);
+  starsAchievements.rotation.x += 0.0005;
+  starsAchievements.rotation.y += 0.0005;
+
+  // Adjust opacity based on scroll position
+  const achievementsSection = document.getElementById('achievements');
+  const rect = achievementsSection.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+  let opacity = 1;
+
+  if (rect.top > windowHeight || rect.bottom < 0) {
+    opacity = 0;
+  } else {
+    const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+    opacity = visibleHeight / rect.height;
+  }
+
+  rendererAchievements.domElement.style.opacity = opacity;
+
+  rendererAchievements.render(sceneAchievements, cameraAchievements);
+}
+animateAchievements();
+
+window.addEventListener('resize', onWindowResizeAchievements, false);
+
+function onWindowResizeAchievements(){
+  const width = window.innerWidth;
+  const height = document.getElementById('achievements').offsetHeight;
+
+  cameraAchievements.aspect = width / height;
+  cameraAchievements.updateProjectionMatrix();
+
+  rendererAchievements.setSize(width, height);
 }
 
 // Particles.js Initialization for Tutoring Section
@@ -259,6 +323,60 @@ gsap.from('#about .about-text', {
 gsap.from('.timeline-item', {
   scrollTrigger: {
     trigger: '#experience',
+    start: 'top center'
+  },
+  y: 100,
+  opacity: 0,
+  duration: 1,
+  stagger: 0.2
+});
+
+// Accordion Functionality
+const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+accordionHeaders.forEach(header => {
+  header.addEventListener('click', () => {
+    const accordionItem = header.parentElement;
+    const accordionContent = header.nextElementSibling;
+    const openItem = document.querySelector('.accordion-item.active');
+
+    if (openItem && openItem !== accordionItem) {
+      openItem.classList.remove('active');
+      openItem.querySelector('.accordion-content').style.maxHeight = 0;
+    }
+
+    accordionItem.classList.toggle('active');
+    if (accordionItem.classList.contains('active')) {
+      accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+    } else {
+      accordionContent.style.maxHeight = 0;
+    }
+  });
+});
+
+// Animate Progress Bars on Scroll
+const progressFills = document.querySelectorAll('.progress-fill');
+
+progressFills.forEach(fill => {
+  const percentage = fill.getAttribute('data-percentage');
+  fill.style.width = '0%';
+
+  gsap.to(fill, {
+    width: percentage,
+    scrollTrigger: {
+      trigger: fill,
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+    duration: 1.5,
+    ease: 'power1.out',
+  });
+});
+
+// GSAP Animations for Resources Section
+gsap.from('#resources .resource-card', {
+  scrollTrigger: {
+    trigger: '#resources',
     start: 'top center'
   },
   y: 100,
