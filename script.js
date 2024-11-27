@@ -1,4 +1,3 @@
-// Custom Cursor
 const cursor = document.querySelector('.cursor');
 const hoverElements = document.querySelectorAll('a, .btn, .project-card, .resource-card');
 
@@ -11,7 +10,6 @@ hoverElements.forEach(elem => {
   });
 });
 
-// Typed.js Initialization
 var typed = new Typed('#typed', {
   strings: ['Physics Enthusiast', 'Math Problem Destroyer', 'Awesome Guy'],
   typeSpeed: 50,
@@ -19,13 +17,11 @@ var typed = new Typed('#typed', {
   loop: true
 });
 
-// AOS Initialization
 AOS.init({
   duration: 1000,
   once: true
 });
 
-// Mobile Navigation Toggle
 const burger = document.querySelector('.burger');
 const navLinks = document.querySelector('.nav-links');
 
@@ -34,7 +30,6 @@ burger.addEventListener('click', () => {
   burger.classList.toggle('toggle');
 });
 
-// Smooth Scrolling
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
     e.preventDefault();
@@ -48,7 +43,6 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Back to Top Button
 const backToTop = document.querySelector('.back-to-top');
 
 window.addEventListener('scroll', () => {
@@ -59,7 +53,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Vanilla Tilt Initialization for Project and Resource Cards
 VanillaTilt.init(document.querySelectorAll(".project-card, .resource-card"), {
   max: 15,
   speed: 400,
@@ -67,370 +60,111 @@ VanillaTilt.init(document.querySelectorAll(".project-card, .resource-card"), {
   "max-glare": 0.2,
 });
 
-// Three.js Background for Hero Section with Multiple Constellations
-
-// Initialize Scene, Camera, and Renderer
-const sceneHero = new THREE.Scene();
-const cameraHero = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  1,
-  10000
-);
-cameraHero.position.z = 1000; // Adjusted for better view of constellations
-
-const rendererHero = new THREE.WebGLRenderer({
-  canvas: document.getElementById('hero-canvas'),
-  alpha: true,
-  antialias: true,
-});
-rendererHero.setSize(window.innerWidth, window.innerHeight);
-rendererHero.setPixelRatio(window.devicePixelRatio);
-rendererHero.setClearColor(0x000000, 0); // Transparent background
-
-// Background Star Shader Material
-const backgroundStarVertexShader = `
-  attribute float size;
-  void main() {
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    gl_PointSize = size * (300.0 / length(mvPosition.xyz));
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const backgroundStarFragmentShader = `
-  void main() {
-    gl_FragColor = vec4(1.0);
-  }
-`;
-
-const backgroundStarMaterial = new THREE.ShaderMaterial({
-  vertexShader: backgroundStarVertexShader,
-  fragmentShader: backgroundStarFragmentShader,
-  transparent: true,
-});
-
-// Create Random Background Stars
-const backgroundStarGeometry = new THREE.BufferGeometry();
-const backgroundStarVertices = [];
-const backgroundStarSizes = [];
-
-for (let i = 0; i < 5000; i++) {
-  const x = (Math.random() - 0.5) * 8000;
-  const y = (Math.random() - 0.5) * 8000;
-  const z = (Math.random() - 0.5) * 8000;
-  backgroundStarVertices.push(x, y, z);
-
-  // Random star sizes between 1 and 3
-  backgroundStarSizes.push(Math.random() * 2 + 1);
-}
-
-backgroundStarGeometry.setAttribute(
-  'position',
-  new THREE.Float32BufferAttribute(backgroundStarVertices, 3)
-);
-backgroundStarGeometry.setAttribute(
-  'size',
-  new THREE.Float32BufferAttribute(backgroundStarSizes, 1)
-);
-
-const backgroundStars = new THREE.Points(backgroundStarGeometry, backgroundStarMaterial);
-sceneHero.add(backgroundStars);
-
-// Constellation Star Shader Material
-const constellationStarVertexShader = `
-  uniform float highlight;
-  attribute float size;
-  void main() {
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    float adjustedSize = size * (1.0 + highlight * 2.0);
-    gl_PointSize = adjustedSize * (300.0 / length(mvPosition.xyz));
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const constellationStarFragmentShader = `
-  uniform float highlight;
-  void main() {
-    vec3 color = mix(vec3(1.0), vec3(1.0, 0.84, 0.0), highlight); // Gold when highlighted
-    gl_FragColor = vec4(color, 1.0);
-  }
-`;
-
-const baseConstellationStarMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    highlight: { value: 0 },
-  },
-  vertexShader: constellationStarVertexShader,
-  fragmentShader: constellationStarFragmentShader,
-  transparent: true,
-});
-
-// Function to Clone Shader Material
-function cloneShaderMaterial(material) {
-  const newMaterial = material.clone();
-  newMaterial.uniforms = THREE.UniformsUtils.clone(material.uniforms);
-  return newMaterial;
-}
-
-// Define Multiple Base Constellations
-const constellationsList = [
-  {
-    name: 'Orion',
-    stars: [
-      { name: 'Betelgeuse', position: new THREE.Vector3(-50, 80, -200) },
-      { name: 'Bellatrix', position: new THREE.Vector3(50, 80, -200) },
-      { name: 'Alnitak', position: new THREE.Vector3(-70, 0, -200) },
-      { name: 'Alnilam', position: new THREE.Vector3(0, 0, -200) },
-      { name: 'Mintaka', position: new THREE.Vector3(70, 0, -200) },
-      { name: 'Saiph', position: new THREE.Vector3(-50, -80, -200) },
-      { name: 'Rigel', position: new THREE.Vector3(50, -80, -200) },
-    ],
-    connections: [
-      ['Betelgeuse', 'Bellatrix'],
-      ['Betelgeuse', 'Alnitak'],
-      ['Alnitak', 'Alnilam'],
-      ['Alnilam', 'Mintaka'],
-      ['Bellatrix', 'Mintaka'],
-      ['Alnitak', 'Saiph'],
-      ['Mintaka', 'Rigel'],
-      ['Saiph', 'Rigel'],
-    ],
-  },
-  {
-    name: 'Ursa Major',
-    stars: [
-      { name: 'Dubhe', position: new THREE.Vector3(-60, 100, -250) },
-      { name: 'Merak', position: new THREE.Vector3(-30, 80, -250) },
-      { name: 'Phecda', position: new THREE.Vector3(-10, 60, -250) },
-      { name: 'Megrez', position: new THREE.Vector3(0, 40, -250) },
-      { name: 'Alioth', position: new THREE.Vector3(10, 20, -250) },
-      { name: 'Mizar', position: new THREE.Vector3(30, 0, -250) },
-      { name: 'Alkaid', position: new THREE.Vector3(60, -20, -250) },
-    ],
-    connections: [
-      ['Dubhe', 'Merak'],
-      ['Merak', 'Phecda'],
-      ['Phecda', 'Megrez'],
-      ['Megrez', 'Alioth'],
-      ['Alioth', 'Mizar'],
-      ['Mizar', 'Alkaid'],
-    ],
-  },
-  {
-    name: 'Cassiopeia',
-    stars: [
-      { name: 'Schedar', position: new THREE.Vector3(-80, 120, -300) },
-      { name: 'Caph', position: new THREE.Vector3(-40, 100, -300) },
-      { name: 'Gamma Cassiopeiae', position: new THREE.Vector3(0, 80, -300) },
-      { name: 'Ruchbah', position: new THREE.Vector3(40, 100, -300) },
-      { name: 'Segin', position: new THREE.Vector3(80, 120, -300) },
-    ],
-    connections: [
-      ['Schedar', 'Caph'],
-      ['Caph', 'Gamma Cassiopeiae'],
-      ['Gamma Cassiopeiae', 'Ruchbah'],
-      ['Ruchbah', 'Segin'],
-    ],
-  },
-  // Add more constellations as desired
-];
-
-// Function to Create a Constellation Instance
-function createConstellation(constellationData, offset) {
-  // Clone stars with offset
-  const duplicatedStars = constellationData.stars.map(star => ({
-    name: star.name,
-    position: star.position.clone().add(offset),
-  }));
-
-  // Create star geometry
-  const starGeometry = new THREE.BufferGeometry();
-  const starPositions = [];
-  const starSizes = [];
-
-  duplicatedStars.forEach(star => {
-    starPositions.push(star.position.x, star.position.y, star.position.z);
-    starSizes.push(5); // Adjust size as needed
-  });
-
-  starGeometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(starPositions, 3)
+document.addEventListener('DOMContentLoaded', () => {
+  const sceneHero = new THREE.Scene();
+  const cameraHero = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    1,
+    10000
   );
-  starGeometry.setAttribute(
-    'size',
-    new THREE.Float32BufferAttribute(starSizes, 1)
-  );
+  cameraHero.position.z = 1000;
+  const rendererHero = new THREE.WebGLRenderer({
+    canvas: document.getElementById('hero-canvas'),
+    alpha: true,
+    antialias: true,
+  });
+  rendererHero.setSize(window.innerWidth, window.innerHeight);
+  rendererHero.setPixelRatio(window.devicePixelRatio);
+  rendererHero.setClearColor(0x000000, 0);
 
-  // Clone star material
-  const starMaterialClone = cloneShaderMaterial(baseConstellationStarMaterial);
-
-  const starPoints = new THREE.Points(starGeometry, starMaterialClone);
-  sceneHero.add(starPoints);
-
-  // Create lines geometry
-  const lineGeometry = new THREE.BufferGeometry();
-  const linePositions = [];
-
-  constellationData.connections.forEach(connection => {
-    const startStar = duplicatedStars.find(star => star.name === connection[0]);
-    const endStar = duplicatedStars.find(star => star.name === connection[1]);
-
-    if (startStar && endStar) {
-      linePositions.push(
-        startStar.position.x,
-        startStar.position.y,
-        startStar.position.z,
-        endStar.position.x,
-        endStar.position.y,
-        endStar.position.z
-      );
-    }
+  window.addEventListener('resize', () => {
+    cameraHero.aspect = window.innerWidth / window.innerHeight;
+    cameraHero.updateProjectionMatrix();
+    rendererHero.setSize(window.innerWidth, window.innerHeight);
   });
 
-  lineGeometry.setAttribute(
-    'position',
-    new THREE.Float32BufferAttribute(linePositions, 3)
-  );
+  const particleCount = 2000;
+  const particlesGeometry = new THREE.BufferGeometry();
+  const positions = [];
+  const velocities = [];
 
-  const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0, // Start invisible
-  });
-
-  const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
-  sceneHero.add(linesMesh);
-
-  return {
-    name: constellationData.name,
-    stars: starPoints,
-    lines: linesMesh,
-    starMaterial: starMaterialClone,
-    lineMaterial: lineMaterial,
-  };
-}
-
-// Array to hold all constellation meshes
-const constellationMeshes = [];
-
-// Define the number of duplicates you want
-const numberOfDuplicates = 20; // Adjust as needed
-
-// Define the area within which to distribute constellations
-const distributionArea = {
-  x: { min: -3000, max: 3000 },
-  y: { min: -1500, max: 1500 },
-  z: { min: -4000, max: 0 },
-};
-
-// Function to generate a random offset within the distribution area
-function getRandomOffset() {
-  const x = THREE.MathUtils.randFloat(distributionArea.x.min, distributionArea.x.max);
-  const y = THREE.MathUtils.randFloat(distributionArea.y.min, distributionArea.y.max);
-  const z = THREE.MathUtils.randFloat(distributionArea.z.min, distributionArea.z.max);
-  return new THREE.Vector3(x, y, z);
-}
-
-// Function to select a random constellation from the list
-function getRandomConstellation() {
-  const index = Math.floor(Math.random() * constellationsList.length);
-  return constellationsList[index];
-}
-
-// Create multiple constellations
-for (let i = 0; i < numberOfDuplicates; i++) {
-  const constellationData = getRandomConstellation();
-  const offset = getRandomOffset();
-  const constellation = createConstellation(constellationData, offset);
-  constellationMeshes.push(constellation);
-}
-
-// Mouse and Raycaster for Interaction
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-document.addEventListener('mousemove', (event) => {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-});
-
-// Animation Loop
-function animateHero() {
-  requestAnimationFrame(animateHero);
-
-  // Rotate the background stars and constellations
-  backgroundStars.rotation.y += 0.0002;
-
-  constellationMeshes.forEach((mesh) => {
-    mesh.stars.rotation.y += 0.0002;
-    mesh.lines.rotation.y += 0.0002;
-  });
-
-  // Update raycaster
-  raycaster.setFromCamera(mouse, cameraHero);
-
-  // Increase the detection radius
-  raycaster.params.Points.threshold = 100; // Adjust as needed
-
-  // Keep track of the nearest constellation
-  let nearestConstellation = null;
-  let minDistance = Infinity;
-
-  constellationMeshes.forEach((mesh) => {
-    const intersects = raycaster.intersectObject(mesh.stars);
-
-    if (intersects.length > 0) {
-      const distance = intersects[0].distance;
-      if (distance < minDistance) {
-        minDistance = distance;
-        nearestConstellation = mesh;
-      }
-    }
-  });
-
-  // Reset all constellations
-  constellationMeshes.forEach((mesh) => {
-    if (mesh !== nearestConstellation) {
-      // Reset opacity and color
-      mesh.lineMaterial.opacity = THREE.MathUtils.clamp(mesh.lineMaterial.opacity - 0.05, 0, 1);
-      mesh.lineMaterial.color.lerp(new THREE.Color(0xffffff), 0.1); // Change back to white
-
-      // Reset star brightness and size
-      mesh.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
-        mesh.starMaterial.uniforms.highlight.value - 0.05,
-        0,
-        1
-      );
-    }
-  });
-
-  // Highlight the nearest constellation
-  if (nearestConstellation) {
-    nearestConstellation.lineMaterial.opacity = THREE.MathUtils.clamp(nearestConstellation.lineMaterial.opacity + 0.1, 0, 1);
-    nearestConstellation.lineMaterial.color.lerp(new THREE.Color(0xffd700), 0.1); // Change to gold
-
-    // Increase star brightness and size
-    nearestConstellation.starMaterial.uniforms.highlight.value = THREE.MathUtils.clamp(
-      nearestConstellation.starMaterial.uniforms.highlight.value + 0.1,
-      0,
-      1
+  for (let i = 0; i < particleCount; i++) {
+    positions.push(
+      (Math.random() - 0.5) * 4000,
+      (Math.random() - 0.5) * 4000,
+      (Math.random() - 0.5) * 4000
+    );
+    velocities.push(
+      (Math.random() - 0.5) * 0.5,
+      (Math.random() - 0.5) * 0.5,
+      (Math.random() - 0.5) * 0.5
     );
   }
 
-  rendererHero.render(sceneHero, cameraHero);
-}
-animateHero();
+  particlesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  particlesGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
 
-// Resize Handler for Responsiveness
-window.addEventListener('resize', () => {
-  cameraHero.aspect = window.innerWidth / window.innerHeight;
-  cameraHero.updateProjectionMatrix();
-  rendererHero.setSize(window.innerWidth, window.innerHeight);
+  const particlesMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 2,
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    depthWrite: false,
+  });
+
+  const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+  sceneHero.add(particles);
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  document.addEventListener('mousemove', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+  });
+
+  function animateHero() {
+    requestAnimationFrame(animateHero);
+    particles.rotation.y += 0.0005;
+
+    const positions = particlesGeometry.attributes.position.array;
+    const velocities = particlesGeometry.attributes.velocity.array;
+
+    raycaster.setFromCamera(mouse, cameraHero);
+    const intersects = raycaster.intersectObject(particles);
+
+    if (intersects.length > 0) {
+      const intersect = intersects[0];
+      const index = intersect.index * 3;
+      const x = positions[index];
+      const y = positions[index + 1];
+      const z = positions[index + 2];
+      const dx = (intersect.point.x - x) * 0.05;
+      const dy = (intersect.point.y - y) * 0.05;
+      const dz = (intersect.point.z - z) * 0.05;
+      velocities[index] += dx;
+      velocities[index + 1] += dy;
+      velocities[index + 2] += dz;
+    }
+
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] += velocities[i];
+      positions[i + 1] += velocities[i + 1];
+      positions[i + 2] += velocities[i + 2];
+
+      if (positions[i] > 2000 || positions[i] < -2000) velocities[i] *= -1;
+      if (positions[i + 1] > 2000 || positions[i + 1] < -2000) velocities[i + 1] *= -1;
+      if (positions[i + 2] > 2000 || positions[i + 2] < -2000) velocities[i + 2] *= -1;
+    }
+
+    particlesGeometry.attributes.position.needsUpdate = true;
+
+    rendererHero.render(sceneHero, cameraHero);
+  }
+  animateHero();
 });
 
-// Particles.js Initialization for Tutoring Section
 particlesJS('particles-js',
   {
     "particles": {
@@ -476,7 +210,6 @@ particlesJS('particles-js',
   }
 );
 
-// Email Modal Functionality
 const modal = document.getElementById('email-modal');
 const tutoringBtn = document.getElementById('tutoring-btn');
 const closeBtn = document.querySelector('.close-btn');
@@ -495,23 +228,17 @@ window.addEventListener('click', (e) => {
   }
 });
 
-// Floating Particles Following Cursor
 function createParticle(x, y) {
   const particle = document.createElement('div');
   particle.classList.add('particle');
   document.body.appendChild(particle);
-
   particle.style.left = x + 'px';
   particle.style.top = y + 'px';
-
   const size = Math.random() * 5 + 5;
   particle.style.width = size + 'px';
   particle.style.height = size + 'px';
-
-  particle.style.transition = 'transform 0.5s ease-out, opacity 0.5s';
   particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
   particle.style.opacity = 0;
-
   setTimeout(() => {
     particle.remove();
   }, 500);
@@ -523,14 +250,13 @@ document.addEventListener('mousemove', e => {
   createParticle(e.clientX, e.clientY);
 });
 
-// Dynamic Background Color Change with GSAP
 window.addEventListener('scroll', () => {
   const scrollPosition = window.pageYOffset;
   const maxScroll = document.body.scrollHeight - window.innerHeight;
   const scrollPercentage = scrollPosition / maxScroll;
 
-  const startColor = { r: 13, g: 13, b: 13 }; // #0d0d0d
-  const endColor = { r: 22, g: 33, b: 62 }; // #16213e
+  const startColor = { r: 13, g: 13, b: 13 };
+  const endColor = { r: 22, g: 33, b: 62 };
 
   const r = Math.round(startColor.r + (endColor.r - startColor.r) * scrollPercentage);
   const g = Math.round(startColor.g + (endColor.g - startColor.g) * scrollPercentage);
@@ -539,7 +265,6 @@ window.addEventListener('scroll', () => {
   document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 });
 
-// GSAP Scroll-triggered Animations
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.from('#about .about-image', {
@@ -573,7 +298,6 @@ gsap.from('.timeline-item', {
   stagger: 0.2
 });
 
-// GSAP Animations for Quote Section
 gsap.from('#quote .quote-content', {
   scrollTrigger: {
     trigger: '#quote',
@@ -584,7 +308,6 @@ gsap.from('#quote .quote-content', {
   duration: 1
 });
 
-// GSAP Animations for Resources Section
 gsap.from('#resources .resource-card', {
   scrollTrigger: {
     trigger: '#resources',
@@ -596,7 +319,6 @@ gsap.from('#resources .resource-card', {
   stagger: 0.2
 });
 
-// Accordion Functionality
 const accordionHeaders = document.querySelectorAll('.accordion-header');
 
 accordionHeaders.forEach(header => {
@@ -619,7 +341,6 @@ accordionHeaders.forEach(header => {
   });
 });
 
-// Animate Progress Bars on Scroll
 const progressFills = document.querySelectorAll('.progress-fill');
 
 progressFills.forEach(fill => {
@@ -638,5 +359,4 @@ progressFills.forEach(fill => {
   });
 });
 
-// Set Current Year in Footer
 document.getElementById('current-year').textContent = new Date().getFullYear();
