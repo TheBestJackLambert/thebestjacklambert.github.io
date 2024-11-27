@@ -185,12 +185,28 @@
     <div class="modal-content">
       <span class="close-btn">&times;</span>
       <h2>Contact Me for Tutoring</h2>
-      <form action="https://formspree.io/f/your-form-id" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <button type="submit" class="btn fancy-btn">Send Message</button>
-      </form>
+      <!-- Email Modal -->
+        <div id="email-modal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Contact Me for Tutoring</h2>
+            <form id="contact-form">
+              <div class="form-group">
+                <input type="text" id="name" name="name" required>
+                <label for="name">Your Name</label>
+              </div>
+              <div class="form-group">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Your Email</label>
+              </div>
+              <div class="form-group">
+                <textarea id="message" name="message" required></textarea>
+                <label for="message">Your Message</label>
+              </div>
+              <button type="submit" class="btn fancy-btn">Send Message</button>
+            </form>
+          </div>
+        </div>
     </div>
   </div>
 
