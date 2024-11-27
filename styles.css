@@ -1,9 +1,15 @@
-/* CSS Variables for Theming */
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --bg-color: #0d0d0d;
-  --primary-color: #e94560;
-  --secondary-color: #0f3460;
-  --accent-color: #16213e;
+  --primary-color: #ffd700; /* Gold */
+  --secondary-color: #1a1a1a; /* Near-black */
+  --accent-color: #ffd700; /* Gold */
   --text-color: #ffffff;
   --font-family: 'Poppins', sans-serif;
 }
@@ -15,7 +21,7 @@ body {
   font-family: var(--font-family);
   overflow-x: hidden;
   cursor: none;
-  background: linear-gradient(to bottom, #0d0d0d, #16213e);
+  background: linear-gradient(to bottom, var(--bg-color), var(--secondary-color));
   background-attachment: fixed;
   transition: background 0.5s ease;
 }
@@ -25,17 +31,27 @@ body {
   position: fixed;
   width: 15px;
   height: 15px;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out;
+  transition: transform 0.1s ease-out, background 0.3s ease;
   z-index: 9999;
 }
 
 .cursor-hover {
   transform: translate(-50%, -50%) scale(2);
-  background: var(--secondary-color);
+  background: var(--secondary-color); /* Near-black on hover */
+}
+
+/* Particle Styles */
+.particle {
+  position: absolute;
+  background: var(--primary-color); /* Gold */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+  will-change: transform, opacity;
 }
 
 /* Navigation Bar */
@@ -58,36 +74,81 @@ nav .nav-links {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-}
-
-nav .nav-links li {
-  margin-left: 20px;
-  white-space: nowrap;
+  gap: 20px;
 }
 
 nav .nav-links li a {
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
+  position: relative; /* For underline effect */
   transition: color 0.3s ease;
 }
 
-nav .nav-links li a:hover {
-  color: var(--primary-color);
+nav .nav-links li a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: var(--primary-color); /* Gold underline */
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+nav .nav-links li a:hover::after {
+  width: 100%; /* Gold underline on hover */
 }
 
 .burger {
   display: none;
   flex-direction: column;
   cursor: pointer;
+  gap: 5px;
 }
 
 .burger div {
   width: 25px;
   height: 3px;
   background: var(--text-color);
-  margin: 4px;
   transition: all 0.3s ease;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: rgba(13, 13, 13, 0.95);
+    flex-direction: column;
+    width: 200px;
+    height: calc(100vh - 60px);
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+    padding-top: 20px;
+    gap: 15px;
+  }
+
+  .nav-links.nav-active {
+    transform: translateX(0);
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .burger.toggle div:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .burger.toggle div:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger.toggle div:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
 }
 
 /* Hero Section */
@@ -98,13 +159,12 @@ nav .nav-links li a:hover {
   z-index: 1;
 }
 
-#hero canvas {
+#hero-canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
 }
 
 .hero-content {
@@ -120,20 +180,19 @@ nav .nav-links li a:hover {
   font-size: 7vw;
   font-weight: 700;
   margin-bottom: 10px;
+  color: var(--text-color);
 }
 
 .hero-content h2 {
   font-size: 2.5vw;
   font-weight: 400;
-}
-
-#typed {
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 /* About Section */
 #about {
   padding: 100px 0;
+  background-color: var(--secondary-color); /* Near-black */
   position: relative;
   z-index: 2;
 }
@@ -144,6 +203,7 @@ nav .nav-links li a:hover {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 50px;
 }
 
 #about h2 {
@@ -151,6 +211,7 @@ nav .nav-links li a:hover {
   text-align: center;
   font-size: 3em;
   margin-bottom: 50px;
+  color: var(--primary-color); /* Gold */
 }
 
 .about-content {
@@ -176,6 +237,7 @@ nav .nav-links li a:hover {
   margin-left: 50px;
   color: var(--text-color);
   font-size: 1.2em;
+  position: relative;
 }
 
 .about-text p {
@@ -185,7 +247,7 @@ nav .nav-links li a:hover {
 /* Experience Section with Timeline */
 #experience {
   padding: 100px 0;
-  background: var(--accent-color);
+  background: var(--bg-color);
 }
 
 #experience .container {
@@ -198,6 +260,7 @@ nav .nav-links li a:hover {
   text-align: center;
   font-size: 3em;
   margin-bottom: 50px;
+  color: var(--primary-color); /* Gold */
 }
 
 /* Timeline */
@@ -212,7 +275,7 @@ nav .nav-links li a:hover {
   content: '';
   position: absolute;
   width: 4px;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Gold line */
   top: 0;
   bottom: 0;
   left: 50%;
@@ -231,7 +294,7 @@ nav .nav-links li a:hover {
   top: 15px;
   width: 20px;
   height: 20px;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Gold icon */
   border-radius: 50%;
   z-index: 1;
 }
@@ -263,7 +326,7 @@ nav .nav-links li a:hover {
 }
 
 .timeline-content {
-  background: var(--secondary-color);
+  background: var(--secondary-color); /* Near-black */
   padding: 20px;
   border-radius: 10px;
   position: relative;
@@ -271,13 +334,18 @@ nav .nav-links li a:hover {
 
 .timeline-content h3 {
   margin-top: 0;
+  color: var(--primary-color); /* Gold */
 }
 
 .timeline-content span {
   display: block;
   font-size: 0.9em;
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
   margin-bottom: 10px;
+}
+
+.timeline-content p {
+  color: var(--text-color);
 }
 
 /* Responsive Adjustments */
@@ -307,6 +375,29 @@ nav .nav-links li a:hover {
   .timeline-item.right .timeline-content {
     margin: 0;
   }
+
+  nav .nav-links {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: -100%;
+    background: rgba(13, 13, 13, 0.95);
+    width: 100%;
+    transition: right 0.3s ease;
+  }
+
+  nav .nav-links.nav-active {
+    right: 0;
+  }
+
+  nav .nav-links li {
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .burger {
+    display: flex;
+  }
 }
 
 /* Achievements Section */
@@ -314,6 +405,7 @@ nav .nav-links li a:hover {
   position: relative;
   padding: 100px 0;
   color: var(--text-color);
+  background-color: var(--secondary-color); /* Near-black */
   z-index: 1;
 }
 
@@ -332,16 +424,12 @@ nav .nav-links li a:hover {
   height: 100%;
 }
 
-
-#achievements .container {
-  width: 80%;
-  margin: auto;
-}
-
+/* Achievements Heading */
 #achievements h2 {
   text-align: center;
   font-size: 3em;
   margin-bottom: 50px;
+  color: var(--primary-color); /* Gold */
 }
 
 /* Accordion Styles */
@@ -351,35 +439,34 @@ nav .nav-links li a:hover {
 }
 
 .accordion-item {
-  background: var(--secondary-color);
+  background: var(--secondary-color); /* Near-black */
   border-radius: 5px;
   margin-bottom: 15px;
   overflow: hidden;
 }
 
 .accordion-header {
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   color: #fff;
   padding: 15px 20px;
   font-size: 1.2em;
   text-align: left;
   border: none;
   width: 100%;
-  text-align: left;
   cursor: pointer;
   outline: none;
   transition: background 0.3s;
 }
 
 .accordion-header:hover {
-  background: var(--accent-color);
+  background: var(--accent-color); /* Gold */
 }
 
 .accordion-content {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  background: var(--secondary-color);
+  background: var(--secondary-color); /* Near-black */
   padding: 0 20px;
 }
 
@@ -389,16 +476,21 @@ nav .nav-links li a:hover {
   margin: 0;
 }
 
+.accordion-content ul h2 {
+  margin-bottom: 10px;
+}
+
 .accordion-content ul li {
   padding: 5px 0;
   border-bottom: 1px solid #444;
   display: flex;
   align-items: center;
+  color: var(--text-color);
 }
 
 .accordion-content ul li i {
   margin-right: 10px;
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 /* Progress Bar Styles */
@@ -409,18 +501,18 @@ nav .nav-links li a:hover {
 .progress-bar span {
   display: block;
   margin-bottom: 5px;
-  color: var(--text-color);
+  color: var(--primary-color); /* Gold */
 }
 
 .progress {
-  background: #333;
+  background: #333; /* Dark background */
   border-radius: 5px;
   overflow: hidden;
   height: 20px;
 }
 
 .progress-fill {
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   height: 100%;
   width: 0;
   border-radius: 5px;
@@ -433,6 +525,7 @@ nav .nav-links li a:hover {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  padding: 15px 20px;
 }
 
 .award-badge {
@@ -441,14 +534,10 @@ nav .nav-links li a:hover {
   height: 180px;
   text-align: center;
   cursor: pointer;
-}
-
-.award-badge img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
+  background-color: #666;
+  border-radius: 5px;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .award-badge span {
@@ -465,7 +554,7 @@ nav .nav-links li a:hover {
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
-  background: var(--secondary-color);
+  background: var(--secondary-color); /* Near-black */
   color: var(--text-color);
   padding: 5px 10px;
   border-radius: 5px;
@@ -479,9 +568,96 @@ nav .nav-links li a:hover {
   opacity: 1;
 }
 
-/* Projects Section with Flip Animation */
+/* Quote Section */
+#quote.quote-section {
+  padding: 100px 20px;
+  background-color: var(--secondary-color); /* Near-black background */
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#quote .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.quote-content {
+  position: relative;
+}
+
+.quote-content::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.5;
+  border-radius: 10px;
+}
+
+.quote-content blockquote {
+  font-size: 1.5em;
+  font-style: italic;
+  position: relative;
+  padding: 40px 20px;
+  margin: 0;
+  border-left: 5px solid var(--primary-color); /* Gold accent */
+  background: rgba(255, 215, 0, 0.05); /* Subtle gold background */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  animation: floatQuote 6s ease-in-out infinite;
+}
+
+.quote-content blockquote::before {
+  content: '\201C'; /* Left double quotation mark */
+  font-size: 3em;
+  color: var(--primary-color);
+  position: absolute;
+  left: -15px;
+  top: -10px;
+}
+
+.quote-content blockquote p {
+  margin: 0 0 10px 0;
+}
+
+.quote-content blockquote footer {
+  font-size: 1em;
+  color: var(--primary-color);
+}
+
+/* Floating Quote Animation */
+@keyframes floatQuote {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Add a Closing Quote Mark */
+.quote-content blockquote::after {
+  content: '\201D'; /* Right double quotation mark */
+  font-size: 3em;
+  color: var(--primary-color);
+  position: absolute;
+  right: -15px;
+  bottom: -10px;
+}
+
+/* Projects Section */
 #projects {
   padding: 100px 0;
+  background-color: var(--bg-color);
 }
 
 #projects .container {
@@ -493,7 +669,7 @@ nav .nav-links li a:hover {
   text-align: center;
   font-size: 3em;
   margin-bottom: 50px;
-  color: var(--text-color);
+  color: var(--primary-color); /* Gold */
 }
 
 .projects-grid {
@@ -507,6 +683,9 @@ nav .nav-links li a:hover {
 .project-card {
   width: 300px;
   perspective: 1000px;
+  background-color: var(--secondary-color); /* Near-black */
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .flip-card-inner {
@@ -515,7 +694,7 @@ nav .nav-links li a:hover {
   text-align: center;
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  min-height: 400px; /* Adjusted minimum height */
+  min-height: 400px;
 }
 
 .project-card:hover .flip-card-inner {
@@ -526,7 +705,7 @@ nav .nav-links li a:hover {
 .flip-card-back {
   position: absolute;
   width: 100%;
-  min-height: 400px; /* Adjusted minimum height */
+  min-height: 400px;
   backface-visibility: hidden;
   border-radius: 10px;
   overflow: hidden;
@@ -535,7 +714,7 @@ nav .nav-links li a:hover {
 }
 
 .flip-card-front {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Near-black */
   color: var(--text-color);
 }
 
@@ -547,11 +726,9 @@ nav .nav-links li a:hover {
 }
 
 .flip-card-back {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Gold */
   color: var(--text-color);
   transform: rotateY(180deg);
-  top: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -570,21 +747,24 @@ nav .nav-links li a:hover {
 
 .flip-card-back .btn {
   padding: 10px 20px;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
 }
 
 .flip-card-back .btn:hover {
   background: var(--text-color);
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
-/* Tutoring Section with Particle Animation */
+/* Tutoring Section */
 #tutoring {
   position: relative;
   overflow: hidden;
+  padding: 100px 0;
+  background-color: var(--secondary-color); /* Near-black */
 }
 
 #tutoring #particles-js {
@@ -600,27 +780,38 @@ nav .nav-links li a:hover {
   text-align: center;
 }
 
-/* Fancy Button for Tutoring */
+#tutoring h2 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: var(--primary-color); /* Gold */
+}
+
+#tutoring p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
 .fancy-btn {
   position: relative;
   overflow: hidden;
   color: var(--text-color);
   padding: 15px 30px;
-  background: linear-gradient(45deg, #e94560, #0f3460);
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
   border: none;
   border-radius: 50px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
   display: inline-block;
   margin: 20px auto;
-  box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Gold shadow */
 }
 
 .fancy-btn:hover {
-  background: linear-gradient(45deg, #0f3460, #e94560);
-  color: var(--text-color);
-  box-shadow: 0 0 20px rgba(233, 69, 96, 0.7);
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+  color: var(--bg-color);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); /* Enhanced Gold shadow */
 }
 
 .fancy-btn::before {
@@ -654,10 +845,10 @@ nav .nav-links li a:hover {
 }
 
 .modal-content {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Near-black */
   margin: 5% auto;
   padding: 40px 20px;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--primary-color); /* Gold border */
   width: 90%;
   max-width: 600px;
   position: relative;
@@ -668,6 +859,7 @@ nav .nav-links li a:hover {
 
 .modal-content h2 {
   margin-bottom: 30px;
+  color: var(--primary-color); /* Gold */
 }
 
 .close-btn {
@@ -682,7 +874,7 @@ nav .nav-links li a:hover {
 
 .close-btn:hover,
 .close-btn:focus {
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold on hover */
 }
 
 /* Form Styles */
@@ -704,7 +896,7 @@ nav .nav-links li a:hover {
   width: 100%;
   padding: 15px 20px;
   background: transparent;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--primary-color); /* Gold */
   border-radius: 5px;
   color: var(--text-color);
   font-size: 1em;
@@ -736,7 +928,7 @@ nav .nav-links li a:hover {
 .form-group textarea:not(:placeholder-shown) + label {
   top: -10px;
   font-size: 0.85em;
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 .form-group textarea {
@@ -745,25 +937,25 @@ nav .nav-links li a:hover {
 
 #contact-form button {
   padding: 15px 30px;
-  background: linear-gradient(45deg, #e94560, #0f3460);
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color)); /* Gold gradient */
   color: var(--text-color);
   border: none;
   border-radius: 50px;
   cursor: pointer;
   font-size: 1em;
-  transition: background 0.3s, box-shadow 0.3s;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
   margin-top: 10px;
 }
 
 #contact-form button:hover {
-  background: linear-gradient(45deg, #0f3460, #e94560);
-  box-shadow: 0 0 15px rgba(233, 69, 96, 0.7);
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color)); /* Reverse gradient */
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); /* Enhanced Gold shadow */
 }
 
 /* Resources Section */
 #resources {
   padding: 100px 0;
-  background: var(--accent-color);
+  background: var(--bg-color);
   color: var(--text-color);
 }
 
@@ -775,7 +967,15 @@ nav .nav-links li a:hover {
 #resources h2 {
   text-align: center;
   font-size: 3em;
+  margin-bottom: 20px;
+  color: var(--primary-color); /* Gold */
+}
+
+#resources p {
+  text-align: center;
   margin-bottom: 30px;
+  font-size: 1.2em;
+  line-height: 1.6;
 }
 
 .resources-grid {
@@ -788,13 +988,15 @@ nav .nav-links li a:hover {
 .resource-card {
   width: 250px;
   perspective: 1000px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--secondary-color); /* Near-black */
 }
 
-.resource-card .flip-card-inner {
+.flip-card-inner {
   position: relative;
   width: 100%;
-  height: 250px; /* Adjusted height */
-  text-align: center;
+  height: 250px;
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
@@ -803,27 +1005,31 @@ nav .nav-links li a:hover {
   transform: rotateY(180deg);
 }
 
-.resource-card .flip-card-front,
-.resource-card .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
-  height: 250px; /* Adjusted height */
+  height: 250px;
   backface-visibility: hidden;
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
 }
 
-.resource-card .flip-card-front {
-  background: var(--primary-color);
+.flip-card-front {
+  background: var(--primary-color); /* Gold */
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.resource-card .flip-card-back {
-  background: var(--secondary-color);
+.flip-card-front h3 {
+  color: var(--bg-color); /* Contrast with gold */
+}
+
+.flip-card-back {
+  background: var(--secondary-color); /* Near-black */
   color: var(--text-color);
   transform: rotateY(180deg);
   display: flex;
@@ -832,27 +1038,28 @@ nav .nav-links li a:hover {
   justify-content: center;
 }
 
-.resource-card .flip-card-back p {
+.flip-card-back p {
   margin-bottom: 10px;
 }
 
-.resource-card .flip-card-back .btn {
+.flip-card-back .btn {
   padding: 10px 20px;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
-  margin-top: 10px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
 }
 
-.resource-card .flip-card-back .btn:hover {
+.flip-card-back .btn:hover {
   background: var(--text-color);
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 /* Contact Section */
 #contact {
   padding: 100px 0;
+  background-color: var(--secondary-color); /* Near-black */
 }
 
 #contact .container {
@@ -863,12 +1070,19 @@ nav .nav-links li a:hover {
 
 #contact h2 {
   font-size: 3em;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  color: var(--primary-color); /* Gold */
 }
 
 #contact p {
   font-size: 1.2em;
   margin-bottom: 40px;
+}
+
+.contact-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
 .contact-links a {
@@ -882,7 +1096,7 @@ nav .nav-links li a:hover {
 }
 
 .contact-links a:hover {
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--primary-color); /* Gold underline on hover */
 }
 
 /* Footer */
@@ -902,7 +1116,7 @@ footer p {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   color: #fff;
   padding: 15px;
   border-radius: 50%;
@@ -911,11 +1125,12 @@ footer p {
   z-index: 1000;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s, color 0.3s;
 }
 
 .back-to-top:hover {
   background: var(--text-color);
-  color: var(--primary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 .back-to-top .arrow {
@@ -987,7 +1202,7 @@ footer p {
   top: 0;
   width: 100%;
   height: 100%;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   transition: left 0.5s;
   z-index: -1;
 }
@@ -1003,8 +1218,11 @@ footer p {
 /* Floating Particles Following Cursor */
 .particle {
   position: absolute;
-  background: var(--primary-color);
+  background: var(--primary-color); /* Gold */
   border-radius: 50%;
   pointer-events: none;
   z-index: 1000;
+  transition: transform 0.5s ease-out, opacity 0.5s;
 }
+
+/* Quote Section (Already Enhanced Above) */
