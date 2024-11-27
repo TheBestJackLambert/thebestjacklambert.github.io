@@ -498,24 +498,27 @@ nav .nav-links li a:hover {
 
 .project-card {
   width: 300px;
-  perspective: 1000px;
+  perspective: 1000px; /* Enables 3D perspective */
 }
 
 .flip-card-inner {
   position: relative;
   width: 100%;
-  height: 410px; /* Increased from 350px */
+  height: 410px;
   text-align: center;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth flip animation */
 }
 
-.flip-card-front,
-.flip-card-back {
+.project-card:hover .flip-card-inner {
+  transform: rotateY(180deg); /* Flips the card */
+}
+
+.flip-card-front, .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 410px; /* Increased from 350px */
-  backface-visibility: hidden;
+  height: 100%;
+  backface-visibility: hidden; /* Hides the back side when not flipped */
   border-radius: 10px;
   overflow: hidden;
 }
@@ -532,14 +535,15 @@ nav .nav-links li a:hover {
 }
 
 .flip-card-back {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: var(--text-color);
-  transform: rotateY(180deg);
+  transform: rotateY(180deg); /* Prepares the back for flipping */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 .flip-card-back h3 {
   margin-bottom: 10px;
