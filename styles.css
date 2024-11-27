@@ -490,11 +490,13 @@ nav .nav-links li a:hover {
 }
 
 .projects-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Increased spacing between cards */
+    justify-content: center;
+    overflow: visible; /* Ensure nothing gets cut off */
 }
+
 
 .project-card {
   width: 300px;
@@ -504,7 +506,7 @@ nav .nav-links li a:hover {
 .flip-card-inner {
   position: relative;
   width: 100%;
-  height: 410px;
+  height: 600px;
   text-align: center;
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth flip animation */
@@ -517,7 +519,7 @@ nav .nav-links li a:hover {
 .flip-card-front, .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 600px;
   backface-visibility: hidden; /* Hides the back side when not flipped */
   border-radius: 10px;
   overflow: hidden;
