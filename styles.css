@@ -1,4 +1,6 @@
-/* Reset and Base Styles */
+/* =====================================================
+   Reset and Base Styles
+===================================================== */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +12,7 @@
   --primary-color: #ffd700; /* Gold */
   --secondary-color: #1a1a1a; /* Near-black */
   --accent-color: #ffd700; /* Gold */
-  --text-color: #ffffff;
+  --text-color: #ffffff; /* White */
   --font-family: 'Poppins', sans-serif;
 }
 
@@ -26,7 +28,9 @@ body {
   transition: background 0.5s ease;
 }
 
-/* Custom Cursor */
+/* =====================================================
+   Custom Cursor
+===================================================== */
 .cursor {
   position: fixed;
   width: 15px;
@@ -44,17 +48,21 @@ body {
   background: var(--secondary-color); /* Near-black on hover */
 }
 
-/* Particle Styles */
+/* =====================================================
+   Particle Styles
+===================================================== */
 .particle {
   position: absolute;
   background: var(--primary-color); /* Gold */
   border-radius: 50%;
   pointer-events: none;
   z-index: 1000;
-  will-change: transform, opacity;
+  transition: transform 0.5s ease-out, opacity 0.5s;
 }
 
-/* Navigation Bar */
+/* =====================================================
+   Navigation Bar
+===================================================== */
 nav {
   position: fixed;
   width: 100%;
@@ -114,7 +122,9 @@ nav .nav-links li a:hover::after {
   transition: all 0.3s ease;
 }
 
-/* Mobile Navigation */
+/* =====================================================
+   Mobile Navigation
+===================================================== */
 @media (max-width: 768px) {
   .nav-links {
     position: absolute;
@@ -149,9 +159,20 @@ nav .nav-links li a:hover::after {
   .burger.toggle div:nth-child(3) {
     transform: rotate(45deg) translate(-5px, -6px);
   }
+
+  /* Adjust flip-card heights for mobile */
+  .flip-card-inner {
+    height: 250px; /* Further reduce height on smaller screens */
+  }
+
+  .resource-card .flip-card-inner {
+    height: 180px; /* Further reduce height for resource cards on mobile */
+  }
 }
 
-/* Hero Section */
+/* =====================================================
+   Hero Section
+===================================================== */
 #hero {
   position: relative;
   height: 100vh;
@@ -189,7 +210,105 @@ nav .nav-links li a:hover::after {
   color: var(--primary-color); /* Gold */
 }
 
-/* About Section */
+/* =====================================================
+   Quote Section with Smooth Transition
+===================================================== */
+#quote.quote-section {
+  padding: 100px 20px;
+  background-color: var(--secondary-color); /* Near-black background */
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0; /* Start hidden for fade-in effect */
+  transform: translateY(50px); /* Start slightly below for upward movement */
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+#quote.quote-section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#quote .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.quote-content {
+  position: relative;
+}
+
+.quote-content::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.5;
+  border-radius: 10px;
+}
+
+.quote-content blockquote {
+  font-size: 1.5em;
+  font-style: italic;
+  position: relative;
+  padding: 40px 20px;
+  margin: 0;
+  border-left: 5px solid var(--primary-color); /* Gold accent */
+  background: rgba(255, 215, 0, 0.05); /* Subtle gold background */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  animation: floatQuote 6s ease-in-out infinite;
+}
+
+.quote-content blockquote::before {
+  content: '\201C'; /* Left double quotation mark */
+  font-size: 3em;
+  color: var(--primary-color);
+  position: absolute;
+  left: -15px;
+  top: -10px;
+}
+
+.quote-content blockquote p {
+  margin: 0 0 10px 0;
+}
+
+.quote-content blockquote footer {
+  font-size: 1em;
+  color: var(--primary-color);
+}
+
+/* Floating Quote Animation */
+@keyframes floatQuote {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Add a Closing Quote Mark */
+.quote-content blockquote::after {
+  content: '\201D'; /* Right double quotation mark */
+  font-size: 3em;
+  color: var(--primary-color);
+  position: absolute;
+  right: -15px;
+  bottom: -10px;
+}
+
+/* =====================================================
+   About Section
+===================================================== */
 #about {
   padding: 100px 0;
   background-color: var(--secondary-color); /* Near-black */
@@ -244,7 +363,9 @@ nav .nav-links li a:hover::after {
   line-height: 1.6;
 }
 
-/* Experience Section with Timeline */
+/* =====================================================
+   Experience Section with Timeline
+===================================================== */
 #experience {
   padding: 100px 0;
   background: var(--bg-color);
@@ -348,59 +469,184 @@ nav .nav-links li a:hover::after {
   color: var(--text-color);
 }
 
-/* Responsive Adjustments */
-@media screen and (max-width: 768px) {
-  .timeline::after {
-    left: 20px;
-  }
+/* =====================================================
+   Projects Section with Flip Animation Cards
+===================================================== */
+#projects {
+  padding: 100px 0;
+  background-color: var(--bg-color);
+}
 
-  .timeline-item {
-    width: 100%;
-    padding-left: 70px;
-    padding-right: 25px;
-    text-align: left;
-    margin-bottom: 30px;
-  }
+#projects .container {
+  width: 80%;
+  margin: auto;
+}
 
-  .timeline-item.left,
-  .timeline-item.right {
-    left: 0;
-  }
+#projects h2 {
+  text-align: center;
+  font-size: 3em;
+  margin-bottom: 50px;
+  color: var(--primary-color); /* Gold */
+}
 
-  .timeline-item .timeline-icon {
-    left: 10px;
-  }
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  overflow: visible;
+}
 
-  .timeline-item.left .timeline-content,
-  .timeline-item.right .timeline-content {
-    margin: 0;
-  }
+/* Projects and Resources Shared Styles */
+.project-card,
+.resource-card {
+  width: 300px;
+  perspective: 1000px;
+  background-color: var(--secondary-color); /* Grey background */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
+  transition: box-shadow 0.5s ease, transform 0.3s ease;
+  position: relative;
+}
 
-  nav .nav-links {
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: -100%;
-    background: rgba(13, 13, 13, 0.95);
-    width: 100%;
-    transition: right 0.3s ease;
-  }
+/* Flip Card Inner */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Adjust as needed */
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-  nav .nav-links.nav-active {
-    right: 0;
-  }
+/* Flip Card Front and Back */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+}
 
-  nav .nav-links li {
-    margin: 15px 0;
-    text-align: center;
-  }
+/* Flip Card Front */
+.flip-card-front {
+  background-color: var(--secondary-color) !important; /* Ensure grey background */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center;
+  justify-content: flex-start; /* Start from the top */
+  padding: 20px; /* Add padding for spacing */
+  transition: box-shadow 0.3s ease;
+}
 
-  .burger {
-    display: flex;
+.flip-card-front:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Gold glow on hover */
+}
+
+.flip-card-front::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+  z-index: -1;
+  border-radius: 50%;
+  opacity: 0; /* Hidden until hover */
+  transition: opacity 0.3s ease;
+}
+
+.flip-card-front:hover::before {
+  opacity: 1;
+}
+
+.flip-card-front h1,
+.flip-card-front h3 {
+  color: var(--primary-color); /* Yellow text on front */
+  font-size: 1.2em; /* Adjust as needed */
+  margin-bottom: 10px;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 10px; /* Space between text and image */
+}
+
+/* Flip Card Back */
+.flip-card-back {
+  background-color: var(--secondary-color) !important; /* Grey background */
+  color: var(--text-color); /* White text on back */
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Add padding for spacing */
+}
+
+.flip-card-back h3 {
+  margin-bottom: 10px;
+}
+
+.flip-card-back p {
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.flip-card-back .btn {
+  padding: 10px 20px;
+  background: var(--primary-color); /* Gold */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+}
+
+.flip-card-back .btn:hover {
+  background: var(--text-color);
+  color: var(--primary-color); /* Gold */
+}
+
+/* Hover Effects */
+.project-card:hover,
+.resource-card:hover {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Gold glow on hover */
+}
+
+/* Flip on Hover */
+.project-card:hover .flip-card-inner,
+.resource-card:hover .flip-card-inner {
+  transform: rotateY(180deg); /* Enable flip effect */
+}
+
+/* Glow Effect When Not Hovered */
+.project-card:not(:hover),
+.resource-card:not(:hover) {
+  animation: dynamic-glow 3s infinite;
+}
+
+/* Dynamic Glow Keyframes */
+@keyframes dynamic-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Light white glow start */
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Light white glow mid */
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Light white glow end */
   }
 }
 
-/* Achievements Section */
+/* =====================================================
+   Achievements Section
+===================================================== */
 #achievements {
   position: relative;
   padding: 100px 0;
@@ -494,31 +740,37 @@ nav .nav-links li a:hover::after {
 }
 
 .accordion-content.open {
-  max-height: 200px; /* Adjust based on content */
+  max-height: 500px; /* Increased to accommodate more content */
   padding: 20px 25px;
 }
 
 .accordion-content ul {
-    padding: 10px 0;
-    list-style: none;
-    margin: 0;
+  padding: 10px 0;
+  list-style: none;
+  margin: 0;
+}
+
+.accordion-content ul h2 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
 }
 
 .accordion-content ul li {
-    padding: 5px 0;
-    border-bottom: 1px solid #444;
-    display: flex;
-    align-items: center;
-    color: var(--text-color);
+  padding: 5px 0;
+  border-bottom: 1px solid #444;
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
 }
 
 .accordion-content ul li i {
-    margin-right: 10px;
-    color: var(--primary-color);
+  margin-right: 10px;
+  color: var(--primary-color);
 }
 
-
-/* Progress Bar Styles */
+/* =====================================================
+   Progress Bar Styles
+===================================================== */
 .progress-bar {
   margin-bottom: 20px;
 }
@@ -544,7 +796,9 @@ nav .nav-links li a:hover::after {
   transition: width 1.5s ease;
 }
 
-/* Awards Grid */
+/* =====================================================
+   Awards Grid
+===================================================== */
 .awards-grid {
   display: flex;
   flex-wrap: wrap;
@@ -593,308 +847,9 @@ nav .nav-links li a:hover::after {
   opacity: 1;
 }
 
-/* Quote Section */
-#quote.quote-section {
-  padding: 100px 20px;
-  background-color: var(--secondary-color); /* Near-black background */
-  color: var(--text-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-#quote .container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.quote-content {
-  position: relative;
-}
-
-.quote-content::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
-  pointer-events: none;
-  opacity: 0.5;
-  border-radius: 10px;
-}
-
-.quote-content blockquote {
-  font-size: 1.5em;
-  font-style: italic;
-  position: relative;
-  padding: 40px 20px;
-  margin: 0;
-  border-left: 5px solid var(--primary-color); /* Gold accent */
-  background: rgba(255, 215, 0, 0.05); /* Subtle gold background */
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-  animation: floatQuote 6s ease-in-out infinite;
-}
-
-.quote-content blockquote::before {
-  content: '\201C'; /* Left double quotation mark */
-  font-size: 3em;
-  color: var(--primary-color);
-  position: absolute;
-  left: -15px;
-  top: -10px;
-}
-
-.quote-content blockquote p {
-  margin: 0 0 10px 0;
-}
-
-.quote-content blockquote footer {
-  font-size: 1em;
-  color: var(--primary-color);
-}
-
-/* Floating Quote Animation */
-@keyframes floatQuote {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Add a Closing Quote Mark */
-.quote-content blockquote::after {
-  content: '\201D'; /* Right double quotation mark */
-  font-size: 3em;
-  color: var(--primary-color);
-  position: absolute;
-  right: -15px;
-  bottom: -10px;
-}
-
-/* Projects Section */
-#projects {
-  padding: 100px 0;
-  background-color: var(--bg-color);
-}
-
-#projects .container {
-  width: 80%;
-  margin: auto;
-}
-
-#projects h2 {
-  text-align: center;
-  font-size: 3em;
-  margin-bottom: 50px;
-  color: var(--primary-color); /* Gold */
-}
-
-.projects-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-  overflow: visible;
-}
-.project-card,
-.resource-card {
-  background-color: var(--secondary-color); /* Force grey background for all cards */
-}
-
-/* Projects and Resources Shared Styles */
-.project-card,
-.resource-card {
-  width: 300px;
-  perspective: 1000px;
-  background-color: var(--secondary-color);/* Grey background for non-hover */
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
-  transition: background-color 0.3s ease, box-shadow 0.5s ease;
-}
-
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 400px; /* Ensure consistent height */
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.project-card:hover .flip-card-inner,
-.resource-card:hover .flip-card-inner {
-  transform: rotateY(180deg); /* Enable flip effect */
-}
-.project-card,
-.resource-card {
-  background-color: var(--secondary-color) !important; /* Enforce grey */
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
-}
-
-.project-card:not(:hover),
-.resource-card:not(:hover) {
-  background-color: var(--secondary-color) !important; /* Ensure grey */
-  transition: background-color 0.3s ease;
-}
-
-/* Hover Effect for Glow Expansion */
-.project-card:hover,
-.resource-card:hover {
-  background-color: var(--secondary-color); /* Bright yellow on hover */
-  animation: glow-expand 0.5s ease forwards; /* Animate glow outward */
-}
-
-/* Non-Hovered Cards Background */
-.project-card:not(:hover),
-.resource-card:not(:hover) {
-  background-color: var(--secondary-color); /* Ensure grey for non-hover */
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-}
-.projects-grid .project-card:not(:hover),
-.resources-grid .resource-card:not(:hover) {
-  background-color: var(--secondary-color) !important;
-}
-
-/* Keyframes for Glow Expansion */
-@keyframes glow-expand {
-  0% {
-    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); /* Subtle start */
-  }
-  50% {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Mid glow */
-  }
-  100% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Fully expanded glow */
-  }
-}
-
-/* Flip Card Front and Back */
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%; /* Match height */
-  backface-visibility: hidden; /* Hide back face when flipped */
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.flip-card-front {
-  background-color: var(--secondary-color); /* Default near-black */
-  color: var(--text-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.flip-card-front:hover {
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Bright yellow glow on hover */
-}
-
-.flip-card-back {
-  background-color: var(--secondary-color); /* Same grey background */
-  color: var(--primary-color); /* Yellow text color */
-  transform: rotateY(180deg); /* Ensure back flips properly */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.project-card:not(:hover),
-.resource-card:not(:hover) {
-  animation: subtle-glow 3s infinite;
-}
-@keyframes dynamic-glow {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-  }
-}
-/* Project Cards */
-/* Flip Cards */
-.flip-card-front {
-  background-color: var(--secondary-color); /* Dark grey */
-  color: var(--text-color);
-  position: relative;
-  box-shadow: 0 0 10px rgba(128, 128, 128, 0.5); /* Subtle grey glow */
-  transition: box-shadow 0.3s ease;
-}
-
-.flip-card-front:hover {
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Bright yellow glow */
-}
-
-.flip-card-front::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
-  z-index: -1;
-  border-radius: 50%;
-  opacity: 0; /* Hidden until hover */
-  transition: opacity 0.3s ease;
-}
-
-.flip-card-front:hover::before {
-  opacity: 1;
-}
-
-.flip-card-back {
-  background-color: var(--secondary-color); /* Gold */
-  color: var(--primary-color);
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
-}
-
-
-.flip-card-back h3 {
-  margin-bottom: 10px;
-}
-
-.flip-card-back p {
-  font-size: 0.9em;
-  margin-bottom: 20px;
-  padding: 0 20px;
-}
-
-.flip-card-back .btn {
-  padding: 10px 20px;
-  background: var(--primary-color); /* Gold */
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background 0.3s, box-shadow 0.3s, color 0.3s;
-}
-
-.flip-card-back .btn:hover {
-  background: var(--secondary-color);
-  color: var(--primary-color); /* Gold */
-}
-
-/* Tutoring Section */
+/* =====================================================
+   Tutoring Section with Particle Animation
+===================================================== */
 #tutoring {
   position: relative;
   overflow: hidden;
@@ -966,7 +921,9 @@ nav .nav-links li a:hover::after {
   transform: scale(1.5);
 }
 
-/* Modal Styles */
+/* =====================================================
+   Modal Styles
+===================================================== */
 .modal {
   display: none;
   position: fixed;
@@ -1012,7 +969,9 @@ nav .nav-links li a:hover::after {
   color: var(--primary-color); /* Gold on hover */
 }
 
-/* Form Styles */
+/* =====================================================
+   Form Styles
+===================================================== */
 #contact-form {
   display: flex;
   flex-direction: column;
@@ -1087,7 +1046,9 @@ nav .nav-links li a:hover::after {
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); /* Enhanced Gold shadow */
 }
 
-/* Resources Section */
+/* =====================================================
+   Resources Section with Flip Cards
+===================================================== */
 #resources {
   padding: 100px 0;
   background: var(--bg-color);
@@ -1126,13 +1087,16 @@ nav .nav-links li a:hover::after {
   border-radius: 10px;
   overflow: hidden;
   background-color: var(--secondary-color); /* Near-black */
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
+  transition: box-shadow 0.5s ease, transform 0.3s ease;
+  position: relative;
 }
 
-.flip-card-inner {
+.resource-card .flip-card-inner {
   position: relative;
   width: 100%;
-  height: 250px;
-  transition: transform 0.8s;
+  height: 200px; /* Reduced height for resource cards */
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
 }
 
@@ -1144,33 +1108,59 @@ nav .nav-links li a:hover::after {
 .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 250px;
+  height: 100%;
   backface-visibility: hidden;
   border-radius: 10px;
-  padding: 20px;
-  box-sizing: border-box;
 }
 
 .flip-card-front {
-  background: var(--primary-color); /* Gold */
-  color: #fff;
+  background-color: var(--secondary-color) !important; /* Ensure grey background */
   display: flex;
+  flex-direction: column; /* Stack items vertically */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Start from the top */
+  padding: 20px; /* Add padding for spacing */
+  transition: box-shadow 0.3s ease;
+}
+
+.flip-card-front:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Gold glow on hover */
+}
+
+.flip-card-front::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+  z-index: -1;
+  border-radius: 50%;
+  opacity: 0; /* Hidden until hover */
+  transition: opacity 0.3s ease;
+}
+
+.flip-card-front:hover::before {
+  opacity: 1;
 }
 
 .flip-card-front h3 {
-  color: var(--bg-color); /* Contrast with gold */
+  color: var(--primary-color); /* Yellow text on front */
+  font-size: 1.2em; /* Adjust as needed */
+  margin-bottom: 10px;
 }
 
 .flip-card-back {
-  background: var(--secondary-color); /* Near-black */
-  color: var(--text-color);
+  background-color: var(--secondary-color) !important; /* Grey background */
+  color: var(--text-color); /* White text on back */
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 20px; /* Add padding for spacing */
 }
 
 .flip-card-back p {
@@ -1191,7 +1181,9 @@ nav .nav-links li a:hover::after {
   color: var(--primary-color); /* Gold */
 }
 
-/* Contact Section */
+/* =====================================================
+   Contact Section
+===================================================== */
 #contact {
   padding: 100px 0;
   background-color: var(--secondary-color); /* Near-black */
@@ -1234,7 +1226,9 @@ nav .nav-links li a:hover::after {
   border-bottom: 2px solid var(--primary-color); /* Gold underline on hover */
 }
 
-/* Footer */
+/* =====================================================
+   Footer
+===================================================== */
 footer {
   background: var(--bg-color);
   text-align: center;
@@ -1246,7 +1240,9 @@ footer p {
   margin: 0;
 }
 
-/* Back to Top Button */
+/* =====================================================
+   Back to Top Button
+===================================================== */
 .back-to-top {
   position: fixed;
   bottom: 30px;
@@ -1276,7 +1272,9 @@ footer p {
   transform: rotate(-135deg);
 }
 
-/* Responsive Design */
+/* =====================================================
+   Responsive Design Adjustments
+===================================================== */
 @media (max-width: 768px) {
   nav {
     padding: 10px 20px;
@@ -1322,9 +1320,20 @@ footer p {
     margin: 15px 0;
     text-align: center;
   }
+
+  /* Adjust flip-card heights for mobile */
+  .flip-card-inner {
+    height: 250px; /* Further reduce height on smaller screens */
+  }
+
+  .resource-card .flip-card-inner {
+    height: 180px; /* Further reduce height for resource cards on mobile */
+  }
 }
 
-/* Additional styles for engagement */
+/* =====================================================
+   Additional Styles for Engagement
+===================================================== */
 .btn {
   position: relative;
   overflow: hidden;
@@ -1350,14 +1359,37 @@ footer p {
   color: var(--bg-color);
 }
 
-/* Floating Particles Following Cursor */
-.particle {
-  position: absolute;
-  background: var(--primary-color); /* Gold */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1000;
-  transition: transform 0.5s ease-out, opacity 0.5s;
+/* =====================================================
+   Floating Particles Following Cursor
+   (Assuming you have related JS for this effect)
+===================================================== */
+
+/* =====================================================
+   Keyframes for Glow Expansion
+===================================================== */
+@keyframes glow-expand {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); /* Subtle start */
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Mid glow */
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Fully expanded glow */
+  }
 }
 
-/* Quote Section (Already Enhanced Above) */
+/* =====================================================
+   Keyframes for Dynamic Glow
+===================================================== */
+@keyframes dynamic-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Light white glow start */
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Light white glow mid */
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Light white glow end */
+  }
+}
