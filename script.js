@@ -360,3 +360,12 @@ progressFills.forEach(fill => {
 });
 
 document.getElementById('current-year').textContent = new Date().getFullYear();
+gsap.to('#quote.quote-section', {
+  scrollTrigger: {
+    trigger: '#quote.quote-section',
+    start: 'top 80%',
+    toggleClass: { targets: '#quote.quote-section', className: 'active' },
+    toggleActions: 'play none none reverse',
+  },
+  // These properties can be left empty if handled by CSS transitions
+});
