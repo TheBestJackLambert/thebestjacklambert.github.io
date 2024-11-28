@@ -706,7 +706,7 @@ nav .nav-links li a:hover::after {
 }
 .project-card,
 .resource-card {
-  background-color: var(--secondary-color) !important; /* Force grey background for all cards */
+  background-color: var(--secondary-color); /* Force grey background for all cards */
 }
 
 /* Projects and Resources Shared Styles */
@@ -714,7 +714,7 @@ nav .nav-links li a:hover::after {
 .resource-card {
   width: 300px;
   perspective: 1000px;
-  background-color: var(--secondary-color) !important;/* Grey background for non-hover */
+  background-color: var(--secondary-color);/* Grey background for non-hover */
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
@@ -733,11 +733,22 @@ nav .nav-links li a:hover::after {
 .resource-card:hover .flip-card-inner {
   transform: rotateY(180deg); /* Enable flip effect */
 }
+.project-card,
+.resource-card {
+  background-color: var(--secondary-color) !important; /* Enforce grey */
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
+}
+
+.project-card:not(:hover),
+.resource-card:not(:hover) {
+  background-color: var(--secondary-color) !important; /* Ensure grey */
+  transition: background-color 0.3s ease;
+}
 
 /* Hover Effect for Glow Expansion */
 .project-card:hover,
 .resource-card:hover {
-  background-color: var(--primary-color); /* Bright yellow on hover */
+  background-color: var(--secondary-color); /* Bright yellow on hover */
   animation: glow-expand 0.5s ease forwards; /* Animate glow outward */
 }
 
@@ -746,6 +757,10 @@ nav .nav-links li a:hover::after {
 .resource-card:not(:hover) {
   background-color: var(--secondary-color); /* Ensure grey for non-hover */
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+.projects-grid .project-card:not(:hover),
+.resources-grid .resource-card:not(:hover) {
+  background-color: var(--secondary-color) !important;
 }
 
 /* Keyframes for Glow Expansion */
@@ -875,8 +890,8 @@ nav .nav-links li a:hover::after {
 }
 
 .flip-card-back .btn:hover {
-  background: var(--primary-color);
-  color: var(--secondary-color); /* Gold */
+  background: var(--secondary-color);
+  color: var(--primary-color); /* Gold */
 }
 
 /* Tutoring Section */
