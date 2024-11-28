@@ -704,40 +704,113 @@ nav .nav-links li a:hover::after {
   justify-content: center;
   overflow: visible;
 }
+.project-card,
+.resource-card {
+  background-color: var(--secondary-color) !important; /* Force grey background for all cards */
+}
 
-.project-card {
+/* Projects and Resources Shared Styles */
+.project-card,
+.resource-card {
   width: 300px;
   perspective: 1000px;
-  background-color: var(--secondary-color); /* Near-black */
+  background-color: var(--secondary-color) !important;/* Grey background for non-hover */
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
+  transition: background-color 0.3s ease, box-shadow 0.5s ease;
 }
 
 .flip-card-inner {
   position: relative;
   width: 100%;
-  text-align: center;
+  height: 400px; /* Ensure consistent height */
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  min-height: 400px;
 }
 
-.project-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
+.project-card:hover .flip-card-inner,
+.resource-card:hover .flip-card-inner {
+  transform: rotateY(180deg); /* Enable flip effect */
 }
 
+/* Hover Effect for Glow Expansion */
+.project-card:hover,
+.resource-card:hover {
+  background-color: var(--primary-color); /* Bright yellow on hover */
+  animation: glow-expand 0.5s ease forwards; /* Animate glow outward */
+}
+
+/* Non-Hovered Cards Background */
+.project-card:not(:hover),
+.resource-card:not(:hover) {
+  background-color: var(--secondary-color); /* Ensure grey for non-hover */
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+/* Keyframes for Glow Expansion */
+@keyframes glow-expand {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); /* Subtle start */
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Mid glow */
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Fully expanded glow */
+  }
+}
+
+/* Flip Card Front and Back */
 .flip-card-front,
 .flip-card-back {
   position: absolute;
   width: 100%;
-  min-height: 400px;
-  backface-visibility: hidden;
+  height: 100%; /* Match height */
+  backface-visibility: hidden; /* Hide back face when flipped */
   border-radius: 10px;
   overflow: hidden;
-  padding: 20px;
-  box-sizing: border-box;
 }
 
+.flip-card-front {
+  background-color: var(--secondary-color); /* Default near-black */
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flip-card-front:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Bright yellow glow on hover */
+}
+
+.flip-card-back {
+  background-color: var(--secondary-color); /* Same grey background */
+  color: var(--primary-color); /* Yellow text color */
+  transform: rotateY(180deg); /* Ensure back flips properly */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.project-card:not(:hover),
+.resource-card:not(:hover) {
+  animation: subtle-glow 3s infinite;
+}
+@keyframes dynamic-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+}
 /* Project Cards */
 /* Flip Cards */
 .flip-card-front {
@@ -772,8 +845,8 @@ nav .nav-links li a:hover::after {
 }
 
 .flip-card-back {
-  background-color: var(--primary-color); /* Gold */
-  color: var(--text-color);
+  background-color: var(--secondary-color); /* Gold */
+  color: var(--primary-color);
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -802,8 +875,8 @@ nav .nav-links li a:hover::after {
 }
 
 .flip-card-back .btn:hover {
-  background: var(--text-color);
-  color: var(--primary-color); /* Gold */
+  background: var(--primary-color);
+  color: var(--secondary-color); /* Gold */
 }
 
 /* Tutoring Section */
