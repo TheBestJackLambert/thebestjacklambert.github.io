@@ -215,7 +215,6 @@ nav .nav-links li a:hover::after {
 ===================================================== */
 #quote.quote-section {
   padding: 100px 20px;
-  background-color: var(--secondary-color); /* Near-black background */
   color: var(--text-color);
   display: flex;
   align-items: center;
