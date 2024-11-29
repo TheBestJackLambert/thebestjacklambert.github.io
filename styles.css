@@ -13,6 +13,7 @@
   --secondary-color: #1a1a1a; /* Near-black */
   --accent-color: #ffd700; /* Gold */
   --text-color: #ffffff; /* White */
+   --card-bg-color: #050505; /* Very dark shade */
   --font-family: 'Poppins', sans-serif;
 }
 
@@ -472,8 +473,8 @@ nav .nav-links li a:hover::after {
    Projects Section with Flip Animation Cards
 ===================================================== */
 #projects {
+   background-color: var(--secondary-color); /* Near-black */
   padding: 100px 0;
-  background-color: var(--bg-color);
 }
 
 #projects .container {
@@ -497,14 +498,15 @@ nav .nav-links li a:hover::after {
 }
 
 /* Projects and Resources Shared Styles */
+/* Projects and Resources Shared Styles */
 .project-card,
 .resource-card {
   width: 300px;
   perspective: 1000px;
-  background-color: var(--secondary-color); /* Grey background */
+  background-color: var(--card-bg-color); /* Use the new darker background */
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Subtle glow */
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Darker shadow for depth */
   transition: box-shadow 0.5s ease, transform 0.3s ease;
   position: relative;
 }
