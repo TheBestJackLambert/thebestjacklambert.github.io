@@ -1,54 +1,120 @@
-<!-- Custom Cursor Element -->
-<div class="cursor"></div>
-<link rel="stylesheet" href="Project1.css">
-<script src="Project1.js"></script>
-
-<!-- Project Details Section -->
-<section id="project-details">
-  <!-- Three.js 3D Background Canvas -->
-  <canvas id="project-canvas"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Theremin Project - A hands-free musical instrument using analog circuits.">
+  <meta name="keywords" content="Theremin, Musical Instrument, Analog Circuits, Signal Processing">
+  <meta name="author" content="Jack Lambert">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theremin Project | Jack Lambert Portfolio</title>
   
-  <div class="container">
-    <h2 data-aos="fade-up">Theremin Project</h2>
-    <div class="project-overview" data-aos="fade-up" data-aos-delay="100">
-      <h3>Gallery</h3>
-      <img src="../MainSite/images/theramin.png" alt="Theremin Project Image" class="project-image" data-aos="zoom-in">
-      <img src="../MainSite/images/unnamed (2).png" alt="Theremin in Action" class="project-image" data-aos="zoom-in">
-      <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Board of Theremin" class="project-image" data-aos="zoom-in">
-      </div>
-      <div class="project-description">
-        <h3>Overview</h3>
-        <p>
-          The Theremin Project involves building a hands-free musical instrument using analog circuits. The project focuses on creating precise oscillators and sensors to control pitch and volume, allowing for expressive musical performances without physical contact.
-        </p>
-        <h3>Technologies Used</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Analog Circuit Design</li>
-          <li><i class="fas fa-check-circle"></i> Oscillator Implementation</li>
-          <li><i class="fas fa-check-circle"></i> Signal Processing</li>
-          <li><i class="fas fa-check-circle"></i> Soldering and Prototyping</li>
-        </ul>
-        <h3>Key Features</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Precise pitch control</li>
-          <li><i class="fas fa-check-circle"></i> Responsive volume adjustment</li>
-          <li><i class="fas fa-check-circle"></i> Durable and portable design</li>
-          <li><i class="fas fa-check-circle"></i> Customizable sound profiles</li>
-        </ul>
-        <h3>Project Presentation</h3>
-        <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-          <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR2XZFZuYYZj2lNG9B-kYDCXqZSx4Zn6ozmhxXwDCfQklJ2YitZSoFn5Cv7Od3Qcw/embed?start=false&loop=true&delayms=10000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="Project1.css">
+</head>
+<body>
+  
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+  
+  <!-- Floating Decorative Elements -->
+  <div class="floating-circle" data-aos="fade-right" data-aos-duration="2000" data-aos-delay="800"></div>
+  <!-- Removed the floating-square to eliminate the unwanted rectangle -->
+  
+  <!-- Custom Cursor Element -->
+  <div class="cursor"></div>
+  
+  <!-- Project Details Section -->
+  <section id="project-details">
+    <!-- Particles.js Container -->
+    <div id="particles-js"></div>
+    
+    <div class="container">
+      <header>
+        <h2 data-aos="fade-up" data-aos-duration="1000">
+          <span id="typed-text"></span>
+        </h2>
+      </header>
+      
+      <div class="project-overview">
+        <div class="project-images" data-aos="fade-right" data-aos-duration="1000">
+          <h3>Gallery</h3>
+          <img src="../MainSite/images/theramin.png" alt="Theremin Project - Hands-free Musical Instrument" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="200">
+          <img src="../MainSite/images/unnamed2.png" alt="Theremin in Action" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="400">
+          <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Board of Theremin" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="600">
+        </div>
+        <div class="project-description" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
+          <h3 id="overview">Overview</h3>
+          <p>
+            The Theremin Project involves building a hands-free musical instrument using analog circuits. The project focuses on creating precise oscillators and sensors to control pitch and volume, allowing for expressive musical performances without physical contact.
+          </p>
+          
+          <h3 id="technologies">Technologies Used</h3>
+          <ul>
+            <li><span class="check-icon">✔</span> Analog Circuit Design</li>
+            <li><span class="check-icon">✔</span> Oscillator Implementation</li>
+            <li><span class="check-icon">✔</span> Signal Processing</li>
+            <li><span class="check-icon">✔</span> Soldering and Prototyping</li>
+          </ul>
+          
+          <h3 id="features">Key Features</h3>
+          <ul>
+            <li><span class="check-icon">✔</span> Precise pitch control</li>
+            <li><span class="check-icon">✔</span> Responsive volume adjustment</li>
+            <li><span class="check-icon">✔</span> Durable and portable design</li>
+            <li><span class="check-icon">✔</span> Customizable sound profiles</li>
+          </ul>
+          
+          <h3 id="presentation">Project Presentation</h3>
+          <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
+            <iframe 
+              src="https://docs.google.com/presentation/d/e/2PACX-1vR2XZFZuYYZj2lNG9B-kYDCXqZSx4Zn6ozmhxXwDCfQklJ2YitZSoFn5Cv7Od3Qcw/embed?start=false&loop=true&delayms=60000" 
+              frameborder="0" 
+              width="1280" 
+              height="749" 
+              allowfullscreen="true" 
+              mozallowfullscreen="true" 
+              webkitallowfullscreen="true">
+            </iframe>
+          </div>          
         </div>
       </div>
+      
+      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
     </div>
-    <a href="../index.html" class="btn back-btn" data-aos="fade-up" data-aos-delay="400">← Back to Projects</a>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <p>&copy; <span id="current-year"></span> Jack Lambert</p>
-</footer>
-
-<!-- Back to Top Button -->
-<a href="#project-details" class="back-to-top" data-aos="fade-up"><i class="arrow up"></i></a>
+  </section>
+  
+  <!-- Footer -->
+  <footer data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
+    <p>&copy; <span id="current-year"></span> Jack Lambert</p>
+  </footer>
+  
+  <!-- Back to Top Button -->
+  <a href="#project-details" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+  
+  <!-- External Libraries -->
+  
+  <!-- AOS JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
+  
+  <!-- GSAP JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
+  
+  <!-- Particles.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+  
+  <!-- Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="Project1.js" defer></script>
+</body>
+</html>
