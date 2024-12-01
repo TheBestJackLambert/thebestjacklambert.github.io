@@ -1,56 +1,144 @@
-<!-- Custom Cursor Element -->
-<div class="cursor"></div>
-
-<!-- Project Details Section -->
-<section id="project-details">
-  <!-- Three.js 3D Background Canvas -->
-  <canvas id="project-canvas"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Wi-Fi detector project made during my internship at GTRI">
+  <meta name="author" content="Jack Lambert">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Altitude Signal Detector | Jack Lambert Portfolio</title>
   
-  <div class="container">
-    <h2 data-aos="fade-up">Theremin Project</h2>
-    <div class="project-overview" data-aos="fade-up" data-aos-delay="100">
-      <img src="YOUR_IMAGE_URL" alt="Theremin Project Image" class="project-image" data-aos="zoom-in">
-      <div class="project-description">
-        <h3>Overview</h3>
-        <p>
-          The Theremin Project involves building a hands-free musical instrument using analog circuits. The project focuses on creating precise oscillators and sensors to control pitch and volume, allowing for expressive musical performances without physical contact.
-        </p>
-        <h3>Technologies Used</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Analog Circuit Design</li>
-          <li><i class="fas fa-check-circle"></i> Oscillator Implementation</li>
-          <li><i class="fas fa-check-circle"></i> Signal Processing</li>
-          <li><i class="fas fa-check-circle"></i> Soldering and Prototyping</li>
-        </ul>
-        <h3>Key Features</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Precise pitch control</li>
-          <li><i class="fas fa-check-circle"></i> Responsive volume adjustment</li>
-          <li><i class="fas fa-check-circle"></i> Durable and portable design</li>
-          <li><i class="fas fa-check-circle"></i> Customizable sound profiles</li>
-        </ul>
-        <h3>Project Presentation</h3>
-        <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-          <iframe src="YOUR_PRESENTATION_URL" frameborder="0" width="100%" height="500px" allowfullscreen="true" loading="lazy"></iframe>
-        </div>
-        <h3>Gallery</h3>
-        <div class="gallery" data-aos="fade-up" data-aos-delay="300">
-          <img src="YOUR_GALLERY_IMAGE_URL_1" alt="Theremin in Action" class="gallery-image" data-aos="zoom-in">
-          <img src="YOUR_GALLERY_IMAGE_URL_2" alt="Circuit Board of Theremin" class="gallery-image" data-aos="zoom-in">
-          <img src="YOUR_GALLERY_IMAGE_URL_3" alt="Theremin Performance" class="gallery-image" data-aos="zoom-in">
-        </div>
-        <h3>Project Link</h3>
-        <a href="https://github.com/thebestjacklambert/theremin-project" target="_blank" class="btn">View on GitHub</a>
-      </div>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- AOS CSS for Animations -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkTyRAbsyqNs0mrkgjA/+Bm/jXkR58e1PjBA1dh9JJdKkGODdL6AKlEWmVJ1eBJj0mLrjkHvXo8e+/Ug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Model Viewer Library -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="Project3.css">
+</head>
+<body>
+  
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+  
+  <!-- Custom Cursor Element -->
+  <div class="cursor"></div>
+  
+  <!-- Hero Section with Big Title -->
+  <section id="hero">
+    <!-- Particles.js Container -->
+    <div id="particles-js" class="background-particles"></div>
+    <div class="hero-content">
+      <h1 id="main-title" data-aos="fade-up" data-aos-duration="1000">
+        High Altitude Signal Detector
+      </h1>
+      <h2 id="typed-text" data-aos="fade-up" data-aos-duration="1000"></h2>
     </div>
-    <a href="#!" class="btn back-btn" data-aos="fade-up" data-aos-delay="400">← Back to Projects</a>
-  </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer>
-  <p>&copy; <span id="current-year"></span> Jack Lambert</p>
-</footer>
+  <!-- Project Details Section -->
+  <section id="project-details">
+    <div class="container">
+      <div class="project-overview">
+        <!-- Left Column: 3D Model and Technical Specs -->
+        <div class="column left" data-aos="fade-up" data-aos-duration="1000">
+          <!-- 3D Model Viewer -->
+          <model-viewer 
+            src="model.glb" 
+            alt="High Altitude Signal Detector 3D Model" 
+            auto-rotate 
+            camera-controls 
+            background-color="#1a1a1a" 
+            style="width: 100%; height: 400px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);">
+            <!-- Fallback Content -->
+            <p>Your browser does not support <code>model-viewer</code>.</p>
+          </model-viewer>
+          
+          <!-- Technical Specifications -->
+          <div class="technical-specs" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+            <h3>Technical Specifications</h3>
+            <ul>
+              <li><strong>Processor:</strong> ARM Cortex-M4 32-bit processor running at 80MHz.</li>
+              <li><strong>Wireless Capabilities:</strong> Supports 2.46GHz and 5GHz Wi-Fi signal detection.</li>
+              <li><strong>Power Efficiency:</strong> Optimized to operate under 0.75 lb with low power consumption.</li>
+              <li><strong>Operating Conditions:</strong> Designed to function in high-altitude environments with varying temperatures.</li>
+            </ul>
+          </div>
+        </div>
 
-<!-- Back to Top Button -->
-<a href="#project-details" class="back-to-top" data-aos="fade-up"><i class="arrow up"></i></a>
+        <!-- Right Column: Project Description -->
+        <div class="column right" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+          <h3>Background</h3>
+          <p>
+            This project was made for the Georgia Tech NASA Mini Payload competition. So far, we were one of four teams to progress to the CDR (Construction and Design Round) and receive a $100 stipend.
+          </p>
+
+          <h3>Criteria</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Must not exceed 0.75 lb</li>
+            <li><i class="fas fa-check-circle"></i> Must be fully self-contained and less than 3.7 inches in height</li>
+            <li><i class="fas fa-check-circle"></i> Signal Processing</li>
+            <li><i class="fas fa-check-circle"></i> Soldering and Prototyping</li>
+          </ul>
+          
+          <h3 id="features">Key Features</h3>
+          <ul>
+            <li><span class="check-icon">✔</span> Changing brightness based on signal strength</li>
+            <li><span class="check-icon">✔</span> Wireless</li>
+            <li><span class="check-icon">✔</span> Able to pick up 2.46GHz and 5GHz signals</li>
+          </ul>
+          
+          <h3 id="presentation">Project Presentation</h3>
+          <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQDHuZ_g73Qz9liDTU-jn8C-pDwMJq3VkBcSy9pxNfUxxQ7dI7zsDuA40DdBsvvP5RFHXUpMS9AjNzB/embed?start=false&loop=true&delayms=60000"
+             frameborder="0" 
+             width="100%" 
+             height="100%" 
+             allowfullscreen="true" 
+             mozallowfullscreen="true"
+             webkitallowfullscreen="true">
+            </iframe>
+          </div>          
+        </div>
+      </div>
+      
+      <!-- Back to Projects Button -->
+      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
+    <p>&copy; <span id="current-year"></span> Jack Lambert</p>
+  </footer>
+  
+  <!-- Back to Top Button -->
+  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+  
+  <!-- External Libraries -->
+  
+  <!-- AOS JS for Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
+  
+  <!-- GSAP JS (Optional, if you use it) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
+  
+  <!-- Particles.js for Background Effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+  
+  <!-- Typed.js for Typing Animation -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="Project3.js" defer></script>
+</body>
+</html>

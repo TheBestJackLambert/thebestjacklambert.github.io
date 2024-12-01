@@ -1,0 +1,534 @@
+/* =====================================================
+   Reset and Base Styles
+===================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #0d0d0d;
+  --primary-color: #ffd700; /* Gold */
+  --secondary-color: #1a1a1a; /* Near-black */
+  --accent-color: #ff8c00; /* Dark Orange for contrast */
+  --text-color: #ffffff; /* White */
+  --font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+  cursor: none; /* Hide default cursor */
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =====================================================
+   Scroll Progress Bar Styles
+===================================================== */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--primary-color); /* Gold */
+  width: 0%;
+  z-index: 10000; /* Ensure it's above other elements */
+  transition: width 0.25s ease;
+}
+
+/* =====================================================
+   Custom Cursor Styles
+===================================================== */
+.cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.cursor--active {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: var(--accent-color);
+}
+
+/* =====================================================
+   Hero Section Styles
+===================================================== */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  overflow: hidden;
+}
+
+.background-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Behind hero content */
+  /* Remove or comment out the pointer-events property */
+  /* pointer-events: none; */
+  pointer-events: auto; /* Enable pointer events */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2; /* Above particles.js */
+  text-align: center;
+  /* Remove pointer-events: none; to ensure interactions on content */
+}
+
+.hero-content * {
+  pointer-events: auto; /* Enable pointer events on child elements */
+}
+
+#main-title {
+  color: var(--primary-color);
+  font-size: 4rem;
+  text-align: center;
+  animation: fadeInTitle 2s ease-in-out;
+}
+
+#typed-text {
+  color: var(--accent-color);
+  font-size: 3rem; /* Increased font size to match main title */
+  margin-top: 20px;
+  display: block;
+  animation: fadeInTyped 2s ease-in-out;
+}
+
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInTyped {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   Project Overview Styles
+===================================================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.project-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* =====================================================
+   Left Column: 3D Model and Technical Specs
+===================================================== */
+.column.left {
+  flex: 1;
+  min-width: 300px;
+}
+
+model-viewer {
+  width: 100%;
+  height: 400px; /* Adjust height as needed */
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Gold shadow */
+  background-color: var(--secondary-color); /* Match secondary color */
+  position: relative;
+}
+
+@media (max-width: 1200px) {
+  model-viewer {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  model-viewer {
+    height: 250px;
+  }
+}
+
+/* Technical Specifications */
+.technical-specs {
+  margin-top: 20px;
+}
+
+.technical-specs h3 {
+  color: var(--primary-color);
+  font-size: 1.8em;
+  margin-bottom: 20px;
+}
+
+.technical-specs ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.technical-specs li {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.technical-specs li strong {
+  color: var(--primary-color);
+}
+
+/* =====================================================
+   Right Column: Project Description
+===================================================== */
+.column.right {
+  flex: 2;
+  min-width: 300px;
+}
+
+.column.right h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.column.right p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.column.right ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 25px;
+}
+
+.column.right ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  color: var(--text-color);
+  font-size: 1.1em;
+}
+
+.column.right ul li .check-icon {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.column.right ul li i {
+  color: var(--primary-color);
+  margin-right: 8px;
+}
+
+/* Presentation Container */
+.presentation-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Gold shadow */
+  margin-top: 25px;
+}
+
+.presentation-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0; /* For animation */
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.presentation-container.aos-animate iframe {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* =====================================================
+   Button Styles
+===================================================== */
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  padding: 15px 35px;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  color: var(--text-color);
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Gold shadow */
+}
+
+.btn:hover {
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+  color: var(--bg-color);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); /* Enhanced Gold shadow */
+  transform: translateY(-5px);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 215, 0, 0.2);
+  transition: all 0.5s;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  left: 0;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.btn:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.back-btn {
+  margin-top: 30px;
+}
+
+/* =====================================================
+   Back to Top Button Styles
+===================================================== */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: var(--primary-color); /* Gold */
+  color: #fff;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease, background 0.3s, color 0.3s;
+  z-index: 1000;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--text-color);
+  color: var(--primary-color); /* Gold */
+}
+
+.back-to-top .arrow.up {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(-135deg);
+  transition: border-color 0.3s;
+}
+
+.back-to-top .arrow.up:hover {
+  border-color: var(--primary-color);
+}
+
+/* =====================================================
+   Footer Styles
+===================================================== */
+footer {
+  background: var(--bg-color);
+  text-align: center;
+  padding: 25px 0;
+  margin-top: 120px;
+  opacity: 0; /* For animation */
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+footer.aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+footer p {
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+/* =====================================================
+   Additional Animations for Enhanced Engagement
+===================================================== */
+
+/* Slide-in from bottom for footer */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+footer.aos-animate {
+  animation: slideInUp 0.6s forwards;
+}
+
+/* Fade-in for descriptions and embeds */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.project-description.aos-animate,
+.presentation-container.aos-animate,
+model-viewer.aos-animate,
+.technical-specs.aos-animate {
+  animation: fadeInUp 0.6s forwards;
+}
+
+/* Hover ripple effect on buttons */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* =====================================================
+   Responsive Design Adjustments for Project Page
+===================================================== */
+@media (max-width: 1200px) {
+  .project-overview {
+    flex-direction: column;
+  }
+  
+  model-viewer {
+    height: 300px;
+  }
+
+  .technical-specs ul {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 768px) {
+  model-viewer {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+  
+  model-viewer {
+    height: 200px;
+  }
+  
+  .specs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   Typing Animation Styles
+===================================================== */
+#typed-text::after {
+  content: '|'; /* Custom blinking cursor */
+  display: inline-block;
+  margin-left: 0.1em;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* =====================================================
+   Smooth Scroll Behavior
+===================================================== */
+html {
+  scroll-behavior: smooth;
+}
