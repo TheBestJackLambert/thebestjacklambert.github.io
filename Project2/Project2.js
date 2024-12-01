@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Typed.js with cursor disabled
   const typed = new Typed('#typed-text', {
-    strings: ['Project 1', 'Theremin', 'Made at GTRI'],
+    strings: ['Project 2', 'Wi-fi Detector', 'Made at GTRI'],
     typeSpeed: 100,
     backSpeed: 50,
     loop: true,
