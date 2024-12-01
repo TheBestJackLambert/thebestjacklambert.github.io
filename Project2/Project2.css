@@ -1,0 +1,474 @@
+/* =====================================================
+   Reset and Base Styles
+===================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #0d0d0d;
+  --primary-color: #ffd700; /* Gold */
+  --secondary-color: #1a1a1a; /* Near-black */
+  --accent-color: #ff8c00; /* Dark Orange for contrast */
+  --text-color: #ffffff; /* White */
+  --font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+  cursor: none; /* Hide default cursor */
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =====================================================
+   Custom Cursor Styles
+===================================================== */
+.cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: gold;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  mix-blend-mode: difference;
+}
+
+/* =====================================================
+   Scroll Progress Bar Styles
+===================================================== */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--primary-color); /* Gold */
+  width: 0%;
+  z-index: 10000; /* Ensure it's above other elements */
+  transition: width 0.25s ease;
+}
+
+/* =====================================================
+   Project Details Section
+===================================================== */
+#project-details {
+  position: relative;
+  padding: 120px 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+#project-details .container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+}
+
+#project-details h2 {
+  text-align: center;
+  font-size: 3em;
+  margin-bottom: 60px;
+  color: var(--primary-color); /* Gold */
+  min-height: 1.2em; /* Prevent layout shift */
+}
+
+#typed-text {
+  border-right: 0.15em solid var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* =====================================================
+   Project Overview Styles
+===================================================== */
+.project-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 50px;
+  align-items: start;
+  justify-items: center;
+}
+
+.project-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: start;
+}
+
+.project-images h3 {
+  color: var(--primary-color);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.project-image {
+  width: 100%;
+  max-width: 300px; /* Adjust as needed */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: cover;
+}
+
+.project-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.project-description {
+  flex: 1;
+  min-width: 350px;
+  opacity: 0; /* For animation */
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.project-description.aos-animate { /* Updated from .active */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-description h3 {
+  color: var(--primary-color); /* Gold */
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.project-description p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.project-description ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 25px;
+}
+
+.project-description ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  color: var(--text-color);
+  font-size: 1.1em;
+}
+
+.project-description ul li .check-icon {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.presentation-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Gold shadow */
+  margin-top: 25px;
+}
+
+.presentation-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0; /* For animation */
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.presentation-container.aos-animate iframe { /* Updated from .active iframe */
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* =====================================================
+   Button Styles
+===================================================== */
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  padding: 15px 35px;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  color: var(--text-color);
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Gold shadow */
+}
+
+.btn:hover {
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+  color: var(--bg-color);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); /* Enhanced Gold shadow */
+  transform: translateY(-5px);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 215, 0, 0.2);
+  transition: all 0.5s;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  left: 0;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.btn:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.back-btn {
+  margin-top: 30px;
+}
+
+/* =====================================================
+   Back to Top Button Styles
+===================================================== */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: var(--primary-color); /* Gold */
+  color: #fff;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease, background 0.3s, color 0.3s;
+  z-index: 1000;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--text-color);
+  color: var(--primary-color); /* Gold */
+}
+
+.back-to-top .arrow.up {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(-135deg);
+  transition: border-color 0.3s;
+}
+
+.back-to-top .arrow.up:hover {
+  border-color: var(--primary-color);
+}
+
+/* =====================================================
+   Footer Styles
+===================================================== */
+footer {
+  background: var(--bg-color);
+  text-align: center;
+  padding: 25px 0;
+  margin-top: 120px;
+  opacity: 0; /* For animation */
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+footer.aos-animate { /* Updated from .active */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+footer p {
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+/* =====================================================
+   Additional Animations for Enhanced Engagement
+===================================================== */
+
+/* Slide-in from bottom for footer */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+footer.aos-animate { /* Updated from .active */
+  animation: slideInUp 0.6s forwards;
+}
+
+/* Fade-in for images and descriptions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.project-image.aos-animate,
+.project-description.aos-animate,
+.presentation-container.aos-animate iframe {
+  animation: fadeInUp 0.6s forwards;
+}
+
+/* Hover ripple effect on buttons */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Floating Decorative Elements */
+.floating-circle {
+  position: fixed;
+  top: 20%;
+  left: 80%;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  z-index: -1;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+/* =====================================================
+   Responsive Design Adjustments for Project Page
+===================================================== */
+@media (max-width: 1200px) {
+  .project-overview {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+  
+  .project-image {
+    max-width: 100%;
+  }
+}
+
+/* =====================================================
+   Typing Animation Styles
+===================================================== */
+#typed-text::after {
+  content: '|'; /* Custom blinking cursor */
+  display: inline-block;
+  margin-left: 0.1em;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* =====================================================
+   Smooth Scroll Behavior
+===================================================== */
+html {
+  scroll-behavior: smooth;
+}
