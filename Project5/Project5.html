@@ -1,97 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Water Game — Project</title>
-<style>
-  :root{
-    --bg:#0d0d0d; --text:#f5f5f5; --muted:#cfcfcf;
-    --card:#141414; --line:#262626; --accent:#ffd700;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-  img{max-width:100%;display:block}
-
-  /* Header + Back button */
-  .page-header{padding:28px 16px 10px}
-  .header-row{width:92%;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-  .page-header h1{margin:0;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--accent)}
-  .sub{margin:6px 0 0;color:var(--muted)}
-  .typed-line{display:inline-block}
-  .typed-base,.typed-dynamic{color:var(--accent)}
-  .btn-back{display:inline-block;padding:8px 12px;border-radius:999px;border:1px solid var(--line);
-    color:var(--text);text-decoration:none;background:#0f0f0f;transition:background .18s,color .18s,transform .12s}
-  .btn-back:hover{background:var(--accent);color:#111}
-
-  /* Layout */
-  .container{width:92%;max-width:1200px;margin:0 auto 72px}
-  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
-  @media (max-width: 960px){.grid{grid-template-columns:1fr}}
-
-  /* Card base */
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-  .card + .card{margin-top:18px}
-  .h2{font-size:1.1rem;margin:0;color:var(--accent)}
-  .section-pad{padding:12px 14px}
-
-  /* 3D Viewer */
-  .viewer-head{display:flex;align-items:center;justify-content:space-between;gap:16px;
-    padding:12px 14px;background:linear-gradient(180deg, rgba(255,215,0,.10), rgba(255,215,0,.04));
-    border-bottom:1px solid rgba(255,215,0,.18)}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .tab{background:#0f0f0f;border:1px solid #2a2a2a;color:#eee;padding:8px 12px;border-radius:999px;
-    font-size:.9rem;cursor:pointer;transition:transform .16s,box-shadow .16s,background .18s,color .18s}
-  .tab.active,.tab:focus-visible{background:var(--accent);color:#111;outline:none;
-    box-shadow:0 0 0 3px rgba(255,215,0,.25) inset}
-  .model-host{position:relative;width:100%;height:460px;background:
-    radial-gradient(80% 60% at 50% 20%, #161616, #0b0b0b 70%)}
-  #mv{width:100%;height:100%;--poster-color:transparent}
-  .viewer-help{font-size:.95rem;color:#bdbdbd;text-align:center;padding:10px 14px;border-top:1px dashed #2a2a2a}
-  .diag{margin:10px 12px;background:#0f0f0f;border:1px dashed #2a2a2a;border-radius:12px;padding:10px 12px}
-  .diag summary{cursor:pointer;color:var(--accent)}
-
-  /* Photo Gallery (below viewer, left column) */
-  .wg-title{color:var(--accent);margin:10px 14px 8px;font-size:1.05rem}
-  .wg-carousel{position:relative;padding:10px}
-  .wg-viewport{overflow:hidden;border-radius:12px}
-  .wg-track{display:flex;transition:transform 320ms cubic-bezier(.22,.61,.36,1);will-change:transform}
-  .wg-item{min-width:100%;user-select:none}
-  .wg-item img{width:100%;height:auto;background:#0b0b0b;object-fit:cover}
-  .wg-item figcaption{font-size:.95rem;color:var(--muted);text-align:center;padding:8px 4px 2px}
-  .wg-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:999px;
-    background:#0f0f0f;border:1px solid #2a2a2a;color:#fff;display:grid;place-items:center;cursor:pointer;z-index:2}
-  .wg-nav:hover{background:var(--accent);color:#111}
-  .wg-nav.prev{left:12px}
-  .wg-nav.next{right:12px}
-  .wg-dots{display:flex;gap:8px;justify-content:center;padding:10px 6px 8px}
-  .wg-dots button{width:8px;height:8px;border-radius:999px;background:#333;border:0;cursor:pointer}
-  .wg-dots button.active{background:var(--accent);box-shadow:0 0 0 2px rgba(255,215,0,.25)}
-  @media (prefers-reduced-motion: reduce){ .wg-track{transition:none} }
-
-  /* Slides */
-  .slides-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;
-    background:linear-gradient(180deg, rgba(255,215,0,.10), rgba(255,215,0,.04));border-bottom:1px solid rgba(255,215,0,.18)}
-  .slides-embed{position:relative;width:100%;padding-bottom:56.25%; background:#0b0b0b}
-  .slides-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0 0 16px 16px}
-
-  /* Writeup */
-  .writeup h3{margin:0 0 8px;color:var(--accent)}
-  .writeup p,.writeup li{color:#ececec;line-height:1.7}
-
-  /* Footer */
-  .footer{padding:24px;text-align:center;color:#bdbdbd;border-top:1px solid #1a1a1a}
-
-  /* Custom cursor (only hides system cursor if JS confirms init) */
-  .cursor{position:fixed;top:0;left:0;width:18px;height:18px;border-radius:50%;pointer-events:none;
-    transform:translate(-50%, -50%);z-index:9999;mix-blend-mode:difference;
-    background:radial-gradient(circle at 30% 30%, #fff, var(--accent) 60%, transparent 70%);
-    box-shadow:0 0 16px rgba(255,215,0,.45);opacity:0;transition:opacity .2s ease, transform .08s ease}
-  .cursor.show{opacity:1}
-  .cursor.hover{transform:translate(-50%, -50%) scale(1.35);box-shadow:0 0 24px rgba(255,215,0,.7)}
-  .has-custom-cursor{cursor:none}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Water Game — Project</title>
+  <link rel="stylesheet" href="Project5.css" />
 </head>
 <body>
   <!-- Custom cursor (JS will enable) -->
@@ -153,17 +66,16 @@
 
             <div class="wg-viewport" role="region" aria-label="Project images">
               <div class="wg-track" data-track>
-                <!-- Replace these paths with your actual files -->
                 <figure class="wg-item current" role="group" aria-roledescription="slide" aria-label="1 of 3">
-                  <img src="assets/water-game/img1.jpg" alt="Prototype — front view" loading="lazy" />
+                  <img src="Online Notepad Download (1).png" alt="Prototype — front view" loading="lazy" />
                   <figcaption>Early prototype — front view.</figcaption>
                 </figure>
                 <figure class="wg-item" role="group" aria-roledescription="slide" aria-label="2 of 3">
-                  <img src="assets/water-game/img2.jpg" alt="Buoyancy bottle mounts" loading="lazy" />
+                  <img src="Online Notepad Download (2).png" alt="Buoyancy bottle mounts" loading="lazy" />
                   <figcaption>Buoyancy mounts underneath.</figcaption>
                 </figure>
                 <figure class="wg-item" role="group" aria-roledescription="slide" aria-label="3 of 3">
-                  <img src="assets/water-game/img3.jpg" alt="Chain drive close-up" loading="lazy" />
+                  <img src="Online Notepad Download.png" alt="Chain drive close-up" loading="lazy" />
                   <figcaption>Chain drive close-up.</figcaption>
                 </figure>
               </div>
@@ -177,13 +89,12 @@
 
       <!-- RIGHT COLUMN: slides + writeup -->
       <div class="col-right">
-        <!-- SLIDES (restored) -->
+        <!-- SLIDES -->
         <div class="card">
           <div class="slides-head">
             <h2 class="h2">Slides & Media</h2>
           </div>
           <div class="slides-embed">
-            <!-- Replace the ID with yours if different -->
             <iframe
               src="https://docs.google.com/presentation/d/1kqcFaH4-RByNgUd3dTbGq8fI1MQDOD9O3xGTA3IuvDs/embed?start=false&loop=false&delayms=3000"
               allowfullscreen
@@ -221,180 +132,6 @@
 
   <!-- model-viewer (only external dependency) -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-  <script>
-  // =============== Utilities ===============
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  $('#year') && ($('#year').textContent = new Date().getFullYear());
-
-  // =============== Custom Cursor (robust) ===============
-  (function initCursor(){
-    const cursor = $('.cursor');
-    if (!cursor) return;
-    let rafId = null;
-    function move(e){
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(()=>{
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top  = e.clientY + 'px';
-        cursor.classList.add('show');
-      });
-    }
-    window.addEventListener('mousemove', move, {passive:true});
-    // Hide system cursor only after JS active:
-    document.body.classList.add('has-custom-cursor');
-    const hoverables = ['a','button','.tab','.wg-nav'];
-    hoverables.forEach(sel => {
-      $$(sel).forEach(el => {
-        el.addEventListener('mouseenter', ()=> cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', ()=> cursor.classList.remove('hover'));
-      });
-    });
-  })();
-
-  // =============== Typed headline (no external lib) ===============
-  (function typedHeadline(){
-    const el = $('#typed'); if (!el) return;
-    const words = ['Design','Controls','Iteration'];
-    let wi = 0, ci = 0, del = false;
-    function tick(){
-      const w = words[wi];
-      if (!del){
-        ci++; el.textContent = w.slice(0, ci);
-        if (ci === w.length){ del = true; setTimeout(tick, 900); return; }
-      } else {
-        ci--; el.textContent = w.slice(0, ci);
-        if (ci === 0){ del = false; wi = (wi+1)%words.length; }
-      }
-      setTimeout(tick, del ? 38 : 65);
-    }
-    tick();
-  })();
-
-  // =============== 3D Viewer (tabs + ORIGINAL file paths) ===============
-  (function initModelViewer(){
-    const mv = $('#mv'); if (!mv) return;
-    const logEl = $('#mv-log');
-    const log = (msg) => { if (logEl) logEl.insertAdjacentHTML('beforeend', '<li>'+msg+'</li>'); };
-
-    // EXACT original file paths (no folder prefix)
-    const FILE_PATHS = {
-      Assembly: 'Assembly.gltf',
-      Motor: 'Motor.gltf',
-      Plates: 'Plates.gltf',
-      Propeller: 'Propeller.gltf'
-    };
-
-    // Optional: if you later set window.MODEL_BASE, it will prefix these
-    const BASE = (window.MODEL_BASE || '');
-
-    const FALLBACK = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
-
-    function loadExact(baseKey){
-      const original = FILE_PATHS[baseKey];
-      if (!original){ mv.src = FALLBACK; log('❓ unknown key: '+baseKey+' → fallback'); return; }
-
-      // Try original path exactly as before; if it 404s, try swapping extension; then fallback.
-      const tryOrder = [original];
-      if (original.endsWith('.gltf')) tryOrder.push(original.replace(/\.gltf$/i,'.glb'));
-      else if (original.endsWith('.glb')) tryOrder.push(original.replace(/\.glb$/i,'.gltf'));
-
-      let i = 0;
-      function next(){
-        if (i >= tryOrder.length){ mv.src = FALLBACK; log('❌ '+original+' → fallback'); return; }
-        const src = BASE + tryOrder[i++];
-        mv.removeAttribute('src'); // force reload
-        mv.src = src;
-        const onError = () => { mv.removeEventListener('error', onError); log('⚠️ failed: '+src); next(); };
-        const onLoad  = () => { mv.removeEventListener('load', onLoad); mv.removeEventListener('error', onError); log('✅ loaded: '+src); };
-        mv.addEventListener('error', onError, {once:true});
-        mv.addEventListener('load',  onLoad,  {once:true});
-      }
-      next();
-    }
-
-    const tabs = $$('.tab');
-    function activate(tab){
-      tabs.forEach(t=>{
-        const on = (t===tab);
-        t.classList.toggle('active', on);
-        t.setAttribute('aria-selected', on ? 'true':'false');
-      });
-      loadExact(tab.getAttribute('data-model'));
-    }
-
-    tabs.forEach(t => t.addEventListener('click', ()=> activate(t)));
-    tabs.forEach(t => t.addEventListener('keydown', (e)=>{
-      const i = tabs.indexOf(t);
-      if (e.key === 'ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
-      if (e.key === 'ArrowLeft'){  e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
-      if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); t.click(); }
-    }));
-
-    // Initial
-    activate($('.tab.active') || tabs[0]);
-  })();
-
-  // =============== Photo Gallery (carousel) ===============
-  (function waterGallery(){
-    const roots = document.querySelectorAll('[data-gallery]');
-    roots.forEach(setup);
-
-    function setup(root){
-      const track = root.querySelector('[data-track]');
-      const items = Array.from(root.querySelectorAll('.wg-item'));
-      const prev  = root.querySelector('[data-prev]');
-      const next  = root.querySelector('[data-next]');
-      const dotsHost = root.querySelector('[data-dots]');
-      if (!track || !items.length) return;
-
-      let index = Math.max(0, items.findIndex(el => el.classList.contains('current')));
-      if (index < 0) index = 0;
-
-      const dots = items.map((_, i) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.setAttribute('aria-label', 'Go to slide '+(i+1));
-        if (i === index) b.classList.add('active');
-        dotsHost && dotsHost.appendChild(b);
-        b.addEventListener('click', ()=> go(i));
-        return b;
-      });
-
-      function update(){
-        track.style.transform = 'translateX(' + (-index*100) + '%)';
-        items.forEach((el,i)=> el.classList.toggle('current', i===index));
-        dots.forEach((d,i)=> d.classList.toggle('active', i===index));
-      }
-      function go(i){ index = (i + items.length) % items.length; update(); }
-      function goNext(){ go(index+1); }
-      function goPrev(){ go(index-1); }
-
-      prev && prev.addEventListener('click', goPrev);
-      next && next.addEventListener('click', goNext);
-
-      // Keyboard when focused inside carousel
-      root.addEventListener('keydown', (e)=>{
-        if (e.key === 'ArrowRight'){ e.preventDefault(); goNext(); }
-        if (e.key === 'ArrowLeft'){  e.preventDefault(); goPrev(); }
-      });
-
-      // Swipe
-      const viewport = root.querySelector('.wg-viewport');
-      let startX = 0, dx = 0, dragging = false;
-      viewport && viewport.addEventListener('pointerdown', (e)=>{ dragging = true; startX = e.clientX; viewport.setPointerCapture(e.pointerId); });
-      viewport && viewport.addEventListener('pointermove', (e)=>{ if (!dragging) return; dx = e.clientX - startX; track.style.transform = 'translateX(' + (-index*100 + (dx/viewport.clientWidth)*100) + '%)'; });
-      viewport && viewport.addEventListener('pointerup', (e)=>{ dragging = false; viewport.releasePointerCapture(e.pointerId); if (Math.abs(dx) > viewport.clientWidth*0.15) (dx<0 ? goNext() : goPrev()); else update(); dx = 0; });
-
-      // Autoplay (pause on hover)
-      let timer = setInterval(goNext, 5000);
-      root.addEventListener('mouseenter', ()=> clearInterval(timer));
-      root.addEventListener('mouseleave', ()=> { clearInterval(timer); timer = setInterval(goNext, 5000); });
-
-      update();
-    }
-  })();
-  </script>
+  <script src="Project5.js"></script>
 </body>
 </html>
