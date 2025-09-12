@@ -62,33 +62,43 @@ img{max-width:100%;display:block}
 .wg-title{color:var(--accent);margin:10px 14px 8px;font-size:1.05rem}
 .wg-carousel{position:relative;padding:10px}
 
-/* === FIX: Constrain height and anchor movement === */
+/* --- Carousel fixes --- */
 .wg-viewport{
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  aspect-ratio: 16 / 9;   /* adjust to taste */
-  max-height: 750px;      /* optional */
+  aspect-ratio: 16 / 9;
 }
 
 .wg-track{
   display:flex;
   transition:transform 320ms cubic-bezier(.22,.61,.36,1);
   will-change:transform;
+  height:100%;              /* make slides inherit viewport height */
 }
 
-/* === FIX: each item is exactly one viewport wide === */
-.wg-item{flex:0 0 100%; user-select:none}
+.wg-item{
+  flex:0 0 100%;
+  user-select:none;
+  margin:0;                  /* <— kills the default figure margins */
+  height:100%;
+  display:grid;
+  grid-template-rows: 1fr auto; /* image takes space, caption sits at bottom */
+}
 
-/* === FIX: image fills the viewport area === */
 .wg-item img{
-  width:65%;
-  height:65%;
+  width:100%;
+  height:100%;
+  object-fit:cover;          /* use 'contain' if you prefer letterboxing */
   background:#0b0b0b;
-  object-fit:cover; /* use 'contain' if you prefer letterboxing */
 }
 
-.wg-item figcaption{font-size:.95rem;color:var(--muted);text-align:center;padding:8px 4px 2px}
+.wg-item figcaption{
+  font-size:.95rem;
+  color:var(--muted);
+  text-align:center;
+  padding:8px 10px 2px;
+}
 .wg-nav{
   position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:999px;
   background:#0f0f0f;border:1px solid #2a2a2a;color:#fff;display:grid;place-items:center;cursor:pointer;z-index:2
