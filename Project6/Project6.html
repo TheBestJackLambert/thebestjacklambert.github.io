@@ -1,56 +1,142 @@
-<!-- Custom Cursor Element -->
-<div class="cursor"></div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jack Lambert Chess | @TheBestJackLambert</title>
+  <meta name="description" content="Jack Lambert Chess" />
+  <meta name="theme-color" content="#0d0d0d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Project6.css" />
+</head>
+<body>
+  <!-- Scroll progress -->
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-<!-- Project Details Section -->
-<section id="project-details">
-  <!-- Three.js 3D Background Canvas -->
-  <canvas id="project-canvas"></canvas>
-  
-  <div class="container">
-    <h2 data-aos="fade-up">Theremin Project</h2>
-    <div class="project-overview" data-aos="fade-up" data-aos-delay="100">
-      <img src="YOUR_IMAGE_URL" alt="Theremin Project Image" class="project-image" data-aos="zoom-in">
-      <div class="project-description">
-        <h3>Overview</h3>
-        <p>
-          The Theremin Project involves building a hands-free musical instrument using analog circuits. The project focuses on creating precise oscillators and sensors to control pitch and volume, allowing for expressive musical performances without physical contact.
-        </p>
-        <h3>Technologies Used</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Analog Circuit Design</li>
-          <li><i class="fas fa-check-circle"></i> Oscillator Implementation</li>
-          <li><i class="fas fa-check-circle"></i> Signal Processing</li>
-          <li><i class="fas fa-check-circle"></i> Soldering and Prototyping</li>
-        </ul>
-        <h3>Key Features</h3>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Precise pitch control</li>
-          <li><i class="fas fa-check-circle"></i> Responsive volume adjustment</li>
-          <li><i class="fas fa-check-circle"></i> Durable and portable design</li>
-          <li><i class="fas fa-check-circle"></i> Customizable sound profiles</li>
-        </ul>
-        <h3>Project Presentation</h3>
-        <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-          <iframe src="YOUR_PRESENTATION_URL" frameborder="0" width="100%" height="500px" allowfullscreen="true" loading="lazy"></iframe>
-        </div>
-        <h3>Gallery</h3>
-        <div class="gallery" data-aos="fade-up" data-aos-delay="300">
-          <img src="YOUR_GALLERY_IMAGE_URL_1" alt="Theremin in Action" class="gallery-image" data-aos="zoom-in">
-          <img src="YOUR_GALLERY_IMAGE_URL_2" alt="Circuit Board of Theremin" class="gallery-image" data-aos="zoom-in">
-          <img src="YOUR_GALLERY_IMAGE_URL_3" alt="Theremin Performance" class="gallery-image" data-aos="zoom-in">
-        </div>
-        <h3>Project Link</h3>
-        <a href="https://github.com/thebestjacklambert/theremin-project" target="_blank" class="btn">View on GitHub</a>
+  <!-- Custom cursor -->
+  <div class="cursor" aria-hidden="true"></div>
+
+  <!-- Hero -->
+  <header id="hero" class="reveal">
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="hero-content">
+      <h1 class="title">Jack Lambert Chess</h1>
+      <h2 id="typed" aria-live="polite"></h2>
+      <div class="handles">
+        <a class="pill" href="https://www.youtube.com/@TheBestJackLambert" target="_blank" rel="noopener">@TheBestJackLambert</a>
       </div>
     </div>
-    <a href="#!" class="btn back-btn" data-aos="fade-up" data-aos-delay="400">← Back to Projects</a>
-  </div>
+  </header>
+
+  <main>
+    <!-- Spotlight videos: Popular + Recent -->
+    <section class="container reveal" aria-labelledby="spotlight-title">
+      <h3 class="section-title" id="spotlight-title">Videos</h3>
+      <div class="video-grid two">
+        <!-- Popular -->
+        <article class="card">
+          <div class="badge">Popular</div>
+          <div class="ratio">
+            <iframe id="popular-iframe" title="Popular video"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+        </article>
+
+        <!-- Recent -->
+        <article class="card">
+          <div class="badge">Recent</div>
+          <div class="ratio">
+            <iframe id="recent-iframe" title="Most recent upload"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="container reveal" aria-labelledby="stats-title">
+      <h3 class="section-title" id="stats-title">Channel Stats</h3>
+      <div class="stats-grid" role="list">
+        <div class="stat" role="listitem"><div id="stat-subs" class="stat-number">—</div><div class="stat-label">Subscribers</div></div>
+        <div class="stat" role="listitem"><div id="stat-videos" class="stat-number">—</div><div class="stat-label">Videos</div></div>
+        <div class="stat" role="listitem"><div id="stat-best" class="stat-number">—</div><div class="stat-label">Views</div></div>
+        <div class="stat" role="listitem"><div id="stat-elo" class="stat-number">—</div><div class="stat-label">USCF Rating</div></div>
+      </div>
+    </section>
+
+<!-- My Repertoire — Cheat Cards -->
+<section class="container reveal" aria-labelledby="cheatcards-title">
+  <h3 class="section-title" id="cheatcards-title">Favorites</h3>
+  <p class="section-kicker">What I actually play</p>
+  <div class="cheat-grid">
+    <article class="cheat">
+      <div class="cheat-head">
+        <h4>Traxler (Wilkes–Barre)</h4>
+      </div>
+      <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 <strong>Bc5!?</strong></p>
+      <ul class="cheat-bullets">
+        <li>Don’t tilt: develop, castle, punish over-attackers.</li>
+        <li>If 5.Nxf7? …Bxf2+ ideas → watch the king hunt motifs.</li>
+        <li>Practical line I use OTB; details in the video.</li>
+      </ul>
+<div class="cheat-actions">
+  <a class="btn small gold-hover" data-watch="traxler" target="_blank" rel="noopener">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
+    Watch breakdown
+  </a>
+  <a class="btn small gold-hover" data-pgnview="traxler" target="_blank" rel="noopener">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8Z"/></svg>
+    View PGN
+  </a>
+</div>
+
+
+
+    </article>
+
+    <article class="cheat">
+      <div class="cheat-head">
+        <h4>Scotch (Main line)</h4>
+      </div>
+      <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 <strong>Bc5</strong></p>
+      <ul class="cheat-bullets">
+        <li>Clean plans: space, piece activity, simple tactics.</li>
+        <li>Title/thumbnail pair in the Spotlight section covers this.</li>
+        <li>Good for rapid; endgame edges show up early.</li>
+      </ul>
+      <div class="cheat-actions">
+        <a class="btn small gold-hover" data-watch="scotch" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
+          Watch breakdown
+        </a>
+        <a class="btn small gold-hover" data-pgnview="scotch" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8Z"/></svg>
+          View PGN
+        </a>
+      </div>
 </section>
 
-<!-- Footer -->
-<footer>
-  <p>&copy; <span id="current-year"></span> Jack Lambert</p>
-</footer>
+    <!-- Back button -->
+    <div class="container reveal">
+      <a href="../index.html" class="btn back-btn">← Back to Projects</a>
+    </div>
+  </main>
 
-<!-- Back to Top Button -->
-<a href="#project-details" class="back-to-top" data-aos="fade-up"><i class="arrow up"></i></a>
+  <footer class="reveal">
+    <p>&copy; <span id="year"></span> Jack Lambert</p>
+  </footer>
+
+  <!-- Back to top -->
+  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+
+  <!-- chess.js (PGN playback only - optional) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="Project6.js"></script>
+</body>
+</html>
