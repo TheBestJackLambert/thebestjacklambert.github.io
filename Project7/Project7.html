@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Link Joint (Planar Arm) Calculator — Project 7 on Jack Lambert's portfolio" />
+  <meta name="author" content="Jack Lambert" />
+  <title>Link‑Joint Arm Calculator | Project 7 | Jack Lambert</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS CSS for Animations -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="Project7.css">
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Custom Cursor Element -->
+  <div class="cursor"></div>
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div id="particles-js" class="background-particles"></div>
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+      <h1 id="main-title">Link‑Joint Arm Calculator</h1>
+      <h2 id="typed-text"></h2>
+    </div>
+  </section>
+
+  <!-- Project Details Section -->
+  <section id="project-details">
+    <div class="container">
+      <div class="project-overview">
+        <!-- Left Column: Interactive Canvas + Controls -->
+        <div class="column left" data-aos="fade-up" data-aos-duration="1000">
+          <div class="panel">
+            <canvas id="arm-canvas" width="700" height="500" aria-label="Planar arm drawing canvas"></canvas>
+
+            <div class="controls">
+              <div class="row">
+                <label for="link-count">Joints (N)</label>
+                <input type="number" id="link-count" value="3" min="1" max="12" step="1" aria-label="Number of joints">
+                <button class="btn xs" id="add-joint" title="Add one joint" aria-label="Add joint">+</button>
+                <button class="btn xs ghost" id="remove-joint" title="Remove last joint" aria-label="Remove joint">−</button>
+              </div>
+
+              <!-- Dynamic rows for (Li, θi) -->
+              <div class="grid" id="link-rows" aria-live="polite" aria-label="Link and angle inputs"></div>
+
+              <div class="toggles">
+                <label><input type="checkbox" id="show-grid" checked> Show grid</label>
+                <label><input type="checkbox" id="show-reach" checked> Show reach circle</label>
+                <label><input type="checkbox" id="trace-path"> Trace path</label>
+              </div>
+
+              <div class="actions">
+                <button class="btn" id="randomize">Randomize</button>
+                <button class="btn" id="reset">Reset</button>
+                <a class="btn ghost" href="../index.html">← Back to Projects</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="results" data-aos="fade-up" data-aos-delay="200">
+            <h3>Forward Kinematics</h3>
+            <div class="fk-cards">
+              <div class="card">
+                <h4>End‑Effector (x, y)</h4>
+                <p><span id="ee-x">0</span>, <span id="ee-y">0</span></p>
+              </div>
+              <div class="card">
+                <h4>Total Orientation</h4>
+                <p><span id="ee-theta">0</span>°</p>
+              </div>
+              <div class="card">
+                <h4>Homogeneous Transform</h4>
+                <pre id="T-homog"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Description, Features, and Python -->
+        <div class="column right" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          <h3>What this tool does</h3>
+          <p>
+            This  visualizer computes and draws the individual vectors for any number of revolute joints. Enter link lengths and joint angles (in degrees)
+            to see the arm update in real time, the orientation, the end‑effector pose, and the homogeneous transform.
+          </p>
+
+          <h3>Features</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Any number of revolute links (set <em>N</em> and go)</li>
+            <li><i class="fas fa-check-circle"></i> Real‑time canvas rendering &amp; grid</li>
+            <li><i class="fas fa-check-circle"></i> Reach circle and optional path trace</li>
+            <li><i class="fas fa-check-circle"></i> Output with affector matrix</li>
+          </ul>
+
+          <h3>Python</h3>
+          <p>
+            This project was written in Python with no libraries.
+          </p>
+          <a class="btn" href="Arm Calculator.py" download>Download Python Script</a>
+
+          <h3>Math (Planar FK)</h3>
+          <p>
+            For links \(L_i\) and joint angles \( \theta_i \) (counter‑clockwise, in degrees here), the end‑effector is:
+          </p>
+          <pre class="math">
+x = Σ L_i cos(Σ θ_j),   y = Σ L_i sin(Σ θ_j)
+θ_total = Σ θ_i
+T = [[cos θ, −sin θ, x],
+     [sin θ,  cos θ, y],
+     [   0,      0, 1]]
+          </pre>
+        </div>
+      </div>
+
+      <!-- Back Button (bottom) -->
+      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
+    <p>&copy; <span id="current-year"></span> Jack Lambert</p>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+
+  <!-- Custom JavaScript -->
+  <script src="Project7.js" defer></script>
+</body>
+</html>

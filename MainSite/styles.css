@@ -539,6 +539,33 @@ nav .nav-links li a:hover::after {
   justify-content: flex-start; /* Start from the top */
   padding: 20px; /* Add padding for spacing */
   transition: box-shadow 0.3s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Front becomes a grid: title auto height, image fills leftover */
+.flip-card-front {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: start;           /* keep title snug at top */
+  overflow: hidden;             /* crop any overflow */
+  padding: 20px;                /* keep your padding */
+}
+
+/* Title styling stays as-is (optional, to be explicit) */
+.flip-card-front h1,
+.flip-card-front h3 {
+  margin: 0 0 10px 0;
+}
+
+/* Image fills the remaining space and crops nicely */
+.flip-card-front img {
+  width: 100%;
+  height: 100%;                 /* fills the 1fr row */
+  object-fit: cover;            /* crop to fill without distortion */
+  border-radius: 10px;
+  display: block;
 }
 
 .flip-card-front:hover {
@@ -1390,4 +1417,58 @@ footer p {
   100% {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Light white glow end */
   }
+}
+/* === Flip-card image should always fill the front face === */
+.project-card .flip-card-inner .flip-card-front {
+  display: grid !important;           /* override earlier display:flex */
+  grid-template-rows: auto 1fr;       /* title = auto, image = fills the rest */
+  align-items: start;
+  overflow: hidden;                   /* crop any overflow from the image */
+  padding: 20px;                      /* keep your padding */
+}
+
+.project-card .flip-card-inner .flip-card-front h1 {
+  margin: 0 0 10px 0;                 /* keep a bit of space above image */
+}
+
+.project-card .flip-card-inner .flip-card-front img {
+  width: 100%;
+  height: 100%;                       /* fill the 1fr row */
+  object-fit: cover;                  /* crop edges, no distortion */
+  display: block;
+  border-radius: 10px;
+  /* neutralize any legacy flex behavior just in case */
+  flex: initial;
+  align-self: stretch;
+  justify-self: stretch;
+}
+/* ---- Project card image crop fix (place at end of MainSite/styles.css) ---- */
+
+/* Ensure the front face is a grid: title + image area that can crop */
+#projects .project-card .flip-card-front{
+  display: grid !important;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+/* Make all project images fill & crop nicely */
+#projects .project-card .flip-card-front img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* crops to fill without distortion */
+  object-position: 50% 50%;   /* tweak this to show best part of the image */
+  margin: 0;                  /* kill the old margin that pushed the image down */
+  display: block;
+  border-radius: 10px;
+}
+
+/* Optional: slightly taller cards for better composition */
+#projects .project-card .flip-card-inner{ height: 320px; }
+@media (max-width: 768px){
+  #projects .project-card .flip-card-inner{ height: 260px; }
+}
+
+/* If the arm image still trims the wrong area, nudge the focal point just for it */
+#projects .project-card .flip-card-front img[src*="arm.png"]{
+  object-position: 50% 35%;   /* move the crop window up a bit; adjust to taste */
 }
