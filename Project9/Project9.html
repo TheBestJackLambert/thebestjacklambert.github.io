@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IK/FK Toolkit — Analytical Controls</title>
+  <meta name="description" content="RobotC + C + Python helpers for analytical inverse and forward kinematics on a 2-DOF arm." />
+  <link rel="stylesheet" href="Project9.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <header id="hero" class="project-hero">
+    <div class="container">
+      <div class="hero-content" data-fade>
+        <p class="eyebrow">Code Toolkit</p>
+        <h1 class="hero-title">IK &amp; FK Playbook</h1>
+        <p class="hero-typed" aria-live="polite">
+          <span class="static">Analytical control for </span>
+          <span id="typed-text" data-typed='["2-link arms","class demos","servo rigs","workspace sweeps"]'>
+            2-link arms
+          </span>
+        </p>
+        <p class="hero-lead">RobotC loop, portable C helpers, and quick Python tooling for planar robot arm kinematics.</p>
+        <p class="hero-summary">This toolkit packages the control code that powers my VEX-based 2-DOF arm—analytical inverse kinematics, forward checking, and calibration utilities bundled so I can reuse them on other classroom demos or simulation experiments.</p>
+        <ul class="project-meta">
+          <li>
+            <span class="label">Focus</span>
+            <span class="value">Analytical IK + FK verification</span>
+          </li>
+          <li>
+            <span class="label">Languages</span>
+            <span class="value">RobotC, C, Python</span>
+          </li>
+          <li>
+            <span class="label">Hardware</span>
+            <span class="value">VEX 2-servo arm, bench-top teaching rigs</span>
+          </li>
+        </ul>
+        <div class="project-tags" aria-label="Key skills">
+          <span>Analytical IK</span>
+          <span>Forward kinematics</span>
+          <span>Trajectory planning</span>
+          <span>RobotC</span>
+        </div>
+        <div class="hero-actions">
+          <a class="btn back-btn" href="../index.html#projects">← Back to Projects</a>
+          <a class="btn gold" href="../Project8/project8.html">See the robot arm</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="project9" class="project-page">
+    <div class="container">
+      <div class="project-layout">
+        <section class="media-column">
+          <article class="card gallery" data-gallery data-fade>
+            <header class="card-head">
+              <h2 class="h2">Gallery</h2>
+              <p>Snapshots from the solver notebook and validation runs.</p>
+            </header>
+            <div class="gallery-shell">
+              <button class="gallery-nav prev" type="button" aria-label="Previous image" data-prev>‹</button>
+              <div class="gallery-viewport" role="region" aria-label="Toolkit images" tabindex="0">
+                <div class="gallery-track" data-track>
+                  <figure class="gallery-item current" aria-label="1 of 3">
+                    <img src="../Project8/ik-diagram.png" alt="Analytical IK diagram with link lengths" />
+                    <figcaption>Deriving the IK angles from the 2-link geometry.</figcaption>
+                  </figure>
+                  <figure class="gallery-item" aria-label="2 of 3">
+                    <img src="../Project8/robotc-code.png" alt="RobotC code running on VEX" />
+                    <figcaption>RobotC loop driving a circular workspace test.</figcaption>
+                  </figure>
+                  <figure class="gallery-item" aria-label="3 of 3">
+                    <img src="../Project8/gear-chain-closeup.jpg" alt="VEX arm gear-chain close-up" />
+                    <figcaption>Gear + chain reduction keeping the elbow responsive.</figcaption>
+                  </figure>
+                </div>
+              </div>
+              <button class="gallery-nav next" type="button" aria-label="Next image" data-next>›</button>
+            </div>
+            <div class="gallery-dots" data-dots aria-label="Choose slide"></div>
+          </article>
+
+          <article class="card stats-card" data-fade>
+            <header class="card-head">
+              <h2 class="h2">Toolkit Stats</h2>
+            </header>
+            <dl class="stats-list">
+              <div class="stat">
+                <dt>Supported joints</dt>
+                <dd>Planar 2-DOF</dd>
+              </div>
+              <div class="stat">
+                <dt>IK solution</dt>
+                <dd>Closed-form analytic</dd>
+              </div>
+              <div class="stat">
+                <dt>Loop rate</dt>
+                <dd>~25 Hz on VEX Cortex</dd>
+              </div>
+              <div class="stat">
+                <dt>Helpers</dt>
+                <dd>Servo mapping, FK checks</dd>
+              </div>
+              <div class="stat">
+                <dt>Extras</dt>
+                <dd>Python sweep planner</dd>
+              </div>
+              <div class="stat">
+                <dt>Workspace</dt>
+                <dd>≤ 2 link lengths</dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="card highlight-card" data-fade>
+            <header class="card-head">
+              <h2 class="h2">Highlights</h2>
+            </header>
+            <div class="section-pad">
+              <ul class="highlight-list">
+                <li>Shared math helpers keep the RobotC loop lean and readable.</li>
+                <li>Calibration flow maps servo degrees → command values with clamping.</li>
+                <li>Python script sweeps arbitrary paths to stress-test the IK numerically.</li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <section class="content-column">
+          <article class="card narrative-card" data-fade>
+            <header class="card-head">
+              <h2 class="h2">Overview</h2>
+              <p>How the code modules stay in sync across firmware and quick sims.</p>
+            </header>
+            <div class="section-pad">
+              <section class="write-section">
+                <h3>Goal</h3>
+                <p>Bundle inverse and forward kinematics routines so I can drop them into any planar 2-joint build without rewriting math each time.</p>
+              </section>
+
+              <section class="write-section">
+                <h3>Modules</h3>
+                <ul>
+                  <li>RobotC control task that drives trajectories and clamps servo outputs.</li>
+                  <li>Plain-C helpers exposing fk/ik for quick validation or MCU ports.</li>
+                  <li>Python tooling to prototype paths and visualize reach envelopes.</li>
+                </ul>
+              </section>
+
+              <section class="write-section">
+                <h3>Workflow</h3>
+                <p>Each new motion starts in Python for math sanity checks. Once curves look good, I move the same target list to RobotC, where the helper functions translate coordinates into joint angles and servo commands while FK confirms the hits.</p>
+              </section>
+
+              <section class="write-section">
+                <h3>Next steps</h3>
+                <p>Expanding to 3-DOF by layering a wrist joint and adapting the analytic solver, then adding simple camera feedback for closed-loop corrections.</p>
+              </section>
+            </div>
+          </article>
+
+          <article class="card code-card" data-fade>
+            <header class="card-head">
+              <div>
+                <h2 class="h2">Code</h2>
+                <p class="card-subhead">Drop-in snippets for firmware and quick prototyping.</p>
+              </div>
+              <div class="code-tabs" role="tablist" aria-label="Code examples">
+                <button class="code-tab active" role="tab" aria-selected="true" data-code="code-robotc">RobotC Loop</button>
+                <button class="code-tab" role="tab" aria-selected="false" data-code="code-c">C Helpers</button>
+                <button class="code-tab" role="tab" aria-selected="false" data-code="code-python">Python Sweep</button>
+              </div>
+            </header>
+
+            <div class="code-toolbar">
+              <button class="btn" id="copyCode" aria-label="Copy the active code block">Copy active snippet</button>
+            </div>
+
+            <div class="code-pane active" id="code-robotc">
+<pre class="code"><code>// RobotC IK loop — plug in your own servo ports/limits
+#pragma config(Motor,  port2, shoulder, tmotorServoStandard, openLoop)
+#pragma config(Motor,  port3, elbow,    tmotorServoStandard, openLoop)
+const float PI = 3.14159265;
+
+int toCmd(float deg){
+  if(deg &lt; 0) deg = 0;
+  if(deg &gt; 120) deg = 120;
+  return (int)(-127 + (deg * (254.0/120.0)) + 0.5);
+}
+
+float SHOULDER_ZERO = 62, ELBOW_ZERO = 60;
+int SHOULDER_DIR = 1, ELBOW_DIR = -1;
+
+void ik(float x, float y, float *q1, float *q2){
+  float r = x*x + y*y;
+  float q1r = acos((r/2.0) - 1.0);
+  float q2r = atan2(y, x) - q1r / 2.0;
+  *q1 = q1r * (180.0/PI);
+  *q2 = q2r * (180.0/PI);
+}
+
+void setShoulder(float deg){ motor[shoulder] = toCmd(SHOULDER_ZERO + SHOULDER_DIR * deg); }
+void setElbow(float deg){ motor[elbow] = toCmd(ELBOW_ZERO + ELBOW_DIR * deg); }
+
+task main(){
+  float t = 0;
+  while(true){
+    float x = 0.2 + 1.4 * cosDegrees(t);
+    float y = 0.4 + 1.4 * sinDegrees(t);
+    float q1, q2; ik(x, y, &q1, &q2);
+    setShoulder(q1); setElbow(q2);
+    wait1Msec(40);
+    t = fmod(t + 3.0, 360.0);
+  }
+}</code></pre>
+            </div>
+
+            <div class="code-pane" id="code-c">
+<pre class="code"><code>// Portable C helpers — link with math library
+#include &lt;math.h&gt;
+
+void fk(float q1, float q2, float *x, float *y){
+  *x = cosf(q1) + cosf(q1 + q2);
+  *y = sinf(q1) + sinf(q1 + q2);
+}
+
+void ik(float x, float y, float *q1, float *q2){
+  float r = x*x + y*y;
+  float a = fmaxf(-1.0f, fminf(1.0f, (r/2.0f) - 1.0f));
+  float q1r = acosf(a);
+  float q2r = atan2f(y, x) - 0.5f * q1r;
+  *q1 = q1r;
+  *q2 = q2r;
+}</code></pre>
+            </div>
+
+            <div class="code-pane" id="code-python">
+<pre class="code"><code># Python sweep generator — quick IK smoke test
+import math
+
+def sweep(radius=1.6, samples=120):
+    for i in range(samples):
+        theta = (2 * math.pi * i) / samples
+        x = radius * math.cos(theta)
+        y = radius * math.sin(theta)
+        yield x, y
+
+def ik(x, y):
+    r = x*x + y*y
+    q1 = math.acos((r/2.0) - 1.0)
+    q2 = math.atan2(y, x) - q1 * 0.5
+    return q1, q2
+
+if __name__ == "__main__":
+    for x, y in sweep():
+        q1, q2 = ik(x, y)
+        print(f"{x:+.3f}, {y:+.3f} → q1={math.degrees(q1):+.1f}°, q2={math.degrees(q2):+.1f}°")</code></pre>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
+
+    <a href="#hero" class="back-to-top" aria-label="Back to top">
+      <span aria-hidden="true">↑</span>
+    </a>
+  </main>
+
+  <script src="Project9.js"></script>
+</body>
+</html>

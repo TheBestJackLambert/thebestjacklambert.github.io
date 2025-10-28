@@ -80,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentYearElement) {
       const currentYear = new Date().getFullYear();
       currentYearElement.textContent = currentYear;
-    } else {
-      console.error('Current year element not found.');
     }
   
     // ======================

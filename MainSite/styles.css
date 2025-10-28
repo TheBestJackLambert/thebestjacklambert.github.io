@@ -22,11 +22,16 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-family);
+  line-height: 1.6;
   overflow-x: hidden;
   cursor: none;
   background: linear-gradient(to bottom, var(--bg-color), var(--secondary-color));
   background-attachment: fixed;
   transition: background 0.5s ease;
+}
+
+p {
+  line-height: 1.7;
 }
 
 /* =====================================================
@@ -107,6 +112,12 @@ nav .nav-links li a::after {
 
 nav .nav-links li a:hover::after {
   width: 100%; /* Gold underline on hover */
+}
+
+nav .nav-links li a:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
 }
 
 .burger {

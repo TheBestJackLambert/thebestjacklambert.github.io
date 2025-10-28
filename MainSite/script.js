@@ -359,7 +359,10 @@ progressFills.forEach(fill => {
   });
 });
 
-document.getElementById('current-year').textContent = new Date().getFullYear();
+const currentYear = document.getElementById('current-year');
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
+}
 gsap.to('#quote.quote-section', {
   scrollTrigger: {
     trigger: '#quote.quote-section',
