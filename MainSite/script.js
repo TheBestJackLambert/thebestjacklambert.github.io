@@ -1,374 +1,216 @@
-const cursor = document.querySelector('.cursor');
-const hoverElements = document.querySelectorAll('a, .btn, .project-card, .resource-card');
-
-hoverElements.forEach(elem => {
-  elem.addEventListener('mouseover', () => {
-    cursor.classList.add('cursor-hover');
-  });
-  elem.addEventListener('mouseleave', () => {
-    cursor.classList.remove('cursor-hover');
-  });
-});
-
-var typed = new Typed('#typed', {
-  strings: ['Physics Enthusiast', 'Math Problem Destroyer', 'Awesome Guy'],
-  typeSpeed: 50,
-  backSpeed: 50,
-  loop: true
-});
-
-AOS.init({
-  duration: 1000,
-  once: true
-});
-
-const burger = document.querySelector('.burger');
-const navLinks = document.querySelector('.nav-links');
-
-burger.addEventListener('click', () => {
-  navLinks.classList.toggle('nav-active');
-  burger.classList.toggle('toggle');
-});
-
-document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (navLinks.classList.contains('nav-active')) {
-      navLinks.classList.remove('nav-active');
-      burger.classList.remove('toggle');
-    }
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: 'smooth'
-    });
-  });
-});
-
-const backToTop = document.querySelector('.back-to-top');
-
-window.addEventListener('scroll', () => {
-  if (window.pageYOffset > 300) {
-    backToTop.style.display = 'flex';
-  } else {
-    backToTop.style.display = 'none';
-  }
-});
-
-VanillaTilt.init(document.querySelectorAll(".project-card, .resource-card"), {
-  max: 15,
-  speed: 400,
-  glare: true,
-  "max-glare": 0.2,
-});
+/* ==========================================================================
+   BLUEPRINT THEME - INTERACTION LOGIC
+   ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const sceneHero = new THREE.Scene();
-  const cameraHero = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  cameraHero.position.z = 1000;
-  const rendererHero = new THREE.WebGLRenderer({
-    canvas: document.getElementById('hero-canvas'),
-    alpha: true,
-    antialias: true,
-  });
-  rendererHero.setSize(window.innerWidth, window.innerHeight);
-  rendererHero.setPixelRatio(window.devicePixelRatio);
-  rendererHero.setClearColor(0x000000, 0);
 
-  window.addEventListener('resize', () => {
-    cameraHero.aspect = window.innerWidth / window.innerHeight;
-    cameraHero.updateProjectionMatrix();
-    rendererHero.setSize(window.innerWidth, window.innerHeight);
+  // 1. Initialize AOS (Animate On Scroll)
+  AOS.init({
+    duration: 800,
+    easing: 'ease-out-cubic',
+    once: true,
+    offset: 50
   });
 
-  const particleCount = 2000;
-  const particlesGeometry = new THREE.BufferGeometry();
-  const positions = [];
-  const velocities = [];
-
-  for (let i = 0; i < particleCount; i++) {
-    positions.push(
-      (Math.random() - 0.5) * 4000,
-      (Math.random() - 0.5) * 4000,
-      (Math.random() - 0.5) * 4000
-    );
-    velocities.push(
-      (Math.random() - 0.5) * 0.5,
-      (Math.random() - 0.5) * 0.5,
-      (Math.random() - 0.5) * 0.5
-    );
+  // 2. Typed.js Initialization
+  if (document.getElementById('typed')) {
+    new Typed('#typed', {
+      strings: [
+        'HARDWARE ENGINEER',
+        'ROBOTICS SPECIALIST',
+        'CIRCUIT DESIGNER',
+        'PROBLEM SOLVER'
+      ],
+      typeSpeed: 40,
+      backSpeed: 30,
+      backDelay: 2000,
+      startDelay: 1000,
+      loop: true,
+      showCursor: true,
+      cursorChar: '█'
+    });
   }
 
-  particlesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  particlesGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+  // 3. Custom Cursor Logic
+  const cursor = document.querySelector('.cursor-follower');
+  const links = document.querySelectorAll('a, button, .bento-card, .mission-entry');
 
-  const particlesMaterial = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 2,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-    depthWrite: false,
-  });
+  if (cursor) {
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
 
-  const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-  sceneHero.add(particles);
+    links.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        cursor.classList.add('active');
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        cursor.style.borderColor = 'var(--text-main)';
+        cursor.style.backgroundColor = 'rgba(255, 215, 0, 0.1)';
+      });
 
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
-
-  document.addEventListener('mousemove', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-  });
-
-  function animateHero() {
-    requestAnimationFrame(animateHero);
-    particles.rotation.y += 0.0005;
-
-    const positions = particlesGeometry.attributes.position.array;
-    const velocities = particlesGeometry.attributes.velocity.array;
-
-    raycaster.setFromCamera(mouse, cameraHero);
-    const intersects = raycaster.intersectObject(particles);
-
-    if (intersects.length > 0) {
-      const intersect = intersects[0];
-      const index = intersect.index * 3;
-      const x = positions[index];
-      const y = positions[index + 1];
-      const z = positions[index + 2];
-      const dx = (intersect.point.x - x) * 0.05;
-      const dy = (intersect.point.y - y) * 0.05;
-      const dz = (intersect.point.z - z) * 0.05;
-      velocities[index] += dx;
-      velocities[index + 1] += dy;
-      velocities[index + 2] += dz;
-    }
-
-    for (let i = 0; i < positions.length; i += 3) {
-      positions[i] += velocities[i];
-      positions[i + 1] += velocities[i + 1];
-      positions[i + 2] += velocities[i + 2];
-
-      if (positions[i] > 2000 || positions[i] < -2000) velocities[i] *= -1;
-      if (positions[i + 1] > 2000 || positions[i + 1] < -2000) velocities[i + 1] *= -1;
-      if (positions[i + 2] > 2000 || positions[i + 2] < -2000) velocities[i + 2] *= -1;
-    }
-
-    particlesGeometry.attributes.position.needsUpdate = true;
-
-    rendererHero.render(sceneHero, cameraHero);
+      link.addEventListener('mouseleave', () => {
+        cursor.classList.remove('active');
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursor.style.borderColor = 'var(--accent-color)';
+        cursor.style.backgroundColor = 'transparent';
+      });
+    });
   }
-  animateHero();
-});
 
-particlesJS('particles-js',
-  {
-    "particles": {
-      "number": {
-        "value": 60,
-        "density": {
-          "enable": true,
-          "value_area": 800
+  // 4. Mobile Navigation
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  const navItems = document.querySelectorAll('.nav-links li');
+
+  if (burger) {
+    burger.addEventListener('click', () => {
+      navLinks.classList.toggle('nav-active');
+
+      // Animate Links
+      navItems.forEach((link, index) => {
+        if (link.style.animation) {
+          link.style.animation = '';
+        } else {
+          link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
         }
-      },
-      "color": {
-        "value": "#ffffff"
-      },
-      "shape": {
-        "type": "circle"
-      },
-      "opacity": {
-        "value": 0.5
-      },
-      "size": {
-        "value": 3
-      },
-      "line_linked": {
-        "enable": false
-      },
-      "move": {
-        "enable": true,
-        "speed": 2
-      }
-    },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": false
-        },
-        "onclick": {
-          "enable": false
-        }
-      }
-    },
-    "retina_detect": true
+      });
+
+      // Burger Animation
+      burger.classList.toggle('toggle');
+    });
   }
-);
 
-const modal = document.getElementById('email-modal');
-const tutoringBtn = document.getElementById('tutoring-btn');
-const closeBtn = document.querySelector('.close-btn');
+  // Close mobile nav on click
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navLinks.classList.contains('nav-active')) {
+        navLinks.classList.remove('nav-active');
+        burger.classList.remove('toggle');
+        navItems.forEach(link => {
+          link.style.animation = '';
+        });
+      }
+    });
+  });
 
-tutoringBtn.addEventListener('click', () => {
-  modal.style.display = 'block';
+  // 5. VanillaTilt for Cards
+  if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll(".bento-card, .specs-image-wrapper"), {
+      max: 5,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.1,
+      scale: 1.02
+    });
+  }
+
+  // 6. Glitch Effect Trigger on Hover
+  const glitchText = document.querySelector('.hero-title');
+  if (glitchText) {
+    glitchText.addEventListener('mouseover', () => {
+      glitchText.classList.add('glitch-active');
+    });
+    glitchText.addEventListener('mouseout', () => {
+      glitchText.classList.remove('glitch-active');
+    });
+  }
+
+  // 7. Dynamic Year in Footer
+  const yearSpan = document.getElementById('current-year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+
+  // 8. Contact Modal Logic
+  const modal = document.getElementById('email-modal'); // If you kept the modal
+  const contactBtn = document.getElementById('tutoring-btn'); // If button exists
+  if (modal && contactBtn) {
+    const closeBtn = modal.querySelector('.close-btn');
+    contactBtn.addEventListener('click', () => modal.style.display = 'block');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', (e) => {
+      if (e.target == modal) modal.style.display = 'none';
+    });
+  }
+
 });
 
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
+/* ==========================================================================
+   PREMIUM ENHANCEMENTS
+   ========================================================================== */
+
+// 9. Card Glow Effect - tracks mouse position
+document.querySelectorAll('.bento-card, .card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--mouse-x', x + '%');
+    card.style.setProperty('--mouse-y', y + '%');
+  });
 });
 
-window.addEventListener('click', (e) => {
-  if (e.target == modal) {
-    modal.style.display = 'none';
+// 10. Image Loading Observer - smooth fade-in when images load
+const images = document.querySelectorAll('img');
+images.forEach(img => {
+  if (img.complete) {
+    img.classList.add('loaded');
+  } else {
+    img.addEventListener('load', () => {
+      img.classList.add('loaded');
+    });
   }
 });
 
-function createParticle(x, y) {
-  const particle = document.createElement('div');
-  particle.classList.add('particle');
-  document.body.appendChild(particle);
-  particle.style.left = x + 'px';
-  particle.style.top = y + 'px';
-  const size = Math.random() * 5 + 5;
-  particle.style.width = size + 'px';
-  particle.style.height = size + 'px';
-  particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
-  particle.style.opacity = 0;
-  setTimeout(() => {
-    particle.remove();
-  }, 500);
+// 11. Scroll Progress Bar
+const scrollProgress = document.getElementById('scroll-progress');
+if (scrollProgress) {
+  window.addEventListener('scroll', () => {
+    const totalHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = (window.scrollY / totalHeight) * 100;
+    scrollProgress.style.width = `${progress}%`;
+  });
 }
 
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-  createParticle(e.clientX, e.clientY);
-});
-
-window.addEventListener('scroll', () => {
-  const scrollPosition = window.pageYOffset;
-  const maxScroll = document.body.scrollHeight - window.innerHeight;
-  const scrollPercentage = scrollPosition / maxScroll;
-
-  const startColor = { r: 13, g: 13, b: 13 };
-  const endColor = { r: 22, g: 33, b: 62 };
-
-  const r = Math.round(startColor.r + (endColor.r - startColor.r) * scrollPercentage);
-  const g = Math.round(startColor.g + (endColor.g - startColor.g) * scrollPercentage);
-  const b = Math.round(startColor.b + (endColor.b - startColor.b) * scrollPercentage);
-
-  document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-});
-
-gsap.registerPlugin(ScrollTrigger);
-
-gsap.from('#about .about-image', {
-  scrollTrigger: {
-    trigger: '#about',
-    start: 'top center'
-  },
-  x: -200,
-  opacity: 0,
-  duration: 1
-});
-
-gsap.from('#about .about-text', {
-  scrollTrigger: {
-    trigger: '#about',
-    start: 'top center'
-  },
-  x: 200,
-  opacity: 0,
-  duration: 1
-});
-
-gsap.from('.timeline-item', {
-  scrollTrigger: {
-    trigger: '#experience',
-    start: 'top center'
-  },
-  y: 100,
-  opacity: 0,
-  duration: 1,
-  stagger: 0.2
-});
-
-gsap.from('#quote .quote-content', {
-  scrollTrigger: {
-    trigger: '#quote',
-    start: 'top center'
-  },
-  y: 50,
-  opacity: 0,
-  duration: 1
-});
-
-gsap.from('#resources .resource-card', {
-  scrollTrigger: {
-    trigger: '#resources',
-    start: 'top center'
-  },
-  y: 100,
-  opacity: 0,
-  duration: 1,
-  stagger: 0.2
-});
-
-const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-accordionHeaders.forEach(header => {
-  header.addEventListener('click', () => {
-    const accordionItem = header.parentElement;
-    const accordionContent = header.nextElementSibling;
-    const openItem = document.querySelector('.accordion-item.active');
-
-    if (openItem && openItem !== accordionItem) {
-      openItem.classList.remove('active');
-      openItem.querySelector('.accordion-content').style.maxHeight = 0;
-    }
-
-    accordionItem.classList.toggle('active');
-    if (accordionItem.classList.contains('active')) {
-      accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+// 12. Back to Top Button
+const backToTop = document.querySelector('.back-to-top');
+if (backToTop) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTop.classList.add('show');
     } else {
-      accordionContent.style.maxHeight = 0;
+      backToTop.classList.remove('show');
     }
   });
-});
 
-const progressFills = document.querySelectorAll('.progress-fill');
-
-progressFills.forEach(fill => {
-  const percentage = fill.getAttribute('data-percentage');
-  fill.style.width = '0%';
-
-  gsap.to(fill, {
-    width: percentage,
-    scrollTrigger: {
-      trigger: fill,
-      start: 'top 80%',
-      toggleActions: 'play none none none',
-    },
-    duration: 1.5,
-    ease: 'power1.out',
+  backToTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-});
-
-const currentYear = document.getElementById('current-year');
-if (currentYear) {
-  currentYear.textContent = new Date().getFullYear();
 }
-gsap.to('#quote.quote-section', {
-  scrollTrigger: {
-    trigger: '#quote.quote-section',
-    start: 'top 80%',
-    toggleClass: { targets: '#quote.quote-section', className: 'active' },
-    toggleActions: 'play none none reverse',
-  },
-  // These properties can be left empty if handled by CSS transitions
-});
+
+// 13. Parallax Effect on Hero
+const hero = document.querySelector('#hero');
+if (hero) {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const heroContent = hero.querySelector('.hero-content');
+    if (heroContent && scrolled < window.innerHeight) {
+      heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+      heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+    }
+  });
+}
+
+// 14. Intersection Observer for section reveals
+const revealSections = document.querySelectorAll('section');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+    }
+  });
+}, { threshold: 0.1 });
+
+revealSections.forEach(section => revealObserver.observe(section));

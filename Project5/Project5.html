@@ -1,138 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Water Game — Project</title>
-  <link rel="stylesheet" href="Project5.css" />
-</head>
-<body>
-  <!-- Custom cursor (JS will enable) -->
-  <div class="cursor" aria-hidden="true"></div>
 
-  <header class="page-header">
-    <div class="header-row">
-      <div>
-        <h1 class="typed-line">
-          <span class="typed-base">Water Game Project — </span>
-          <span class="typed-dynamic" id="typed"></span>
-        </h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECT_05 // WATER GAME | Jack Lambert</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <!-- Model Viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
+
+  <style>
+    .model-tabs {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    .model-tab {
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: var(--text-muted);
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all var(--transition-medium);
+    }
+
+    .model-tab.active,
+    .model-tab:hover {
+      background: rgba(255, 215, 0, 0.1);
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .model-viewer-container {
+      width: 100%;
+      height: 400px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100%;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .writeup h3 {
+      color: var(--accent-color);
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+      font-size: 1rem;
+    }
+
+    .writeup ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .writeup li {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+      padding-left: var(--spacing-md);
+      position: relative;
+    }
+
+    .writeup li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_05</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
+    <div class="container">
+      <h1 data-aos="fade-up">WATER GAME ROBOT</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        A floating robot with VEX motors, chain drive, and high-efficiency propellers.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">VEX ROBOTICS</span>
+        <span class="tech-tag">ROBOTC</span>
+        <span class="tech-tag">MECHANICAL</span>
+        <span class="tech-tag">HYDRODYNAMICS</span>
       </div>
-      <!-- Back button -->
-      <a class="btn-back" href="/index.html#projects" aria-label="Back to projects">← Back to Projects</a>
     </div>
   </header>
 
-  <main class="container">
-    <section class="grid">
-      <!-- LEFT COLUMN: 3D viewer + gallery -->
-      <div class="col-left">
-        <!-- 3D VIEWER -->
-        <div class="card">
-          <div class="viewer-head">
-            <h2 class="h2">Interactable 3D</h2>
-            <div class="tabs" role="tablist" aria-label="Model tabs">
-              <!-- data-model keys map to EXACT original file paths below -->
-              <button class="tab active" role="tab" aria-selected="true" aria-controls="mv-host" data-model="Assembly">Assembly</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="mv-host" data-model="Motor">Motor</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="mv-host" data-model="Plates">Plates</button>
-              <button class="tab" role="tab" aria-selected="false" aria-controls="mv-host" data-model="Propeller">Propeller</button>
-            </div>
-          </div>
+  <!-- 3D Model Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// 3D_MODEL</h2>
+      <div class="model-tabs" data-aos="fade-up">
+        <button class="model-tab active" data-model="Assembly">Assembly</button>
+        <button class="model-tab" data-model="Motor">Motor</button>
+        <button class="model-tab" data-model="Plates">Plates</button>
+        <button class="model-tab" data-model="Propeller">Propeller</button>
+      </div>
+      <div class="model-viewer-container" data-aos="fade-up">
+        <model-viewer id="mv" src="Assembly.gltf" alt="Water Game Robot 3D Model" auto-rotate camera-controls>
+        </model-viewer>
+      </div>
+    </div>
+  </section>
 
-          <div class="model-host" id="mv-host">
-            <!-- JS sets src based on ORIGINAL paths (no folder prefix) -->
-            <model-viewer id="mv"
-                          camera-controls auto-rotate
-                          exposure="0.95"
-                          shadow-intensity="0.7"
-                          shadow-softness="0.8"
-                          style="width:100%;height:100%;--poster-color:transparent"></model-viewer>
-          </div>
-
-          <div class="viewer-help">Drag to orbit • Scroll/pinch to zoom • Double-tap to focus</div>
-
-          <details class="diag">
-            <summary>3D Asset Diagnostics</summary>
-            <ul id="mv-log"><li>Ready.</li></ul>
-          </details>
+  <!-- Gallery Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
+          <img src="Online Notepad Download (1).png" alt="Prototype front view" loading="lazy">
         </div>
-
-        <!-- PHOTO GALLERY -->
-        <div class="card">
-          <h3 class="wg-title">Photo Gallery</h3>
-          <div class="wg-carousel" data-gallery>
-            <button class="wg-nav prev" aria-label="Previous image" data-prev>‹</button>
-
-            <div class="wg-viewport" role="region" aria-label="Project images">
-              <div class="wg-track" data-track>
-                <figure class="wg-item current" role="group" aria-roledescription="slide" aria-label="1 of 4">
-                  <img src="Online Notepad Download (1).png" alt="Prototype — front view" loading="lazy" />
-                </figure>
-                <figure class="wg-item" role="group" aria-roledescription="slide" aria-label="2 of 4">
-                  <img src="Online Notepad Download (2).png" alt="Buoyancy bottle mounts" loading="lazy" />
-                </figure>
-                <figure class="wg-item" role="group" aria-roledescription="slide" aria-label="3 of 4">
-                  <img src="Online Notepad Download.png" alt="Chain drive close-up" loading="lazy" />
-                </figure>
-                <figure class="wg-item" role="group" aria-roledescription="slide" aria-label="4 of 4">
-                  <img src="Online Notepad Download (3).png" alt="Code" loading="lazy" />
-                </figure>
-              </div>
-            </div>
-
-            <button class="wg-nav next" aria-label="Next image" data-next>›</button>
-            <div class="wg-dots" data-dots aria-label="Choose slide"></div>
-          </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="Online Notepad Download (2).png" alt="Buoyancy bottle mounts" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="Online Notepad Download.png" alt="Chain drive close-up" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+          <img src="Online Notepad Download (3).png" alt="Code" loading="lazy">
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- RIGHT COLUMN: slides + writeup -->
-      <div class="col-right">
-        <!-- SLIDES -->
-        <div class="card">
-          <div class="slides-head">
-            <h2 class="h2">Slides & Media</h2>
-          </div>
-          <div class="slides-embed">
-            <iframe
-              src="https://docs.google.com/presentation/d/1kqcFaH4-RByNgUd3dTbGq8fI1MQDOD9O3xGTA3IuvDs/embed?start=false&loop=false&delayms=3000"
-              allowfullscreen
-              title="Water Game Slides"></iframe>
-          </div>
-          <div class="section-pad">
-            <a class="h2" style="text-decoration:none" href="https://docs.google.com/presentation/d/1kqcFaH4-RByNgUd3dTbGq8fI1MQDOD9O3xGTA3IuvDs/edit" target="_blank" rel="noopener">Open Slides ↗</a>
-          </div>
+  <!-- Writeup Section -->
+  <section class="project-section">
+    <div class="container">
+      <div class="two-col">
+        <div class="writeup" data-aos="fade-up">
+          <h2 class="section-header">// GOAL</h2>
+          <p>Create a robot that floats, maneuvers in water, and pushes an opponent into a wall before being pushed into
+            one. Build fits within a 1-foot cube; electronics are ≥1.5" above the water.</p>
+
+          <h3>// DESIGN_HIGHLIGHTS</h3>
+          <ul>
+            <li>Two in-water props driven via chain from geared motor clusters</li>
+            <li>High gear ratio (1:48) for prop RPM</li>
+            <li>Lightweight frame + bottle buoyancy</li>
+            <li>Differential control for tight turning</li>
+            <li>High efficiency propeller design from MIT</li>
+            <li>Variable speed for each propeller including direction changes</li>
+          </ul>
         </div>
 
-        <!-- WRITEUP -->
-        <div class="card section-pad writeup">
-          <h3>Goal</h3>
-          <p>Create a robot that floats, maneuvers in water, and pushes an opponent into a wall before being pushed into one. Build fits within a 1-foot cube; electronics are ≥1.5" above the water.</p>
-
-          <h3>Design Highlights</h3>
+        <div class="writeup" data-aos="fade-up" data-aos-delay="100">
+          <h3>// ITERATION_NOTES</h3>
           <ul>
-            <li>Two in-water props driven via chain from geared motor clusters.</li>
-            <li>High gear ratio for prop RPM; lightweight frame + bottle buoyancy.</li>
-            <li>Differential control (left/right sticks) for tight turning.</li>
-            <li>Gear ratio of 1 to 48 to provide a more speed for the propeller.</li>
-            <li>High efficient propeller design from MIT</li>
-            <li>Code with variable speed for each propeller independently including changing directions.</li>
-          </ul>
-
-          <h3>Iteration Notes</h3>
-          <ul>
-            <li>Buoyancy trim with an aft bottle solved pitch issues.</li>
-            <li>Hot-glued enclosure added sealed air volume.</li>
-            <li>Gear gracked due to high torque.</li>
-            <li>High tension on chain leading to gears getting stuck on axles.</li>
+            <li>Buoyancy trim with an aft bottle solved pitch issues</li>
+            <li>Hot-glued enclosure added sealed air volume</li>
+            <li>Gear cracked due to high torque</li>
+            <li>High tension on chain leading to gears getting stuck on axles</li>
           </ul>
         </div>
       </div>
-    </section>
-  </main>
-  <!-- model-viewer (only external dependency) -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <script src="Project5.js"></script>
+    </div>
+  </section>
+
+  <!-- Slides Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// SLIDES</h2>
+      <div class="presentation-wrapper" data-aos="fade-up">
+        <iframe
+          src="https://docs.google.com/presentation/d/1kqcFaH4-RByNgUd3dTbGq8fI1MQDOD9O3xGTA3IuvDs/embed?start=false&loop=false&delayms=3000"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+    // Model tab switching
+    const tabs = document.querySelectorAll('.model-tab');
+    const mv = document.getElementById('mv');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        mv.src = tab.dataset.model + '.gltf';
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

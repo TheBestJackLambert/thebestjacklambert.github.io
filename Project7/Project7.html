@@ -1,144 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Link Joint (Planar Arm) Calculator — Project 7 on Jack Lambert's portfolio" />
-  <meta name="author" content="Jack Lambert" />
-  <title>Link‑Joint Arm Calculator | Project 7 | Jack Lambert</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Link Joint (Planar Arm) Calculator — Interactive FK visualization">
+  <meta name="author" content="Jack Lambert">
+  <title>PROJECT_07 // ARM CALCULATOR | Jack Lambert</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
 
-  <!-- AOS CSS for Animations -->
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
-  <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="Project7.css">
+  <style>
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .canvas-container {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: var(--spacing-md);
+    }
+
+    #arm-canvas {
+      width: 100%;
+      height: 400px;
+      display: block;
+    }
+
+    .controls {
+      margin-top: var(--spacing-md);
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .control-row label {
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      color: var(--accent-color);
+      min-width: 100px;
+    }
+
+    .control-row input {
+      background: var(--bg-color);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: var(--text-main);
+      font-family: var(--font-tech);
+      padding: 8px 12px;
+      width: 80px;
+    }
+
+    .btn-small {
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: var(--accent-color);
+      font-family: var(--font-tech);
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all var(--transition-medium);
+    }
+
+    .btn-small:hover {
+      background: rgba(255, 215, 0, 0.1);
+      border-color: var(--accent-color);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .result-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-md);
+    }
+
+    .result-card h4 {
+      color: var(--accent-color);
+      font-size: 0.8rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .result-card p {
+      font-family: var(--font-tech);
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .math-block {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: var(--spacing-md);
+      font-family: var(--font-tech);
+      font-size: 0.85rem;
+      color: var(--accent-color);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .feature-list i {
+      color: var(--accent-color);
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
 
-  <!-- Custom Cursor Element -->
-  <div class="cursor"></div>
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_07</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
 
-  <!-- Hero Section -->
-  <section id="hero">
-    <div id="particles-js" class="background-particles"></div>
-    <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
-      <h1 id="main-title">Link‑Joint Arm Calculator</h1>
-      <h2 id="typed-text"></h2>
-    </div>
-  </section>
-
-  <!-- Project Details Section -->
-  <section id="project-details">
+  <!-- Project Hero -->
+  <header class="project-hero">
     <div class="container">
-      <div class="project-overview">
-        <!-- Left Column: Interactive Canvas + Controls -->
-        <div class="column left" data-aos="fade-up" data-aos-duration="1000">
-          <div class="panel">
-            <canvas id="arm-canvas" width="700" height="500" aria-label="Planar arm drawing canvas"></canvas>
+      <h1 data-aos="fade-up">LINK-JOINT ARM CALCULATOR</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        Interactive forward kinematics visualizer for N-link planar robotic arms.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">PYTHON</span>
+        <span class="tech-tag">KINEMATICS</span>
+        <span class="tech-tag">VISUALIZATION</span>
+        <span class="tech-tag">ALGORITHMS</span>
+      </div>
+    </div>
+  </header>
 
-            <div class="controls">
-              <div class="row">
-                <label for="link-count">Joints (N)</label>
-                <input type="number" id="link-count" value="3" min="1" max="12" step="1" aria-label="Number of joints">
-                <button class="btn xs" id="add-joint" title="Add one joint" aria-label="Add joint">+</button>
-                <button class="btn xs ghost" id="remove-joint" title="Remove last joint" aria-label="Remove joint">−</button>
-              </div>
+  <!-- Interactive Section -->
+  <section class="project-section">
+    <div class="container">
+      <div class="two-col">
+        <!-- Canvas Column -->
+        <div data-aos="fade-up">
+          <h2 class="section-header">// VISUALIZER</h2>
+          <div class="canvas-container">
+            <canvas id="arm-canvas" width="600" height="400"></canvas>
+          </div>
 
-              <!-- Dynamic rows for (Li, θi) -->
-              <div class="grid" id="link-rows" aria-live="polite" aria-label="Link and angle inputs"></div>
-
-              <div class="toggles">
-                <label><input type="checkbox" id="show-grid" checked> Show grid</label>
-                <label><input type="checkbox" id="show-reach" checked> Show reach circle</label>
-                <label><input type="checkbox" id="trace-path"> Trace path</label>
-              </div>
-
-              <div class="actions">
-                <button class="btn" id="randomize">Randomize</button>
-                <button class="btn" id="reset">Reset</button>
-                <a class="btn ghost" href="../index.html">← Back to Projects</a>
-              </div>
+          <div class="controls">
+            <div class="control-row">
+              <label>JOINTS (N)</label>
+              <input type="number" id="link-count" value="3" min="1" max="12">
+              <button class="btn-small" id="randomize">RANDOMIZE</button>
+              <button class="btn-small" id="reset">RESET</button>
             </div>
           </div>
 
-          <div class="results" data-aos="fade-up" data-aos-delay="200">
-            <h3>Forward Kinematics</h3>
-            <div class="fk-cards">
-              <div class="card">
-                <h4>End‑Effector (x, y)</h4>
-                <p><span id="ee-x">0</span>, <span id="ee-y">0</span></p>
-              </div>
-              <div class="card">
-                <h4>Total Orientation</h4>
-                <p><span id="ee-theta">0</span>°</p>
-              </div>
-              <div class="card">
-                <h4>Homogeneous Transform</h4>
-                <pre id="T-homog"></pre>
-              </div>
+          <div class="results-grid">
+            <div class="result-card">
+              <h4>END-EFFECTOR (X, Y)</h4>
+              <p><span id="ee-x">0</span>, <span id="ee-y">0</span></p>
+            </div>
+            <div class="result-card">
+              <h4>TOTAL ORIENTATION</h4>
+              <p><span id="ee-theta">0</span>°</p>
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Description, Features, and Python -->
-        <div class="column right" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
-          <h3>What this tool does</h3>
-          <p>
-            This  visualizer computes and draws the individual vectors for any number of revolute joints. Enter link lengths and joint angles (in degrees)
-            to see the arm update in real time, the orientation, the end‑effector pose, and the homogeneous transform.
+        <!-- Description Column -->
+        <div data-aos="fade-up" data-aos-delay="100">
+          <h2 class="section-header">// ABOUT</h2>
+          <p style="margin-bottom: var(--spacing-lg);">
+            This visualizer computes and draws the individual vectors for any number of revolute joints. Enter link
+            lengths and joint angles to see the arm update in real time.
           </p>
 
-          <h3>Features</h3>
-          <ul>
-            <li><i class="fas fa-check-circle"></i> Any number of revolute links (set <em>N</em> and go)</li>
-            <li><i class="fas fa-check-circle"></i> Real‑time canvas rendering &amp; grid</li>
-            <li><i class="fas fa-check-circle"></i> Reach circle and optional path trace</li>
-            <li><i class="fas fa-check-circle"></i> Output with affector matrix</li>
+          <h3 style="color: var(--accent-color); margin-bottom: var(--spacing-md);">// FEATURES</h3>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> Any number of revolute links</li>
+            <li><i class="fas fa-check-circle"></i> Real-time canvas rendering & grid</li>
+            <li><i class="fas fa-check-circle"></i> Reach circle visualization</li>
+            <li><i class="fas fa-check-circle"></i> Homogeneous transform output</li>
           </ul>
 
-          <h3>Python</h3>
-          <p>
-            This project was written in Python with no libraries.
-          </p>
-          <a class="btn" href="Arm Calculator.py" download>Download Python Script</a>
+          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
+            MATH (PLANAR FK)</h3>
+          <div class="math-block">x = Σ Lᵢ cos(Σ θⱼ)
+            y = Σ Lᵢ sin(Σ θⱼ)
+            θ_total = Σ θᵢ
 
-          <h3>Math (Planar FK)</h3>
-          <p>
-            For links \(L_i\) and joint angles \( \theta_i \) (counter‑clockwise, in degrees here), the end‑effector is:
-          </p>
-          <pre class="math">
-x = Σ L_i cos(Σ θ_j),   y = Σ L_i sin(Σ θ_j)
-θ_total = Σ θ_i
-T = [[cos θ, −sin θ, x],
-     [sin θ,  cos θ, y],
-     [   0,      0, 1]]
-          </pre>
+            T = [[cos θ, -sin θ, x],
+            [sin θ, cos θ, y],
+            [ 0, 0, 1]]</div>
+
+          <a href="Arm Calculator.py" download class="btn-tech"
+            style="margin-top: var(--spacing-lg); display: inline-block;">
+            DOWNLOAD_PYTHON_SCRIPT
+          </a>
         </div>
       </div>
-
-      <!-- Back Button (bottom) -->
-      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
     </div>
   </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
-  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
 
-  <!-- External Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="Project7.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 
-  <!-- Custom JavaScript -->
-  <script src="Project7.js" defer></script>
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

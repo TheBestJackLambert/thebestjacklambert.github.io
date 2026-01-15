@@ -1,423 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Jack Lambert | Portfolio</title>
+  <title>JACK_LAMBERT // ENGINEER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="MainSite/styles.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Space Mono (Tech) and Inter (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
   <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-  <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <div class="cursor"></div>
+  <div class="cursor-follower"></div>
 
-  <nav>
+  <!-- Background Grid & Overlay -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ]</div>
     <ul class="nav-links">
-      <li><a href="#hero" class="nav-link">Home</a></li>
-      <li><a href="#about" class="nav-link">About Me</a></li>
-      <li><a href="#experience" class="nav-link">Experience</a></li>
-      <li><a href="#achievements" class="nav-link">Achievements</a></li>
-      <li><a href="#projects" class="nav-link">Projects</a></li>
-      <li><a href="#tutoring" class="nav-link">Tutoring</a></li>
-      <li><a href="#resources" class="nav-link">Resources</a></li>
-      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li><a href="#hero" class="nav-link" data-text="HOME">01_HOME</a></li>
+      <li><a href="#about" class="nav-link" data-text="SPECS">02_SPECS</a></li>
+      <li><a href="#experience" class="nav-link" data-text="LOGS">03_LOGS</a></li>
+      <li><a href="#projects" class="nav-link" data-text="SCHEMATICS">04_SCHEMATICS</a></li>
+      <li><a href="#achievements" class="nav-link" data-text="DATA">05_DATA</a></li>
+      <li><a href="#contact" class="nav-link" data-text="RELAY">06_RELAY</a></li>
     </ul>
     <div class="burger">
-      <div></div>
-      <div></div>
-      <div></div>
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
     </div>
   </nav>
 
-  <!-- Hero Section with Animated Background -->
-  <section id="hero">
-    <!-- Three.js 3D Background -->
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-content">
-      <h1>Jack Lambert</h1>
-      <h2><span id="typed"></span></h2>
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-container">
+      <div class="hero-glitch-wrapper">
+        <h1 class="hero-title glitch" data-text="JACK LAMBERT">JACK LAMBERT</h1>
+      </div>
+      <div class="hero-status">
+        <span class="status-indicator"></span> SYSTEM ONLINE
+      </div>
+      <div class="hero-typewriter">
+        <span class="prefix">> </span><span id="typed"></span>
+      </div>
+      <div class="hero-bio">
+        <p>SENIOR @ WHEELER MAGNET // HARDWARE ENGINEERING // ROBOTICS</p>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#projects" class="btn-tech">
+          <span class="btn-content">INITIALIZE_PROJECTS()</span>
+          <span class="btn-glitch"></span>
+        </a>
+      </div>
     </div>
+
+    <!-- Decorative Tech Elements -->
+    <div class="tech-decoration top-left"></div>
+    <div class="tech-decoration bottom-right"></div>
+    <div class="grid-measurements"></div>
   </section>
 
-  <!-- Quote Section -->
-  <section id="quote" class="quote-section">
-    <div class="container">
-      <div class="quote-content" data-aos="fade-up">
-        <blockquote>
-          <p>The man who loves walking will walk further than the man who loves the destination.</p>
-        </blockquote>
-      </div>
-    </div>
-  </section>
-  <!-- End of Quote Section -->
 
-  <!-- About Me Section -->
-  <section id="about">
+  <!-- SPECS (About) Section -->
+  <section id="about" class="specs-section">
     <div class="container">
-      <h2 data-aos="fade-up">About Me</h2>
-      <div class="about-content" data-aos="fade-up" data-aos-delay="200">
-        <div class="about-image">
-          <img src="MainSite/images/me.jpg" alt="Jack's Photo">
-        </div>
-        <div class="about-text">
-          <p>Hello! I'm Jack Lambert, a high school student enrolled in the magnet program at Wheeler High School. My hobbies include playing chess, cooking, and solving problems.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      <h2 data-aos="fade-up" data-index="02_">TECHNICAL_SPECS</h2>
+      <div class="specs-grid">
+        <div class="specs-content" data-aos="fade-right">
+          <p>OBJECTIVE: Hardware Engineer & Robotics Specialist committed to building scalable systems.</p>
+          <p>BACKGROUND: Senior at Wheeler High School (Magnet). Leading 100+ students across Physics Team, Math Team,
+            and School Ambassadorship.</p>
 
-  <!-- Experience Section with Timeline -->
-  <section id="experience">
-    <div class="container">
-      <h2 data-aos="fade-up">Experience</h2>
-      <div class="timeline">
-        <!-- Experience Item 1 -->
-        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="100">
-          <div class="timeline-icon"></div>
-          <div class="timeline-content">
-            <h3>Nasa Mini Payload Competition</h3>
-            <span>September 2024 - Present</span>
-            <p>Engineering lead for a team of 10 for a project focusing on finding dead zones for GPS and cell signals at high altitudes.</p>
-          </div>
-        </div>
-        <!-- Experience Item 2 -->
-        <div class="timeline-item right" data-aos="fade-up" data-aos-delay="200">
-          <div class="timeline-icon"></div>
-          <div class="timeline-content">
-            <h3>Intern at Georgia Tech Research Institute</h3>
-            <span>June 2024 - July 2024</span>
-            <p>Interned in CIPHER laboratories in the Quantum Computing Division with a focus on digital signal processing.</p>
-          </div>
-        </div>
-        <!-- Experience Item 3 -->
-        <div class="timeline-item left" data-aos="fade-up" data-aos-delay="300">
-          <div class="timeline-icon"></div>
-          <div class="timeline-content">
-            <h3>Physics Team Varsity Captain</h3>
-            <span>January 2024 - Present</span>
-            <p>As the Varsity Captain, my duties include organizing weekly physics activities, managing logistics for events, and creating challenging questions for the team.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Projects Section with Flip Animation Cards -->
-  <section id="projects">
-    <div class="container">
-      <h2 data-aos="fade-up">My Projects</h2>
-      <div class="projects-grid">
-        <!-- Project Card 1 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Theremin Project</h1>
-              <img src="MainSite/images/theramin.png" alt="Theremin Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Theremin from Scratch</h3>
-              <p>At GTRI I designed and built a theramin from scratch in a team of 5</p>
-              <a href="Project1/Project1.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 2 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Wi-Fi Detector</h1>
-              <img src="MainSite/images/wifi detector.png" alt="Wi-Fi Detector Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Wi-Fi Detector</h3>
-              <p>Developed a portable device to detect Wi-Fi signals for network analysis and security purposes.</p>
-              <a href="Project2/Project2.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 3 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>High Altitude GPS Tester</h1>
-              <img src="MainSite/images/payload.png" alt="High Altitude GPS Tester">
-            </div>
-            <div class="flip-card-back">
-              <h3>Mini Payload</h3>
-              <p>Participated in the GT NASA Payload Competition by creating a high-altitude GPS tester to analyze signal strength.</p>
-              <a href="Project3/Project3.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 4 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Virtual Stock Market Bot</h1>
-              <img src="MainSite/images/stock_tracker.jpg" alt="Stock Market Tracker">
-            </div>
-            <div class="flip-card-back">
-              <h3>Stock Market Tracker</h3>
-              <p>Created a tool to track virtual economies in video games with markets similar to real-world ones.</p>
-              <a href="Project4/Project4.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Project Card 5 -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Water Game Project</h1>
-              <img src="Project5/Online Notepad Download.png" alt="Python Library Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Water Game Project</h3>
-              <p>Created a vex motor powered floating robot involving gear ratios, circuits, and ROBOTC</p>
-              <a href="Project5/Project5.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <div class="project-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Chess Channel</h1>
-              <img src="MainSite/images/New Project (4).png" alt="Python Library Project">
-            </div>
-            <div class="flip-card-back">
-              <h3>Chess Youtube Channel</h3>
-              <p>Created a 50k+ view chess youtube channel.</p>
-              <a href="Project6/Project6.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <div class="project-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Arm and Joint calculator</h1>
-              <img src="MainSite/images/arm.png" alt="Robot arm">
-            </div>
-            <div class="flip-card-back">
-              <h3>Arm Calculator</h3>
-              <p>Created an algorithim in Python for arm joints with no libraries</p>
-            <a href="Project7/Project7.html" class="btn">View Project</a>
-          </div>
-        </div>
-      </div>
-        <div class="project-card" data-aos="fade-up" data-aos-delay="600">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>2-DOF Robot Arm</h1>
-              <img src="MainSite/images/topdown.jpg" alt="2-DOF robot arm build">
-            </div>
-            <div class="flip-card-back">
-              <h3>Project 8 — Robot Arm</h3>
-              <p>Analytical IK-driven VEX arm with servo calibration and workspace tests.</p>
-              <a href="Project8/Project8.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <div class="project-card" data-aos="fade-up" data-aos-delay="700">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>IK &amp; FK Playbook</h1>
-              <img src="MainSite/images/Python.png.png" alt="Notebook with kinematics code">
-            </div>
-            <div class="flip-card-back">
-              <h3>IK/FK Toolkit</h3>
-              <p>RobotC, C, and Python snippets packaged for quick planar arm control.</p>
-              <a href="Project9/Project9.html" class="btn">View Project</a>
-            </div>
-          </div>
-        </div>
-        <!-- Continue adding project cards as needed -->
-      </div>
-    </div>
-  </section>
+          <table class="specs-data-table">
+            <tr>
+              <td>PRIMARY_FOCUS</td>
+              <td>Hardware Engineering, Robotics</td>
+            </tr>
+            <tr>
+              <td>EDUCATION</td>
+              <td>Wheeler High School (Magnet Program)</td>
+            </tr>
+            <tr>
+              <td>GPA</td>
+              <td>> 4.0 (Academics Letter)</td>
+            </tr>
+            <tr>
+              <td>TEST_SCORES</td>
+              <td>SAT: 1500 | PSAT: 1460/1520</td>
+            </tr>
+            <tr>
+              <td>COURSE_LOAD</td>
+              <td>
+                <div class="classes-grid">
+                  <span class="class-tag">AP Physics 1</span>
+                  <span class="class-tag">AP Physics C Mech</span>
+                  <span class="class-tag">AP Physics C E/M</span>
+                  <span class="class-tag">Aerospace Engineering</span>
+                  <span class="class-tag">Adv Physics Robotics</span>
+                  <span class="class-tag">AP Precalculus</span>
+                  <span class="class-tag">AP Calc AB/BC</span>
+                  <span class="class-tag">GT Linear Algebra</span>
+                  <span class="class-tag">GT Multivariable Calc</span>
+                  <span class="class-tag">Intro to Engineering</span>
+                  <span class="class-tag">AP CSP</span>
+                  <span class="class-tag">Magnet Chemistry</span>
+                  <span class="class-tag">Magnet Biology</span>
+                  <span class="class-tag">AP Environmental Science</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>CONTACT</td>
+              <td>Jack.Lambert@wheelermagnet.com | 470-842-4975</td>
+            </tr>
+          </table>
 
-  <!-- Achievements Section with Stars Background -->
-  <section id="achievements">
-    <div id="achievements-canvas-wrapper">
-      <canvas id="achievements-canvas"></canvas>
-    </div>
-    <div class="container">
-      <h2 data-aos="fade-up">Achievements</h2>
-      <div class="accordion">
-        <!-- Accordion Item 1 -->
-        <div class="accordion-item">
-          <button class="accordion-header">Classes Taken</button>
-          <div class="accordion-content">
-            <ul>
-              <h2>GPA:4.5</h2>
-              <li><i class="fas fa-check-circle"></i> AP Physics 1</li>
-              <li><i class="fas fa-check-circle"></i> AP Physics C Mechanics</li>
-              <li><i class="fas fa-check-circle"></i> AP Physics C Electricity and Magnetism</li>
-              <li><i class="fas fa-check-circle"></i> Advanced Physics Robot</li>
-              <li><i class="fas fa-check-circle"></i> Aerospace Engineering</li>
-              <li><i class="fas fa-check-circle"></i> AP Precalculus</li>
-              <li><i class="fas fa-check-circle"></i> AP Calculus AB</li>
-              <li><i class="fas fa-check-circle"></i> AP Calculus BC</li>
-              <li><i class="fas fa-check-circle"></i> Georgia Tech Linear Algebra</li>
-              <li><i class="fas fa-check-circle"></i> Georgia Tech Multivariable Calculus</li>
-              <li><i class="fas fa-check-circle"></i> AP Environmental Science</li>
-              <li><i class="fas fa-check-circle"></i> Magnet (In between honors and AP) Chemistry</li>
-              <li><i class="fas fa-check-circle"></i> Magnet Biology </li>
-              <li><i class="fas fa-check-circle"></i> Intro to Engineering </li>
-              <li><i class="fas fa-check-circle"></i> AP Computer Science Principles</li>
-              <li><i class="fas fa-check-circle"></i> 5 levels of Spanish classes </li>
-            </ul>
+          <div style="margin-top: 30px;">
+            <a href="resume.pdf" class="btn-tech" download>DOWNLOAD_PERSONNEL_FILE (PDF)</a>
           </div>
         </div>
-        <!-- Accordion Item 2 -->
-        <div class="accordion-item">
-          <button class="accordion-header">Test Scores</button>
-          <div class="accordion-content">
-            <div class="progress-bar">
-              <span>SAT: 1500</span>
-              <div class="progress">
-                <div class="progress-fill" data-percentage="94%"></div>
-              </div>
-            </div>
-            <div class="progress-bar">
-              <span>PSAT10: 1460</span>
-              <div class="progress">
-                <div class="progress-fill" data-percentage="96%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Accordion Item 3 -->
-        <div class="accordion-item">
-          <button class="accordion-header">Competitions</button>
-          <div class="accordion-content">
-            <div class="awards-grid">
-              <div class="award-badge" data-title="Top 5 Georgia Tech Physics Competition Placement">
-                <span>Top 5 Georgia Tech Physics Competition Placement</span>
-              </div>
-              <div class="award-badge" data-title="19/21 On Georgia Tech Math Competition (similar difficulty to AMC)">
-                <span>19/21 On Georgia Tech Math Competition (similar difficulty to AMC)</span>
-              </div>
-              <div class="award-badge" data-title="Georgia Tech Math Competition Qualifier (Top 5% of math teams)">
-                <span>Georgia Tech Math Competition Qualifier (Top 5% of math teams)</span>
-              </div>
-              <div class="award-badge" data-title="1st in state NASA Mini Payload Competition">
-                <span>1st in state NASA Mini Payload Competition</span>
-              </div>
-              <!-- Add more award badges here -->
-            </div>
-          </div>
+
+        <div class="specs-image-wrapper" data-aos="fade-left">
+          <div class="corner-bracket top-left"></div>
+          <div class="corner-bracket top-right"></div>
+          <div class="corner-bracket bottom-left"></div>
+          <div class="corner-bracket bottom-right"></div>
+          <img src="MainSite/images/me.jpg" alt="Subject: Jack Lambert">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Tutoring Section with Particle Animation -->
-  <section id="tutoring">
-    <!-- Particles.js Background -->
-    <div id="particles-js"></div>
+  <!-- MISSION LOG (Experience) Section -->
+  <section id="experience" class="mission-section">
     <div class="container">
-      <h2 data-aos="fade-up">Tutoring Services</h2>
-      <p data-aos="fade-up" data-aos-delay="200">I offer tutoring in physics and mathematics, whether you're struggling with homework or just wanting to expand your knowledge, feel free to reach out.</p>
-      <button class="btn fancy-btn" id="tutoring-btn" data-aos="fade-up" data-aos-delay="300">Contact Me for Tutoring</button>
-    </div>
-  </section>
+      <h2 data-aos="fade-up" data-index="03_">MISSION_LOG</h2>
+      <div class="mission-log">
 
-  <!-- Email Modal -->
-  <div id="email-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2>Contact Me for Tutoring</h2>
-      <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
-        <div class="form-group">
-          <input type="text" id="name" name="name" required placeholder=" ">
-          <label for="name">Your Name</label>
+        <!-- Physics Team -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">PHYSICS TEAM</span>
+            <span class="mission-date">[2024 - PRESENT]</span>
+          </div>
+          <div class="mission-role">VARSITY CAPTAIN / PRESIDENT</div>
+          <p class="mission-desc">Founded organization reaching 150 students. Manage varsity presentations for 40+
+            weekly members. Oversee JV operations and facilitate advanced problem-solving sessions. Won Top 5 placement
+            in GT Physics Field Day.</p>
         </div>
-        <div class="form-group">
-          <input type="email" id="email" name="email" required placeholder=" ">
-          <label for="email">Your Email</label>
-        </div>
-        <div class="form-group">
-          <textarea id="message" name="message" required placeholder=" "></textarea>
-          <label for="message">Your Message</label>
-        </div>
-        <button type="submit" class="btn fancy-btn">Send Message</button>
-      </form>
-    </div>
-  </div>
 
-  <!-- Resources Section with Flip Cards -->
-  <section id="resources">
-    <div class="container">
-      <h2 data-aos="fade-up">Resources</h2>
-      <p data-aos="fade-up" data-aos-delay="100">Here are some helpful resources that I recommend for studying physics and math.</p>
-      <div class="resources-grid" data-aos="fade-up" data-aos-delay="200">
-        <!-- Resource Card 1 -->
-        <div class="resource-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Physics</h1>
-            </div>
-            <div class="flip-card-back">
-              <p>Here's a link to my favorite physics resources.</p>
-              <a href="https://arc.net/folder/E9AE0555-1940-46E3-B90C-EAC6D23B0689" target="_blank" class="btn">Visit Site</a>
-            </div>
+        <!-- Magnet Ambassadors -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">MAGNET AMBASSADORS</span>
+            <span class="mission-date">[10th - 12th Grade]</span>
           </div>
+          <div class="mission-role">PRESIDENT / CO-PRESIDENT</div>
+          <p class="mission-desc">Collaborate with administration to promote the magnet program. Select future
+            ambassadors, coordinate outreach events, and provide guidance for prospective students.</p>
         </div>
-        <div class="resource-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h1>Math</h1>
-            </div>
-            <div class="flip-card-back">
-              <p>Here's a link to my favorite math resources.</p>
-              <a href="https://arc.net/folder/499EA6F5-0703-4D53-89ED-EC9622A71167" target="_blank" class="btn">Visit Site</a>
-            </div>
+
+        <!-- Math Team -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">MATH TEAM</span>
+            <span class="mission-date">[10th - 12th Grade]</span>
           </div>
+          <div class="mission-role">CAPTAIN / CO-CAPTAIN</div>
+          <p class="mission-desc">Organize competitions and facilitate weekly meetings. Secured sponsorship from Jane
+            Street. Led team to top 5% to qualify for Georgia State Math Competition.</p>
         </div>
-        <!-- Continue adding resource cards -->
+
+        <!-- NASA Payload -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">GT/NASA MINI PAYLOAD</span>
+            <span class="mission-date">[11th Grade]</span>
+          </div>
+          <div class="mission-role">ENGINEERING LEAD</div>
+          <p class="mission-desc">Led 10-person team to build high-altitude signal detector for GPS/Wi-Fi blind spot
+            analysis using RF Sensors. Won 1st in State. Selected to represent GT for Artemis student challenge.</p>
+        </div>
+
+        <!-- GTRI -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">GT RESEARCH INSTITUTE</span>
+            <span class="mission-date">[10th Grade]</span>
+          </div>
+          <div class="mission-role">SUMMER INTERN - QUANTUM SYSTEMS</div>
+          <p class="mission-desc">STEM@GTRI Summer intern at CIPHER labs. Collaborated with a group of 5 to create a
+            functional Wi-Fi detector and theremin using circuit design and electrical engineering fundamentals.</p>
+        </div>
+
+        <!-- WIN -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">WHEELER INCLUSIVE NETWORK</span>
+            <span class="mission-date">[9th - 12th Grade]</span>
+          </div>
+          <div class="mission-role">PRESIDENT</div>
+          <p class="mission-desc">Create integrated events for special education students; assist students with
+            activities; communicate with special education department.</p>
+        </div>
+
+        <!-- Chess Club -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">CHESS CLUB</span>
+            <span class="mission-date">[9th - 12th Grade]</span>
+          </div>
+          <div class="mission-role">PRESIDENT / CO-PRESIDENT</div>
+          <p class="mission-desc">Organize tournaments, recruit members, create lessons, and manage meetings.</p>
+        </div>
+
+        <!-- Challenge Island -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">CHALLENGE ISLAND STEM CAMP</span>
+            <span class="mission-date">[11th Grade]</span>
+          </div>
+          <div class="mission-role">SUMMER COUNSELOR</div>
+          <p class="mission-desc">Supervised campers aged K-5, guided them through engineering processes, and created a
+            safe learning environment.</p>
+        </div>
+
+        <!-- Delivery Driver -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">ATLANTA SEAFOOD & STEAK</span>
+            <span class="mission-date">[12th Grade]</span>
+          </div>
+          <div class="mission-role">DELIVERY DRIVER</div>
+          <p class="mission-desc">Organize freezers, communicate with customers professionally, deliver perishables
+            efficiently.</p>
+        </div>
+
+        <!-- Volunteer -->
+        <div class="mission-entry" data-aos="fade-up">
+          <div class="mission-header">
+            <span class="mission-title">SERVICE TRIPS</span>
+            <span class="mission-date">[9th - 12th Grade]</span>
+          </div>
+          <div class="mission-role">VOLUNTEER</div>
+          <p class="mission-desc">Travel the US to help people in need. Helped Hurricane victims in Asheville, NC;
+            refurbished non-profits in Nashville, TN.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact">
+  <!-- SCHEMATICS (Projects) Section -->
+  <section id="projects" class="schematics-section">
     <div class="container">
-      <h2 data-aos="fade-up">Get In Touch</h2>
-      <p data-aos="fade-up" data-aos-delay="200">Feel free to reach out for collaborations, tutoring, or just a friendly chat.</p>
-      <div class="contact-links" data-aos="fade-up" data-aos-delay="300">
-        <a href="mailto:thebestjacklambert@gmail.com">Email</a>
-        <a href="https://github.com/thebestjacklambert">GitHub</a>
-        <a href="https://www.linkedin.com/in/jack-lambert-8b8646272/">LinkedIn</a>
+      <h2 data-aos="fade-up" data-index="04_">SCHEMATICS</h2>
+      <div class="bento-grid">
+
+        <!-- Project 1 -->
+        <div class="bento-card bento-full" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_01</span>
+            <i class="fas fa-microchip"></i>
+          </div>
+          <h3 class="project-title">Theremin From Scratch</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">CIRCUIT DESIGN</span>
+            <span class="tech-tag">GTRI</span>
+            <span class="tech-tag">ANALOG</span>
+          </div>
+          <p class="project-desc">Designed and built a functional theremin from operational amplifiers and discrete
+            components during GTRI internship.</p>
+          <a href="Project1/Project1.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-header">
+            <span class="project-id">PROJ_02</span>
+            <i class="fas fa-wifi"></i>
+          </div>
+          <h3 class="project-title">Wi-Fi Detector</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">RF SENSORS</span>
+            <span class="tech-tag">PORTABLE</span>
+          </div>
+          <p class="project-desc">Portable device for detecting and analyzing Wi-Fi signal strength for network
+            analysis.</p>
+          <a href="Project2/Project2.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="bento-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-header">
+            <span class="project-id">PROJ_03</span>
+            <i class="fas fa-satellite"></i>
+          </div>
+          <h3 class="project-title">NASA Payload</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">AEROSPACE</span>
+            <span class="tech-tag">GPS</span>
+          </div>
+          <p class="project-desc">High-altitude GPS tester. 1st Place State Winner.</p>
+          <a href="Project3/Project3.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="bento-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-header">
+            <span class="project-id">PROJ_04</span>
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="project-title">Stock Bot</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">PYTHON</span>
+            <span class="tech-tag">ECONOMY</span>
+          </div>
+          <p class="project-desc">Virtual economy tracker for in-game video game markets.</p>
+          <a href="Project4/Project4.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="bento-card" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_05</span>
+            <i class="fas fa-water"></i>
+          </div>
+          <h3 class="project-title">Water Game</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">VEX</span>
+            <span class="tech-tag">ROBOTC</span>
+          </div>
+          <p class="project-desc">VEX motor powered floating robot involving gear ratios and circuits.</p>
+          <a href="Project5/Project5.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="bento-card" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_06</span>
+            <i class="fab fa-youtube"></i>
+          </div>
+          <h3 class="project-title">Chess Channel</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">CONTENT KREA...</span>
+            <span class="tech-tag">50K+ VIEWS</span>
+          </div>
+          <p class="project-desc">Created a successful chess youtube channel with over 50k views.</p>
+          <a href="Project6/Project6.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 7 -->
+        <div class="bento-card" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_07</span>
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h3 class="project-title">Arm Calculator</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">PYTHON</span>
+            <span class="tech-tag">ALGORITHM</span>
+          </div>
+          <p class="project-desc">Algorithm in Python for arm joints calculation without external libraries.</p>
+          <a href="Project7/Project7.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 8 -->
+        <div class="bento-card bento-full" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_08</span>
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3 class="project-title">2-DOF Robot Arm</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">ROBOTICS</span>
+            <span class="tech-tag">KINEMATICS</span>
+            <span class="tech-tag">PYTHON</span>
+          </div>
+          <p class="project-desc">Analytical Inverse Kinematics driven VEX arm with servo calibration. Built to test
+            workspace theories.</p>
+          <a href="Project8/Project8.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
+        <!-- Project 9 -->
+        <div class="bento-card" data-aos="fade-up">
+          <div class="project-header">
+            <span class="project-id">PROJ_09</span>
+            <i class="fas fa-book-open"></i>
+          </div>
+          <h3 class="project-title">IK Toolkit</h3>
+          <div class="project-tech-stack">
+            <span class="tech-tag">C</span>
+            <span class="tech-tag">PYTHON</span>
+            <span class="tech-tag">ROBOTC</span>
+          </div>
+          <p class="project-desc">Codeboard and snippets packaged for quick planar arm control.</p>
+          <a href="Project9/Project9.html" class="btn-tech">VIEW_BLUEPRINT</a>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Back to Top Button -->
-  <a href="#hero" class="back-to-top"><i class="arrow up"></i></a>
+  <!-- DATA (Achievements) Section -->
+  <section id="achievements" class="data-section">
+    <div class="container">
+      <h2 data-aos="fade-up" data-index="05_">PERFORMANCE_DATA</h2>
 
-  <!-- JavaScript Files -->
-  <!-- External Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+      <div class="data-grid">
+        <div class="stat-card" data-aos="zoom-in">
+          <span class="stat-value">1500</span>
+          <span class="stat-label">SAT SCORE</span>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+          <span class="stat-value">1460</span>
+          <span class="stat-label">PSAT SCORE</span>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+          <span class="stat-value">1ST</span>
+          <span class="stat-label">STATE NASA PAYLOAD</span>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+          <span class="stat-value">TOP 5</span>
+          <span class="stat-label">GT PHYSICS DAY</span>
+        </div>
+      </div>
+
+      <div class="awards-list">
+        <div class="award-item" data-aos="fade-right">
+          <i class="fas fa-medal award-icon"></i>
+          <span>Georgia Tech Math Comp Qualifier (Top 5%)</span>
+        </div>
+        <div class="award-item" data-aos="fade-left">
+          <i class="fas fa-medal award-icon"></i>
+          <span>Georgia Tech Math Comp Qualifier (Top 5% of Schools)</span>
+        </div>
+        <div class="award-item" data-aos="fade-right">
+          <i class="fas fa-medal award-icon"></i>
+          <span>Best Overall Delegation UGAMUN</span>
+        </div>
+        <div class="award-item" data-aos="fade-left">
+          <i class="fas fa-clock award-icon"></i>
+          <span>160+ Service Hours</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELAY (Contact) Section -->
+  <section id="contact" class="relay-section">
+    <div class="container">
+      <h2 data-aos="fade-up" data-index="06_">COMM_RELAY</h2>
+      <div class="contact-container">
+        <p>OPEN FOR COLLABORATION, TUTORING, AND TECHNICAL DISCUSSION.</p>
+
+        <div class="contact-terminal">
+          <p class="terminal-line"><span class="terminal-highlight">user@host:~$</span> connect --dest jack_lambert</p>
+          <p class="terminal-line">ESTABLISHING CONNECTION...</p>
+          <p class="terminal-line">EMAIL: <a href="mailto:Jack.Lambert@wheelermagnet.com"
+              class="contact-link">Jack.Lambert@wheelermagnet.com</a></p>
+          <p class="terminal-line">PHONE: <a href="tel:4708424975" class="contact-link">470-842-4975</a></p>
+          <p class="terminal-line">GITHUB: <a href="https://github.com/thebestjacklambert"
+              class="contact-link">thebestjacklambert</a></p>
+          <p class="terminal-line">LINKEDIN: <a href="https://www.linkedin.com/in/jack-lambert-8b8646272/"
+              class="contact-link">Jack Lambert</a></p>
+          <p class="terminal-line"><span class="terminal-highlight">_</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    <p>STATUS: OPERATIONAL</p>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
-  <!-- Three.js Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- Particles.js Library -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <!-- GSAP Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
-  <!-- Include Three.js Post-processing for Bloom (Optional) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/EffectComposer.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/RenderPass.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/UnrealBloomPass.js"></script>
-
-  <!-- Include Your JavaScript File -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
   <script src="MainSite/script.js"></script>
 </body>
+
 </html>

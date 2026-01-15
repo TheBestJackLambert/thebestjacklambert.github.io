@@ -1,138 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Wi-Fi detector project made during my internship at GTRI">
+  <meta name="description" content="High Altitude Signal Detector - NASA Mini Payload Competition 1st Place">
   <meta name="author" content="Jack Lambert">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>High Altitude Signal Detector | Jack Lambert Portfolio</title>
-  
+  <title>PROJECT_03 // NASA PAYLOAD | Jack Lambert</title>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
-  <!-- AOS CSS for Animations -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  
-  <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-  <!-- Model Viewer Library -->
+
+  <!-- Model Viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="Project3.css">
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
+
+  <style>
+    /* Project-specific styles for 3D viewer */
+    .model-viewer-container {
+      width: 100%;
+      height: 400px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .spec-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-lg);
+    }
+
+    .spec-card h3 {
+      color: var(--accent-color);
+      margin-bottom: var(--spacing-md);
+      font-size: 1rem;
+    }
+
+    .spec-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .spec-card li {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+
+    .spec-card li i {
+      color: var(--accent-color);
+      margin-top: 4px;
+    }
+  </style>
 </head>
+
 <body>
-  
+
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
-  
-  <!-- Custom Cursor Element -->
-  <div class="cursor"></div>
-  
-  <!-- Hero Section with Big Title -->
-  <section id="hero">
-    <div id="particles-js" class="background-particles"></div>
-    <div class="hero-content">
-      <h1 id="main-title" data-aos="fade-up" data-aos-duration="1000">High Altitude Signal Detector</h1>
-      <h2 id="typed-text" data-aos="fade-up" data-aos-duration="1000"></h2>
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_03</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
+    <div class="container">
+      <h1 data-aos="fade-up">HIGH ALTITUDE SIGNAL DETECTOR</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        Georgia Tech NASA Mini Payload Competition — 1st Place State Winner
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">AEROSPACE</span>
+        <span class="tech-tag">NASA</span>
+        <span class="tech-tag">GPS ANALYSIS</span>
+        <span class="tech-tag">RASPBERRY PI</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3D Model Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// 3D_MODEL</h2>
+      <div class="model-viewer-container" data-aos="fade-up">
+        <model-viewer src="model.glb" alt="High Altitude Signal Detector 3D Model" auto-rotate camera-controls
+          exposure="0.95" shadow-intensity="0.7">
+        </model-viewer>
+      </div>
     </div>
   </section>
 
-  <!-- Project Details Section -->
-  <section id="project-details">
+  <!-- Specs Grid -->
+  <section class="project-section">
     <div class="container">
-      <div class="project-overview">
-        <!-- Left Column: 3D Model and Technical Specs -->
-        <div class="column left" data-aos="fade-up" data-aos-duration="1000">
-          <!-- 3D Model Viewer -->
-          <model-viewer 
-            src="model.glb" 
-            alt="High Altitude Signal Detector 3D Model" 
-            auto-rotate 
-            camera-controls 
-            background-color="#1a1a1a" 
-            style="width: 100%; height: 400px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);">
-          </model-viewer>
-          
-          <!-- Technical Specifications -->
-          <div class="technical-specs" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
-            <h3>Technical Specifications</h3>
-            <ul>
-              <li><strong>Computing Power:</strong> We used the Raspberry Pi 3A+ to meet the dimensions while still having enough compute to run an FFT onboard.</li>
-              <li><strong>Weight/Dimensions:</strong> Our payload barely meets the requirements with a height of 3.7 inches and a diameter of 3 inches and has a weight of .55lb.</li>
-              <li><strong>Power:</strong> To power the Pi, we used 4 AA batteries alongside a 5V regulator which allows for more than 5 hours of constant power.</li>
-            </ul>
-          </div>
-          
-          <!-- Applications -->
-          <!-- Applications Section -->
-          <div class="technical-specs applications" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
-            <h3>Applications</h3>
-            <p>
-              The findings have broad applications in optimizing communication networks for scenarios such as disaster response, aerospace and defense operations, identifying dead zones, and even improving in-flight Wi-Fi and GPS systems.
-            </p>
-          </div>
-
+      <h2 class="section-header" data-aos="fade-right">// TECHNICAL_SPECS</h2>
+      <div class="specs-grid">
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="0">
+          <h3>// COMPUTING_POWER</h3>
+          <p style="color: var(--text-muted);">We used the Raspberry Pi 3A+ to meet the dimensions while still having
+            enough compute to run an FFT onboard.</p>
         </div>
-
-        <!-- Right Column: Project Description -->
-        <div class="column right" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
-          <h3>Background</h3>
-          <p>
-            This project was made for the Georgia Tech NASA Mini Payload competition. So far, we were one of four teams to progress to the CDR (Construction and Design Round) and receive a $100 stipend.
-          </p>
-
-          <h3>Criteria</h3>
-          <ul>
-            <li><i class="fas fa-check-circle"></i> Must not exceed 0.75 lb</li>
-            <li><i class="fas fa-check-circle"></i> Must be fully self-contained and less than 3.7 inches in height and 3 inches in diameter.</li>
-            <li><i class="fas fa-check-circle"></i> Center of gravity must not shift more than 0.3 in from the centerline.</li>
-            <li><i class="fas fa-check-circle"></i> Data cannot be transmitted out of the payload during flight.</li>
-            <li><i class="fas fa-check-circle"></i> Must be able to be powered for up to five hours without external power.</li>
-            <li><i class="fas fa-check-circle"></i> Project will be selected based on creativity of experiment, safety considerations, and feasibility.</li>
-          </ul>
-          
-          <h3 id="presentation">Project Presentation</h3>
-          <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQDHuZ_g73Qz9liDTU-jn8C-pDwMJq3VkBcSy9pxNfUxxQ7dI7zsDuA40DdBsvvP5RFHXUpMS9AjNzB/embed?start=false&loop=true&delayms=60000"
-             frameborder="0" 
-             width="100%" 
-             height="100%" 
-             allowfullscreen="true" 
-             mozallowfullscreen="true"
-             webkitallowfullscreen="true">
-            </iframe>
-          </div>
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="100">
+          <h3>// DIMENSIONS</h3>
+          <p style="color: var(--text-muted);">Height: 3.7 inches | Diameter: 3 inches | Weight: 0.55 lb — barely
+            meeting requirements.</p>
+        </div>
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="200">
+          <h3>// POWER</h3>
+          <p style="color: var(--text-muted);">4 AA batteries with a 5V regulator for 5+ hours of constant operation
+            without external power.</p>
         </div>
       </div>
-      
-      <!-- Back to Projects Button -->
-      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
     </div>
   </section>
-  
+
+  <!-- Background & Criteria -->
+  <section class="project-section">
+    <div class="container">
+      <div class="specs-grid">
+        <div class="content-main" data-aos="fade-up">
+          <h2 class="section-header">// BACKGROUND</h2>
+          <p>
+            This project was made for the Georgia Tech NASA Mini Payload competition. We were one of four teams to
+            progress to the CDR (Construction and Design Round) and receive a $100 stipend.
+          </p>
+
+          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
+            APPLICATIONS</h3>
+          <p>
+            The findings have broad applications in optimizing communication networks for disaster response, aerospace
+            and defense operations, identifying dead zones, and improving in-flight Wi-Fi and GPS systems.
+          </p>
+        </div>
+
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="100">
+          <h3>// COMPETITION_CRITERIA</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Must not exceed 0.75 lb</li>
+            <li><i class="fas fa-check-circle"></i> Fully self-contained, ≤3.7" height, ≤3" diameter</li>
+            <li><i class="fas fa-check-circle"></i> Center of gravity within 0.3" of centerline</li>
+            <li><i class="fas fa-check-circle"></i> No data transmission during flight</li>
+            <li><i class="fas fa-check-circle"></i> 5+ hours battery life</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Presentation Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// PROJECT_PRESENTATION</h2>
+      <div class="presentation-wrapper" data-aos="fade-up">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vQDHuZ_g73Qz9liDTU-jn8C-pDwMJq3VkBcSy9pxNfUxxQ7dI7zsDuA40DdBsvvP5RFHXUpMS9AjNzB/embed?start=false&loop=true&delayms=60000"
+          allowfullscreen="true">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
-  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
-  
-  <!-- External Libraries -->
-  
-  <!-- AOS JS for Animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-  
-  <!-- GSAP JS (Optional, if you use it) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
-  
-  <!-- Particles.js for Background Effects -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-  
-  <!-- Typed.js for Typing Animation -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
-  
-  <!-- Custom JavaScript -->
-  <script src="Project3.js" defer></script>
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

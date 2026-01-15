@@ -1,108 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="Theremin Project - A hands-free musical instrument using analog circuits.">
   <meta name="keywords" content="Theremin, Musical Instrument, Analog Circuits, Signal Processing">
   <meta name="author" content="Jack Lambert">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Theremin Project | Jack Lambert Portfolio</title>
-  
+  <title>PROJECT_01 // THEREMIN | Jack Lambert</title>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
   <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  
-  <!-- Custom CSS -->
+
+  <!-- Shared Styles (Design System) -->
+  <link rel="stylesheet" href="../shared-styles.css">
+
+  <!-- Project-Specific Styles -->
   <link rel="stylesheet" href="Project1.css">
 </head>
+
 <body>
-  
+
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
-  
-  <!-- Floating Decorative Elements -->
-  <div class="floating-circle" data-aos="fade-right" data-aos-duration="2000" data-aos-delay="800"></div>
-  <!-- Removed the floating-square to eliminate the unwanted rectangle -->
-  
-  <!-- Custom Cursor Element -->
-  <div class="cursor"></div>
-  
-  <!-- Project Details Section -->
-  <section id="project-details">
-    <!-- Particles.js Container -->
-    <div id="particles-js"></div>
-    
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_01</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
     <div class="container">
-      <header>
-        <h2 data-aos="fade-up" data-aos-duration="1000">
-          <span id="typed-text"></span>
-        </h2>
-      </header>
-      
-      <div class="project-overview">
-        <div class="project-images" data-aos="fade-right" data-aos-duration="1000">
-          <h3>Gallery</h3>
-          <img src="../MainSite/images/theramin.png" alt="Theremin Project - Hands-free Musical Instrument" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="200">
-          <img src="../MainSite/images/theramininaction.png" alt="Theremin in Action" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="400">
-          <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Board of Theremin" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="600">
+      <h1 data-aos="fade-up">THEREMIN</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        A hands-free musical instrument built from analog operational amplifiers during my GTRI internship.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">CIRCUIT DESIGN</span>
+        <span class="tech-tag">GTRI</span>
+        <span class="tech-tag">ANALOG</span>
+        <span class="tech-tag">FFT</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gallery Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
+          <img src="../MainSite/images/theramin.png" alt="Theremin Project - Hands-free Musical Instrument"
+            loading="lazy">
         </div>
-        <div class="project-description" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
-          <h3 id="overview">Overview</h3>
-          <p>
-            During the theremin project our goal was to create a musical instrument that could be played without touching it from scratch
-          </p>
-          
-          <h3 id="technologies">Technologies Used</h3>
-          <ul>
-            <li><span class="check-icon">✔</span> Fast Fourier Transforms</li>
-            <li><span class="check-icon">✔</span> Colpitts Oscillator</li>
-            <li><span class="check-icon">✔</span> Mixers</li>
-            <li><span class="check-icon">✔</span> LT Spice</li>
-          </ul>
-          
-          
-          <h3 id="presentation">Project Presentation</h3>
-          <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-            <iframe 
-            src="https://docs.google.com/presentation/d/e/2PACX-1vR2XZFZuYYZj2lNG9B-kYDCXqZSx4Zn6ozmhxXwDCfQklJ2YitZSoFn5Cv7Od3Qcw/embed?start=false&loop=true&delayms=60000" 
-            frameborder="0" 
-            width="1280" 
-            height="749" 
-            allowfullscreen="true" 
-            mozallowfullscreen="true" 
-            webkitallowfullscreen="true">
-          </iframe>
-          </div>          
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="../MainSite/images/theramininaction.png" alt="Theremin in Action" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Board of Theremin" loading="lazy">
         </div>
       </div>
-      
-      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
     </div>
   </section>
-  
+
+  <!-- Overview Section -->
+  <section class="project-section">
+    <div class="container">
+      <div class="content-grid">
+        <div class="content-main" data-aos="fade-up">
+          <h2 class="section-header">// MISSION_OVERVIEW</h2>
+          <p>
+            During the theremin project, our goal was to create a musical instrument that could be played without
+            touching it from scratch. We designed and built a functional theremin using operational amplifiers and
+            discrete components, applying principles of analog signal processing and RF oscillation.
+          </p>
+
+          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
+            TECHNOLOGIES_USED</h3>
+          <div class="tech-stack">
+            <span class="tech-tag">Fast Fourier Transforms</span>
+            <span class="tech-tag">Colpitts Oscillator</span>
+            <span class="tech-tag">Heterodyning & Mixing</span>
+            <span class="tech-tag">LT Spice Simulation</span>
+            <span class="tech-tag">Analog Circuit Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Presentation Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// PROJECT_PRESENTATION</h2>
+      <div class="presentation-wrapper" data-aos="fade-up">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vR2XZFZuYYZj2lNG9B-kYDCXqZSx4Zn6ozmhxXwDCfQklJ2YitZSoFn5Cv7Od3Qcw/embed?start=false&loop=true&delayms=60000"
+          allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
-  <a href="#project-details" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
-  
-  <!-- External Libraries -->
-  
-  <!-- AOS JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-  
-  <!-- GSAP JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
-  
-  <!-- Particles.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-  
-  <!-- Typed.js -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  
-  <!-- Custom JavaScript -->
-  <script src="Project1.js" defer></script>
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      once: true,
+      easing: 'ease-out-cubic'
+    });
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      // Back to top button
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

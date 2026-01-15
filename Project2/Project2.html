@@ -1,112 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="Wi-Fi detector project made during my internship at GTRI">
   <meta name="author" content="Jack Lambert">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wi-Fi Detector Project | Jack Lambert Portfolio</title>
-  
+  <title>PROJECT_02 // WI-FI DETECTOR | Jack Lambert</title>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
   <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="Project2.css">
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
 </head>
+
 <body>
-  
+
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
-  
-  <!-- Floating Decorative Elements -->
-  <div class="floating-circle" data-aos="fade-right" data-aos-duration="2000" data-aos-delay="800"></div>
-  <!-- Removed the floating-square to eliminate the unwanted rectangle -->
-  
-  <!-- Custom Cursor Element -->
-  <div class="cursor"></div>
-  
-  <!-- Project Details Section -->
-  <section id="project-details">
-    <!-- Particles.js Container -->
-    <div id="particles-js"></div>
-    
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_02</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
     <div class="container">
-      <header>
-        <h2 data-aos="fade-up" data-aos-duration="1000">
-          <span id="typed-text"></span>
-        </h2>
-      </header>
-      
-      <div class="project-overview">
-        <div class="project-images" data-aos="fade-right" data-aos-duration="1000">
-          <h3>Gallery</h3>
-          <img src="../MainSite/images/circuitdiagram.png" alt="circuitdiagram" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="200">
-          <img src="../MainSite/images/topdown.jpg" alt="top down view" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="400">
-          <img src="../MainSite/images/ant.png" alt="antenna" class="project-image" loading="lazy" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="600">
+      <h1 data-aos="fade-up">WI-FI DETECTOR</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        A wireless device that detects Wi-Fi signals and indicates strength using LED brightness. Built at GTRI.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">GTRI</span>
+        <span class="tech-tag">RF SENSORS</span>
+        <span class="tech-tag">CIRCUIT DESIGN</span>
+        <span class="tech-tag">DSP</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gallery Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
+          <img src="../MainSite/images/circuitdiagram.png" alt="Circuit Diagram" loading="lazy">
         </div>
-        <div class="project-description" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
-          <h3 id="overview">Overview</h3>
-          <p>
-            Our goal during the Wi-Fi detector project was to create a wireless device that could detect if a Wi-Fi signal was nearby and tell us how strong it was using the brightness of an LED bulb.
-          </p>
-          
-          <h3 id="technologies">Technologies Used</h3>
-          <ul>
-            <li><span class="check-icon">✔</span> Germanium Diodes</li>
-            <li><span class="check-icon">✔</span> LT Spice</li>
-            <li><span class="check-icon">✔</span> Digital Signal Processing</li>
-            <li><span class="check-icon">✔</span> Soldering</li>
-          </ul>
-          
-          <h3 id="features">Key Features</h3>
-          <ul>
-            <li><span class="check-icon">✔</span> Changing brightness based on signal strength</li>
-            <li><span class="check-icon">✔</span> Wireless</li>
-            <li><span class="check-icon">✔</span> Able to pick up 2.46Ghz and 5Ghz signals</li>
-          </ul>
-          
-          <h3 id="presentation">Project Presentation</h3>
-          <div class="presentation-container" data-aos="fade-up" data-aos-delay="200">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR0VTBJO-bljXD1cSN66d9E1MOZLfZIyFK6ep9_M93SBzUfQfykedGgLM12M7IwAw/embed?start=false&loop=true&delayms=60000"
-             frameborder="0" 
-             width="1280" 
-             height="749" 
-             allowfullscreen="true" 
-             mozallowfullscreen="true"
-             webkitallowfullscreen="true">
-            </iframe>
-          </div>          
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="../MainSite/images/topdown.jpg" alt="Top Down View" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="../MainSite/images/ant.png" alt="Antenna Design" loading="lazy">
         </div>
       </div>
-      
-      <a href="../index.html" class="btn back-btn" aria-label="Back to Projects" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">← Back to Projects</a>
     </div>
   </section>
-  
+
+  <!-- Overview Section -->
+  <section class="project-section">
+    <div class="container">
+      <div class="content-main" data-aos="fade-up">
+        <h2 class="section-header">// MISSION_OVERVIEW</h2>
+        <p>
+          Our goal during the Wi-Fi detector project was to create a wireless device that could detect if a Wi-Fi signal
+          was nearby and tell us how strong it was using the brightness of an LED bulb.
+        </p>
+
+        <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
+          TECHNOLOGIES_USED</h3>
+        <div class="tech-stack">
+          <span class="tech-tag">Germanium Diodes</span>
+          <span class="tech-tag">LT Spice</span>
+          <span class="tech-tag">Digital Signal Processing</span>
+          <span class="tech-tag">Soldering</span>
+        </div>
+
+        <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
+          KEY_FEATURES</h3>
+        <div class="tech-stack">
+          <span class="tech-tag">Brightness based on signal strength</span>
+          <span class="tech-tag">Fully Wireless</span>
+          <span class="tech-tag">2.4GHz & 5GHz Detection</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Presentation Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// PROJECT_PRESENTATION</h2>
+      <div class="presentation-wrapper" data-aos="fade-up">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vR0VTBJO-bljXD1cSN66d9E1MOZLfZIyFK6ep9_M93SBzUfQfykedGgLM12M7IwAw/embed?start=false&loop=true&delayms=60000"
+          allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
-  <a href="#project-details" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
-  
-  <!-- External Libraries -->
-  
-  <!-- AOS JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-  
-  <!-- GSAP JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
-  
-  <!-- Particles.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-  
-  <!-- Typed.js -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  
-  <!-- Custom JavaScript -->
-  <script src="Project2.js" defer></script>
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

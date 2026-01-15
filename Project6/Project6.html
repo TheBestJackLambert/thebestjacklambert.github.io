@@ -1,137 +1,289 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jack Lambert Chess | @TheBestJackLambert</title>
-  <meta name="description" content="Jack Lambert Chess" />
-  <meta name="theme-color" content="#0d0d0d" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Project6.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECT_06 // CHESS CHANNEL | Jack Lambert</title>
+  <meta name="description" content="Jack Lambert Chess - 50K+ Views YouTube Channel">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
+
+  <style>
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .video-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all var(--transition-medium);
+    }
+
+    .video-card:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-5px);
+    }
+
+    .video-card .badge {
+      background: var(--accent-color);
+      color: var(--bg-color);
+      font-family: var(--font-tech);
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      display: inline-block;
+      margin: var(--spacing-md);
+    }
+
+    .video-card .ratio {
+      position: relative;
+      padding-bottom: 56.25%;
+    }
+
+    .video-card iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .stat {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-tech);
+      font-size: 2rem;
+      color: var(--accent-color);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .cheat-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-lg);
+    }
+
+    .cheat-card h4 {
+      color: var(--accent-color);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .cheat-line {
+      font-family: var(--font-tech);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .cheat-bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cheat-bullets li {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+      padding-left: var(--spacing-md);
+      position: relative;
+      font-size: 0.9rem;
+    }
+
+    .cheat-bullets li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+
+    .channel-link {
+      display: inline-block;
+      margin-top: var(--spacing-md);
+    }
+  </style>
 </head>
+
 <body>
-  <!-- Scroll progress -->
-  <div id="scroll-progress" aria-hidden="true"></div>
 
-  <!-- Custom cursor -->
-  <div class="cursor" aria-hidden="true"></div>
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
 
-  <!-- Hero -->
-  <header id="hero" class="reveal">
-    <canvas id="particles" aria-hidden="true"></canvas>
-    <div class="hero-content">
-      <h1 class="title">Jack Lambert Chess</h1>
-      <h2 id="typed" aria-live="polite"></h2>
-      <div class="handles">
-        <a class="pill" href="https://www.youtube.com/@TheBestJackLambert" target="_blank" rel="noopener">@TheBestJackLambert</a>
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_06</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
+    <div class="container">
+      <h1 data-aos="fade-up">JACK LAMBERT CHESS</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        YouTube channel with 50K+ views featuring chess tutorials and analysis.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">CONTENT CREATION</span>
+        <span class="tech-tag">50K+ VIEWS</span>
+        <span class="tech-tag">VIDEO EDITING</span>
+        <span class="tech-tag">STRATEGY</span>
       </div>
+      <a href="https://www.youtube.com/@TheBestJackLambert" target="_blank" class="btn-tech channel-link"
+        data-aos="fade-up" data-aos-delay="300">
+        @TheBestJackLambert
+      </a>
     </div>
   </header>
 
-  <main>
-    <!-- Spotlight videos: Popular + Recent -->
-    <section class="container reveal" aria-labelledby="spotlight-title">
-      <h3 class="section-title" id="spotlight-title">Videos</h3>
-      <div class="video-grid two">
-        <!-- Popular -->
-        <article class="card">
-          <div class="badge">Popular</div>
+  <!-- Videos Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// VIDEOS</h2>
+      <div class="video-grid">
+        <div class="video-card" data-aos="fade-up">
+          <span class="badge">POPULAR</span>
           <div class="ratio">
-            <iframe id="popular-iframe" title="Popular video"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Popular video" loading="lazy"
+              allowfullscreen>
+            </iframe>
           </div>
-        </article>
-
-        <!-- Recent -->
-        <article class="card">
-          <div class="badge">Recent</div>
+        </div>
+        <div class="video-card" data-aos="fade-up" data-aos-delay="100">
+          <span class="badge">RECENT</span>
           <div class="ratio">
-            <iframe id="recent-iframe" title="Most recent upload"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Recent video" loading="lazy" allowfullscreen>
+            </iframe>
           </div>
-        </article>
+        </div>
       </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="container reveal" aria-labelledby="stats-title">
-      <h3 class="section-title" id="stats-title">Channel Stats</h3>
-      <div class="stats-grid" role="list">
-        <div class="stat" role="listitem"><div id="stat-subs" class="stat-number">—</div><div class="stat-label">Subscribers</div></div>
-        <div class="stat" role="listitem"><div id="stat-videos" class="stat-number">—</div><div class="stat-label">Videos</div></div>
-        <div class="stat" role="listitem"><div id="stat-best" class="stat-number">—</div><div class="stat-label">Views</div></div>
-        <div class="stat" role="listitem"><div id="stat-elo" class="stat-number">—</div><div class="stat-label">USCF Rating</div></div>
-      </div>
-    </section>
-
-<!-- My Repertoire — Cheat Cards -->
-<section class="container reveal" aria-labelledby="cheatcards-title">
-  <h3 class="section-title" id="cheatcards-title">Favorites</h3>
-  <p class="section-kicker">What I actually play</p>
-  <div class="cheat-grid">
-    <article class="cheat">
-      <div class="cheat-head">
-        <h4>Traxler (Wilkes–Barre)</h4>
-      </div>
-      <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 <strong>Bc5!?</strong></p>
-      <ul class="cheat-bullets">
-        <li>Don’t tilt: develop, castle, punish over-attackers.</li>
-        <li>If 5.Nxf7? …Bxf2+ ideas → watch the king hunt motifs.</li>
-        <li>Practical line I use OTB; details in the video.</li>
-      </ul>
-<div class="cheat-actions">
-  <a class="btn small gold-hover" data-watch="traxler" target="_blank" rel="noopener">
-    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
-    Watch breakdown
-  </a>
-  <a class="btn small gold-hover" data-pgnview="traxler" target="_blank" rel="noopener">
-    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8Z"/></svg>
-    View PGN
-  </a>
-</div>
-
-
-
-    </article>
-
-    <article class="cheat">
-      <div class="cheat-head">
-        <h4>Scotch (Main line)</h4>
-      </div>
-      <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 <strong>Bc5</strong></p>
-      <ul class="cheat-bullets">
-        <li>Clean plans: space, piece activity, simple tactics.</li>
-        <li>Title/thumbnail pair in the Spotlight section covers this.</li>
-        <li>Good for rapid; endgame edges show up early.</li>
-      </ul>
-      <div class="cheat-actions">
-        <a class="btn small gold-hover" data-watch="scotch" target="_blank" rel="noopener">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
-          Watch breakdown
-        </a>
-        <a class="btn small gold-hover" data-pgnview="scotch" target="_blank" rel="noopener">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V8Z"/></svg>
-          View PGN
-        </a>
-      </div>
-</section>
-
-    <!-- Back button -->
-    <div class="container reveal">
-      <a href="../index.html" class="btn back-btn">← Back to Projects</a>
     </div>
-  </main>
-  <!-- Back to top -->
-  <a href="#hero" class="back-to-top" aria-label="Back to Top"><span class="arrow up"></span></a>
+  </section>
 
-  <!-- chess.js (PGN playback only - optional) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script type="module" src="Project6.js"></script>
+  <!-- Stats Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// CHANNEL_STATS</h2>
+      <div class="stats-grid">
+        <div class="stat" data-aos="zoom-in">
+          <span class="stat-number">200+</span>
+          <span class="stat-label">Subscribers</span>
+        </div>
+        <div class="stat" data-aos="zoom-in" data-aos-delay="100">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Videos</span>
+        </div>
+        <div class="stat" data-aos="zoom-in" data-aos-delay="200">
+          <span class="stat-number">50K+</span>
+          <span class="stat-label">Views</span>
+        </div>
+        <div class="stat" data-aos="zoom-in" data-aos-delay="300">
+          <span class="stat-number">1400</span>
+          <span class="stat-label">USCF Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repertoire Section -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// MY_REPERTOIRE</h2>
+      <div class="cheat-grid">
+        <div class="cheat-card" data-aos="fade-up">
+          <h4>Traxler (Wilkes-Barre)</h4>
+          <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 <strong>Bc5!?</strong></p>
+          <ul class="cheat-bullets">
+            <li>Don't tilt: develop, castle, punish over-attackers</li>
+            <li>If 5.Nxf7? ...Bxf2+ ideas → watch the king hunt motifs</li>
+            <li>Practical line I use OTB</li>
+          </ul>
+        </div>
+        <div class="cheat-card" data-aos="fade-up" data-aos-delay="100">
+          <h4>Scotch (Main line)</h4>
+          <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 <strong>Bc5</strong></p>
+          <ul class="cheat-bullets">
+            <li>Clean plans: space, piece activity, simple tactics</li>
+            <li>Good for rapid; endgame edges show up early</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

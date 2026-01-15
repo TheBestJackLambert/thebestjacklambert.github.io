@@ -1,0 +1,183 @@
+/* ==========================================================================
+   BLUEPRINT THEME - PROJECT PAGES
+   ========================================================================== */
+:root {
+  --bg-color: #0a0a0a;
+  --bg-grid-color: #1a1a1a;
+  --accent-color: #FFD700;
+  /* Yellow */
+  --accent-dim: #D4AF37;
+  --text-main: #e0e0e0;
+  --text-muted: #888888;
+  --grid-line: rgba(255, 215, 0, 0.1);
+  --border-tech: 1px solid rgba(255, 215, 0, 0.3);
+
+  --font-tech: 'Space Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+}
+
+/* Background Overlay */
+.blueprint-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+/* ==========================================================================
+     NAV (Simplified for Project Page)
+     ========================================================================== */
+.tech-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  border-bottom: var(--border-tech);
+  background: rgba(10, 10, 10, 0.9);
+}
+
+.nav-brand {
+  font-family: var(--font-tech);
+  color: var(--accent-color);
+  font-size: 1.2rem;
+}
+
+.back-btn {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-family: var(--font-tech);
+  border: 1px solid var(--text-muted);
+  padding: 8px 16px;
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* ==========================================================================
+     PROJECT DETAILS
+     ========================================================================== */
+#project-details {
+  padding: 80px 0;
+}
+
+header h2 {
+  font-family: var(--font-tech);
+  font-size: 3rem;
+  color: var(--accent-color);
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  border-left: 5px solid var(--accent-color);
+  padding-left: 20px;
+}
+
+.project-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.project-images {
+  display: grid;
+  gap: 20px;
+}
+
+.project-image {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  filter: grayscale(100%);
+  transition: all 0.3s;
+}
+
+.project-image:hover {
+  filter: grayscale(0%);
+  border-color: var(--accent-color);
+}
+
+.project-description h3 {
+  font-family: var(--font-tech);
+  color: #fff;
+  margin: 30px 0 15px;
+  font-size: 1.5rem;
+  border-bottom: 1px dashed #333;
+  padding-bottom: 5px;
+}
+
+.project-description p {
+  color: #ccc;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.project-description ul {
+  list-style: none;
+}
+
+.project-description li {
+  font-family: var(--font-tech);
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+
+.project-description li span {
+  color: #fff;
+  margin-left: 10px;
+}
+
+.presentation-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin-top: 30px;
+  border: 1px solid var(--accent-color);
+}
+
+.presentation-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .project-overview {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,215 +1,328 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project 8 — 2-DOF Robot Arm</title>
-  <meta name="description" content="Planar 2-DOF arm using analytical inverse kinematics on a VEX microcontroller (RobotC).">
-  <link rel="stylesheet" href="Project8.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Planar 2-DOF arm using analytical inverse kinematics on a VEX microcontroller (RobotC).">
+  <title>PROJECT_08 // ROBOT ARM | Jack Lambert</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="../shared-styles.css">
+
+  <style>
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .stats-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-md);
+    }
+
+    .stat-item {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-md);
+    }
+
+    .stat-item dt {
+      color: var(--accent-color);
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .stat-item dd {
+      color: var(--text-main);
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: var(--spacing-lg);
+      overflow-x: auto;
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .code-block .keyword {
+      color: #ff79c6;
+    }
+
+    .code-block .function {
+      color: var(--accent-color);
+    }
+
+    .code-block .comment {
+      color: #6272a4;
+    }
+
+    .code-block .number {
+      color: #bd93f9;
+    }
+
+    .equations {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .equations h4 {
+      color: var(--accent-color);
+      margin-bottom: var(--spacing-sm);
+      font-size: 0.9rem;
+    }
+
+    .equations pre {
+      font-family: var(--font-tech);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: var(--spacing-sm) 0;
+    }
+
+    .narrative-section h3 {
+      color: var(--accent-color);
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .narrative-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .narrative-section li {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+      padding-left: var(--spacing-md);
+      position: relative;
+    }
+
+    .narrative-section li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+    }
+  </style>
 </head>
+
 <body>
-  <div id="scroll-progress" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true"></div>
 
-  <header id="hero" class="project-hero">
+  <!-- Blueprint Background -->
+  <div class="blueprint-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="tech-nav">
+    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_08</div>
+    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  </nav>
+
+  <!-- Project Hero -->
+  <header class="project-hero">
     <div class="container">
-      <div class="hero-content" data-fade>
-        <p class="eyebrow">VEX Robotics Build</p>
-        <h1 class="hero-title">2-D Robot Arm</h1>
-        <p class="hero-typed" aria-live="polite">
-          <span id="typed-text"
-                data-typed='["Inverse kinematics",
-          "Servo tuning",
-          "Embedded",
-          "Robotics"]'>
-            workspace sweeps
-          </span>
-        </p>
-        <p class="hero-lead">Planar two-link arm running analytical inverse kinematics on a VEX microcontroller.</p>
-        <p class="hero-summary">I modeled equal-length links, built a popsicle-stick drivetrain, and wrote the RobotC loop so the arm lands anywhere inside its reachable workspace. Analytical IK keeps the moves predictable, while FK checks and calibration passes keep accuracy intact out to two link lengths.</p>
-        <ul class="project-meta">
-          <li>
-            <span class="label">Hardware</span>
-            <span class="value">VEX servos, custom arm, gear + chain drive</span>
-          </li>
-          <li>
-            <span class="label">Software</span>
-            <span class="value">RobotC and python for testing</span>
-          </li>
-        </ul>
-        <div class="project-tags" aria-label="Key skills">
-
-        </div>
-        <div class="hero-actions">
-          <a class="btn back-btn" href="../index.html#projects">← Back to Projects</a>
-          <a class="btn gold" href="#code-robotc">Skip to code</a>
-        </div>
+      <h1 data-aos="fade-up">2-DOF ROBOT ARM</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">
+        Planar two-link arm running analytical inverse kinematics on a VEX microcontroller.
+      </p>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+        <span class="tech-tag">VEX V5</span>
+        <span class="tech-tag">ROBOTC</span>
+        <span class="tech-tag">INVERSE KINEMATICS</span>
+        <span class="tech-tag">PYTHON</span>
       </div>
     </div>
   </header>
 
-  <main id="project8" class="project-page">
+  <!-- Gallery Section -->
+  <section class="project-section">
     <div class="container">
-      <div class="project-layout">
-        <section class="media-column">
-          <article class="card gallery" data-gallery data-fade>
-            <header class="card-head">
-              <h2 class="h2">Gallery</h2>
-              <p>Build sketches, hardware, and control UI moments.</p>
-            </header>
-            <div class="gallery-shell">
-              <button class="gallery-nav prev" aria-label="Previous image" type="button" data-prev>
-                <span aria-hidden="true">‹</span>
-              </button>
-              <div class="gallery-viewport" role="region" aria-label="Project images" tabindex="0">
-                <div class="gallery-track" data-track>
-                  <figure class="gallery-item current" aria-label="1 of 4">
-                    <img src="IMG_3094.jpeg" alt="Inverse kinematics diagram with L1 = L2 = 1">
-                    <figcaption>Back view</figcaption>
-                  </figure>
-                  <figure class="gallery-item" aria-label="2 of 4">
-                    <img src="IMG_3095.jpeg" alt="Popsicle-stick arm during assembly">
-                    <figcaption>Top view</figcaption>
-                  </figure>
-                  <figure class="gallery-item" aria-label="3 of 4">
-                    <img src="IMG_3096.jpeg" alt="Gear and chain connection close-up">
-                    <figcaption>Side view</figcaption>
-                  </figure>
-                </div>
-              </div>
-              <button class="gallery-nav next" aria-label="Next image" type="button" data-next>
-                <span aria-hidden="true">›</span>
-              </button>
-            </div>
-            <div class="gallery-dots" data-dots aria-label="Choose slide"></div>
-          </article>
-
-          <article class="card stats-card" data-fade>
-            <header class="card-head">
-              <h2 class="h2">Quick Facts</h2>
-            </header>
-            <dl class="stats-list">
-              <div class="stat">
-                <dt>Degrees of freedom</dt>
-                <dd>2 (planar)</dd>
-              </div>
-              <div class="stat">
-                <dt>Link lengths</dt>
-                <dd>L₁ = L₂ = 1 (normalized)</dd>
-              </div>
-              <div class="stat">
-                <dt>Actuation</dt>
-                <dd>Two VEX servos</dd>
-              </div>
-              <div class="stat">
-                <dt>Controller</dt>
-                <dd>VEX (RobotC)</dd>
-              </div>
-              <div class="stat">
-                <dt>Workspace</dt>
-                <dd>≤ 2 link lengths from origin</dd>
-              </div>
-            </dl>
-          </article>
-
-        </section>
-
-        <section class="content-column">
-          <article class="card narrative-card" data-fade>
-            <header class="card-head">
-              <h2 class="h2">Build Narrative</h2>
-            </header>
-            <div class="section-pad">
-              <section class="write-section">
-                <h3>Goal</h3>
-                <p>Create a robot arm with 2 degrees of freedom that can reliably reach any coordinate within two popsicle-stick lengths of the base.</p>
-              </section>
-
-              <section class="write-section">
-                <h3>Approach</h3>
-                <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder. I modeled the links with equal length (L₁ = L₂ = 1) so the analytical IK routine stays compact, then ported that solver into RobotC.</p>
-                <div class="equations">
-                  <h4>Forward kinematics</h4>
-<pre><code>q1 = angle 1, q2 = angle 2
-x = cos(q1) + cos(q1 + q2)
-y = sin(q1) + sin(q1 + q2)</code></pre>
-                  <h4>Inverse kinematics</h4>
-<pre><code>r  = x^2 + y^2
-q1 = acos(r/2 - 1)
-q2 = atan2(y, x) - q1/2</code></pre>
-                </div>
-              </section>
-
-              <section class="write-section">
-                <h3>Testing &amp; iteration</h3>
-                <ul>
-                  <li>Originally, we planned to place teh upper servo at the start of the second popsicle stick, but we decided to use a chain and gear instead to allow for a more stable arm.</li>
-                  <li>We also changed from a numerical to analytical approach after seeing the runtime in ROBOTC.</li>
-                </ul>
-              </section>
-            </div>
-          </article>
-
-          <article class="card code-card" data-fade>
-            <header class="card-head">
-              <div>
-                <h2 class="h2">Code</h2>
-              </div>
-              <div class="code-tabs" role="tablist" aria-label="Code examples">
-                <button class="code-tab active" role="tab" aria-selected="true" data-code="code-robotc">RobotC IK Controller</button>
-              </div>
-            </header>
-
-            <div class="code-toolbar">
-              <button class="btn" id="copyCode" aria-label="Copy the active code block">Copy active snippet</button>
-            </div>
-
-            <div class="code-pane active" id="code-robotc">
-<pre class="code"><code>
-#pragma config (Motor, port2, shoulder, tmotorServoStandard, openLoop)
-#pragma config (Motor, ports, elbow, tmotorServoStandard, openLoop)
-
-const float PI = 3.14159265;
-const float gorp = 180.0/PI;
-
-int toCmd (float deg) {
-  if(deg < 0)
-  deg = 0;
-  if(deg > 120) deg = 120;
-  return (int) (-127 + (deg * (254.0 / 120.0)) + 0.5) ;
-}
-float elbo (float x, float y) {
-  float r = pow(x, 2) + pow(y, 2) :
-  float ql = acos (r/2 -1) :
-  return (float) (ql);
-}
-
-float sholder (float x, float y) {
-  float b = elbo (x, y) ;
-  float q2 = atan2 (y, x) - b/2;
-  return (float) (q2);
-}
-
-task main(){
-  float k = 1;
-  float 1 = 1;
-  float shoulderDeg = sholder (k, 1) * gorp;
-  float elbowDeg = elbo (k, 1) * gorp;
-  motor [shoulder] = toCmd (shoulderDeg) ;
-  motor [elbow] = toCmd (elbowDeg) ;
-while true waitlMsec(20);
-}</code></pre>
-            </div>
-          </article>
-        </section>
+      <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
+          <img src="IMG_3094.jpeg" alt="Back view of robot arm" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+          <img src="IMG_3095.jpeg" alt="Top view of robot arm" loading="lazy">
+        </div>
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+          <img src="IMG_3096.jpeg" alt="Side view of robot arm" loading="lazy">
+        </div>
       </div>
     </div>
+  </section>
 
-    <a href="#hero" class="back-to-top" aria-label="Back to top">
-      <span aria-hidden="true">↑</span>
-    </a>
-  </main>
+  <!-- Quick Facts -->
+  <section class="project-section">
+    <div class="container">
+      <h2 class="section-header" data-aos="fade-right">// QUICK_FACTS</h2>
+      <dl class="stats-list">
+        <div class="stat-item" data-aos="fade-up">
+          <dt>DEGREES OF FREEDOM</dt>
+          <dd>2 (planar)</dd>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="50">
+          <dt>LINK LENGTHS</dt>
+          <dd>L₁ = L₂ = 1 (normalized)</dd>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+          <dt>ACTUATION</dt>
+          <dd>Two VEX servos</dd>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="150">
+          <dt>CONTROLLER</dt>
+          <dd>VEX (RobotC)</dd>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+          <dt>WORKSPACE</dt>
+          <dd>≤ 2 link lengths from origin</dd>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="250">
+          <dt>HARDWARE</dt>
+          <dd>VEX servos, gear + chain drive</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
 
-  <script src="Project8.js"></script>
+  <!-- Narrative & Code -->
+  <section class="project-section">
+    <div class="container">
+      <div class="two-col">
+        <!-- Narrative Column -->
+        <div class="narrative-section" data-aos="fade-up">
+          <h2 class="section-header">// BUILD_NARRATIVE</h2>
+
+          <h3>// GOAL</h3>
+          <p>Create a robot arm with 2 degrees of freedom that can reliably reach any coordinate within two
+            popsicle-stick lengths of the base.</p>
+
+          <h3>// APPROACH</h3>
+          <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder. I
+            modeled the links with equal length (L₁ = L₂ = 1) so the analytical IK routine stays compact, then ported
+            that solver into RobotC.</p>
+
+          <div class="equations">
+            <h4>FORWARD KINEMATICS</h4>
+            <pre>q1 = angle 1, q2 = angle 2
+x = cos(q1) + cos(q1 + q2)
+y = sin(q1) + sin(q1 + q2)</pre>
+
+            <h4>INVERSE KINEMATICS</h4>
+            <pre>r  = x² + y²
+q1 = acos(r/2 - 1)
+q2 = atan2(y, x) - q1/2</pre>
+          </div>
+
+          <h3>// ITERATION_NOTES</h3>
+          <ul>
+            <li>Originally planned upper servo at second stick, switched to chain and gear for stability</li>
+            <li>Changed from numerical to analytical approach after seeing RobotC runtime</li>
+          </ul>
+        </div>
+
+        <!-- Code Column -->
+        <div data-aos="fade-up" data-aos-delay="100">
+          <h2 class="section-header">// ROBOTC_CODE</h2>
+          <div class="code-block">
+            <span class="comment">// IK Controller for 2-DOF Arm</span>
+            <span class="keyword">#pragma</span> config (Motor, port2, shoulder)
+            <span class="keyword">#pragma</span> config (Motor, port3, elbow)
+
+            <span class="keyword">const float</span> PI = <span class="number">3.14159265</span>;
+            <span class="keyword">const float</span> gorp = <span class="number">180.0</span>/PI;
+
+            <span class="keyword">int</span> <span class="function">toCmd</span>(float deg) {
+            <span class="keyword">if</span>(deg < <span class="number">0</span>) deg = <span class="number">0</span>;
+              <span class="keyword">if</span>(deg > <span class="number">120</span>) deg = <span
+                class="number">120</span>;
+              <span class="keyword">return</span> (<span class="keyword">int</span>)(-<span class="number">127</span> +
+              (deg * (<span class="number">254.0</span>/<span class="number">120.0</span>)));
+              }
+
+              <span class="keyword">float</span> <span class="function">elbo</span>(float x, float y) {
+              <span class="keyword">float</span> r = pow(x,<span class="number">2</span>) + pow(y,<span
+                class="number">2</span>);
+              <span class="keyword">float</span> q1 = acos(r/<span class="number">2</span> - <span
+                class="number">1</span>);
+              <span class="keyword">return</span> q1;
+              }
+
+              <span class="keyword">float</span> <span class="function">sholder</span>(float x, float y) {
+              <span class="keyword">float</span> b = elbo(x, y);
+              <span class="keyword">float</span> q2 = atan2(y, x) - b/<span class="number">2</span>;
+              <span class="keyword">return</span> q2;
+              }
+
+              <span class="keyword">task</span> <span class="function">main</span>() {
+              <span class="keyword">float</span> k = <span class="number">1</span>, l = <span class="number">1</span>;
+              motor[shoulder] = toCmd(sholder(k,l)*gorp);
+              motor[elbow] = toCmd(elbo(k,l)*gorp);
+              <span class="keyword">while</span>(<span class="keyword">true</span>) wait1Msec(<span
+                class="number">20</span>);
+              }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="project-footer">
+    <div class="container">
+      <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+      <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to Top">
+    <span class="arrow"></span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scroll-progress');
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      scrollProgress.style.width = `${progress}%`;
+
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+  </script>
 </body>
+
 </html>

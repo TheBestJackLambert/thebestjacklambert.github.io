@@ -1,0 +1,810 @@
+/* ==========================================================================
+   SHARED STYLES - Apple-Quality Blueprint Design System
+   Import this file FIRST in all pages for consistent styling
+   ========================================================================== */
+
+/* ==========================================================================
+   CSS VARIABLES
+   ========================================================================== */
+:root {
+    /* Colors */
+    --bg-color: #0a0a0a;
+    --bg-grid-color: #1a1a1a;
+    --accent-color: #FFD700;
+    --accent-dim: #D4AF37;
+    --text-main: #e0e0e0;
+    --text-muted: #888888;
+    --grid-line: rgba(255, 215, 0, 0.1);
+    --border-tech: 1px solid rgba(255, 215, 0, 0.3);
+    --card-bg: rgba(26, 26, 26, 0.6);
+    --card-bg-hover: rgba(26, 26, 26, 0.9);
+
+    /* Typography */
+    --font-tech: 'Space Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 40px;
+    --spacing-xl: 80px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   BLUEPRINT BACKGROUND
+   ========================================================================== */
+.blueprint-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center top;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 9999;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 215, 0, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.1;
+    position: fixed;
+    bottom: 100%;
+    animation: scanline 10s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% {
+        bottom: 100%;
+    }
+
+    100% {
+        bottom: -100px;
+    }
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR
+   ========================================================================== */
+.cursor {
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+    mix-blend-mode: difference;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--accent-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: top 0.15s, left 0.15s, transform 0.15s;
+}
+
+/* ==========================================================================
+   SCROLL PROGRESS BAR
+   ========================================================================== */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-dim));
+    width: 0%;
+    z-index: 10000;
+    transition: width 0.1s ease-out;
+}
+
+/* ==========================================================================
+   NAVIGATION - Tech Style
+   ========================================================================== */
+.tech-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: var(--border-tech);
+}
+
+.nav-brand {
+    font-family: var(--font-tech);
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+.back-btn {
+    font-family: var(--font-tech);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 10px 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.back-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: var(--transition-slow);
+}
+
+.back-btn:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.back-btn:hover::before {
+    left: 100%;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-tech);
+    color: var(--text-main);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+h3 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+p {
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 65ch;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn-tech {
+    display: inline-block;
+    padding: 15px 30px;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: var(--font-tech);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+}
+
+.btn-tech:hover {
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-tech::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+    transition: var(--transition-slow);
+}
+
+.btn-tech:hover::before {
+    left: 100%;
+}
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-lg);
+    position: relative;
+    transition: all var(--transition-medium);
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: var(--accent-color);
+    background: var(--card-bg-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity var(--transition-medium);
+}
+
+.card:hover::after {
+    opacity: 0.3;
+}
+
+/* ==========================================================================
+   CONTAINER
+   ========================================================================== */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* ==========================================================================
+   PROJECT PAGE HERO
+   ========================================================================== */
+.project-hero {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 0 60px;
+    position: relative;
+    border-bottom: var(--border-tech);
+}
+
+.project-hero .container {
+    text-align: center;
+}
+
+.project-hero h1 {
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.project-hero .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   PROJECT CONTENT SECTIONS
+   ========================================================================== */
+.project-section {
+    padding: var(--spacing-xl) 0;
+    border-bottom: var(--border-tech);
+}
+
+.section-header {
+    font-family: var(--font-tech);
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+/* ==========================================================================
+   GALLERY STYLES
+   ========================================================================== */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-medium);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+    filter: grayscale(30%);
+}
+
+.gallery-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+}
+
+/* ==========================================================================
+   TECH STACK TAGS
+   ========================================================================== */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin: var(--spacing-md) 0;
+}
+
+.tech-tag {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: var(--accent-color);
+    font-family: var(--font-tech);
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    transition: all var(--transition-medium);
+}
+
+.tech-tag:hover {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+/* ==========================================================================
+   PRESENTATION EMBED
+   ========================================================================== */
+.presentation-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    margin: var(--spacing-lg) 0;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+}
+
+.presentation-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.project-footer {
+    padding: var(--spacing-lg);
+    text-align: center;
+    border-top: var(--border-tech);
+}
+
+.project-footer p {
+    font-family: var(--font-tech);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   BACK TO TOP
+   ========================================================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    background: var(--bg-color);
+    border: 1px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-medium);
+    z-index: 999;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: var(--accent-color);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.back-to-top .arrow {
+    width: 10px;
+    height: 10px;
+    border: solid var(--accent-color);
+    border-width: 0 2px 2px 0;
+    transform: rotate(-135deg);
+    transition: border-color var(--transition-fast);
+}
+
+.back-to-top:hover .arrow {
+    border-color: var(--bg-color);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+[data-aos] {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    .tech-nav {
+        padding: 15px 20px;
+    }
+
+    .nav-brand {
+        font-size: 0.85rem;
+    }
+
+    .back-btn {
+        padding: 8px 15px;
+        font-size: 0.75rem;
+    }
+
+    .project-hero {
+        padding: 100px 0 40px;
+    }
+
+    .container {
+        width: 95%;
+    }
+
+    .card {
+        padding: var(--spacing-md);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tech-stack {
+        gap: 6px;
+    }
+
+    .tech-tag {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+}
+/* ==========================================================================
+   PREMIUM MICRO-INTERACTIONS & POLISH
+   ========================================================================== */
+
+/* Smooth page load fade-in */
+body {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Subtle text selection color */
+::selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: #fff;
+}
+
+::-moz-selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: #fff;
+}
+
+/* Enhanced focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* Smooth image loading */
+img {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+img.loaded, img[data-aos] {
+  opacity: 1;
+}
+
+/* Gallery item improvements - show full image */
+.gallery-item {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  filter: none;
+}
+
+.gallery-item:hover img {
+  filter: none;
+  transform: scale(1.02);
+}
+
+/* Premium link underline animation */
+a:not(.btn-tech):not(.back-btn):not(.tech-tag):hover {
+  text-decoration: none;
+}
+
+/* Glowing accents on key elements */
+.section-header::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  margin-right: 12px;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Tech tag stagger animation */
+.tech-stack .tech-tag {
+  opacity: 0;
+  animation: slideUp 0.5s ease forwards;
+}
+
+.tech-stack .tech-tag:nth-child(1) { animation-delay: 0.1s; }
+.tech-stack .tech-tag:nth-child(2) { animation-delay: 0.15s; }
+.tech-stack .tech-tag:nth-child(3) { animation-delay: 0.2s; }
+.tech-stack .tech-tag:nth-child(4) { animation-delay: 0.25s; }
+.tech-stack .tech-tag:nth-child(5) { animation-delay: 0.3s; }
+.tech-stack .tech-tag:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card hover glow effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    rgba(255, 215, 0, 0.1) 0%, 
+    transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-medium);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Navbar glass effect enhancement */
+.tech-nav {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Button ripple effect */
+.btn-tech::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 60%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn-tech:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Presentation wrapper shadow & glow */
+.presentation-wrapper {
+  box-shadow: 
+    0 0 40px rgba(255, 215, 0, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition-medium);
+}
+
+.presentation-wrapper:hover {
+  box-shadow: 
+    0 0 60px rgba(255, 215, 0, 0.2),
+    0 30px 80px rgba(0, 0, 0, 0.5);
+  transform: translateY(-5px);
+}
+
+/* Smoother scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Loading skeleton for images */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.03) 25%, 
+    rgba(255,255,255,0.08) 50%, 
+    rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  z-index: 0;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gallery-item img {
+  position: relative;
+  z-index: 1;
+}
