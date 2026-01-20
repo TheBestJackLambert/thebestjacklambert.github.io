@@ -31,32 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Custom Cursor Logic
-  const cursor = document.querySelector('.cursor-follower');
-  const links = document.querySelectorAll('a, button, .bento-card, .mission-entry');
-
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-
-    links.forEach(link => {
-      link.addEventListener('mouseenter', () => {
-        cursor.classList.add('active');
-        cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-        cursor.style.borderColor = 'var(--text-main)';
-        cursor.style.backgroundColor = 'rgba(255, 215, 0, 0.1)';
-      });
-
-      link.addEventListener('mouseleave', () => {
-        cursor.classList.remove('active');
-        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        cursor.style.borderColor = 'var(--accent-color)';
-        cursor.style.backgroundColor = 'transparent';
-      });
-    });
-  }
+  // 3. Custom Cursor Logic - Handled by shared-interactions.js
 
   // 4. Mobile Navigation
   const burger = document.querySelector('.burger');
@@ -213,4 +188,4 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-revealSections.forEach(section => revealObserver.observe(section));
+// Note: HUD Logic is now in shared-interactions.js

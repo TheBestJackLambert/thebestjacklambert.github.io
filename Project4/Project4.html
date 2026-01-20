@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="A bot that analyzes Hypixel Bazaar trades to identify profitable opportunities.">
-  <meta name="author" content="Jack Lambert">
+  <meta name="description" content="Hypixel Bazaar Bot - Automated Trading Algorithim">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PROJECT_04 // BAZAAR BOT | Jack Lambert</title>
 
@@ -15,147 +14,154 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
   <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Shared Styles -->
   <link rel="stylesheet" href="../shared-styles.css">
-
-  <style>
-    .bot-output {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      padding: var(--spacing-lg);
-      font-family: var(--font-tech);
-      font-size: 0.85rem;
-      color: var(--accent-color);
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .step-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .step-list li {
-      color: var(--text-muted);
-      margin-bottom: var(--spacing-md);
-      padding-left: var(--spacing-lg);
-      position: relative;
-    }
-
-    .step-list li strong {
-      color: var(--accent-color);
-    }
-
-    .step-list li::before {
-      content: '>';
-      position: absolute;
-      left: 0;
-      color: var(--accent-color);
-      font-family: var(--font-tech);
-    }
-
-    .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      margin-top: var(--spacing-lg);
-    }
-
-    .github-link i {
-      font-size: 1.5rem;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: var(--spacing-lg);
-    }
-  </style>
+  <link rel="stylesheet" href="Project4.css">
 </head>
 
 <body>
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
 
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
 
-  <!-- Scroll Progress Bar -->
+  <!-- Scroll Progress -->
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_04</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_04</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
-  <!-- Project Hero -->
-  <header class="project-hero">
-    <div class="container">
-      <h1 data-aos="fade-up">HYPIXEL BAZAAR BOT</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        A bot that tracks Hypixel's "stock market" to find potential trades.
-      </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="background-particles" id="particles-js"></div>
+    <div class="hero-content">
+      <div class="outcome-badge" data-aos="fade-up">Algorithmic Trading & Automation</div>
+      <h1 id="main-title" data-aos="fade-up" data-aos-delay="100">HYPIXEL BAZAAR BOT</h1>
+      <span id="sub-title" data-aos="fade-up" data-aos-delay="200">> Real-time market arbitrage engine.</span>
+
+      <div class="tech-stack" style="justify-content: center; margin-top: 30px;" data-aos="fade-up"
+        data-aos-delay="300">
+        <span class="authority-tag">HYPIXEL API</span>
         <span class="tech-tag">PYTHON</span>
-        <span class="tech-tag">API</span>
-        <span class="tech-tag">AUTOMATION</span>
+        <span class="tech-tag">ASYNC IO</span>
         <span class="tech-tag">DATA ANALYSIS</span>
       </div>
     </div>
-  </header>
+  </section>
 
-  <!-- Main Content -->
-  <section class="project-section">
+  <!-- Key Metrics -->
+  <section class="project-section" style="padding-top: 50px;">
     <div class="container">
-      <div class="two-col">
-        <!-- Left Column -->
-        <div data-aos="fade-up">
-          <h2 class="section-header">// BOT_OUTPUT</h2>
-          <div class="bot-output" id="bot-output">
-            <p>> Initializing Bazaar Scanner...</p>
-            <p>> Connected to Hypixel API</p>
-            <p>> Scanning 400+ products...</p>
-            <p>> ALERT: Enchanted Diamond price dropped 23%</p>
-            <p>> Recommendation: BUY @ 1,240 coins</p>
-            <p>> Monitoring for recovery...</p>
-          </div>
-
-          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-            HOW_IT_WORKS</h3>
-          <ul class="step-list">
-            <li><strong>1.</strong> Grabs data from the Hypixel API for all products in the bazaar</li>
-            <li><strong>2.</strong> Compares prices to past data points to establish a trend</li>
-            <li><strong>3.</strong> If trend slope is lower than threshold (20% drop), outputs BUY message</li>
-            <li><strong>4.</strong> Waits for price recovery and outputs SELL message</li>
-          </ul>
+      <div class="project-outcome" data-aos="fade-up">
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">2.4K+</div>
+          <div class="project-outcome-label">Items Tracked</div>
         </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">~15ms</div>
+          <div class="project-outcome-label">Latency</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">12.5%</div>
+          <div class="project-outcome-label">Avg. ROI</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">24/7</div>
+          <div class="project-outcome-label">Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Right Column -->
-        <div data-aos="fade-up" data-aos-delay="100">
-          <h2 class="section-header">// ABOUT</h2>
-          <p style="margin-bottom: var(--spacing-md);">
-            Hypixel has an in-game version of the stock market where players can trade in-game items in exchange for
-            coins.
-          </p>
-          <p style="margin-bottom: var(--spacing-md);">
-            Due to the large playerbase of Hypixel, it results in movements very similar to its real-world counterpart.
-          </p>
-          <p>
-            Seeing a lack of automation from other players, I decided to code a simple bot that would do the trading for
-            me.
-          </p>
+  <!-- Project Overview -->
+  <section class="project-overview container">
+    <!-- Left Column: Bot Simulation -->
+    <div class="column left" data-aos="fade-right">
+      <div class="bot-messages-box">
+        <h3>// BOT_OUTPUT</h3>
+        <!-- Button Removed -->
+        <div id="bot-output">
+          <!-- JS will populate this -->
+        </div>
+      </div>
 
-          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-            EXPLORE_CODE</h3>
-          <p style="margin-bottom: var(--spacing-md);">Check out the source code on GitHub:</p>
-          <a href="https://github.com/Bazaarflipper/BazaarFlipper" class="btn-tech github-link" target="_blank">
-            <i class="fab fa-github"></i> VIEW_ON_GITHUB
+      <!-- Restored "HOW IT WORKS" Section -->
+      <div class="technical-specs" style="margin-top: 30px;">
+        <h3>// HOW_IT_WORKS</h3>
+        <ul>
+          <li><strong>1.</strong> Grabs data from the Hypixel API for all products in the bazaar.</li>
+          <li><strong>2.</strong> Compares prices to past data points to establish a trend.</li>
+          <li><strong>3.</strong> If trend slope is lower than threshold (20% drop), outputs BUY message.</li>
+          <li><strong>4.</strong> Waits for price recovery and outputs SELL message.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Column: Info -->
+    <div class="column right" data-aos="fade-left">
+      <div class="key-features">
+        <h3>// ABOUT</h3>
+        <p>Hypixel has an in-game version of the stock market where players can trade in-game items in exchange for
+          coins.</p>
+        <p>Due to the large playerbase of Hypixel, it results in movements very similar to its real-world counterpart.
+        </p>
+        <p>Seeing a lack of automation from other players, I decided to code a simple bot that would do the trading for
+          me.</p>
+      </div>
+
+      <div class="technical-specs">
+        <h3>// TECHNOLOGIES_USED</h3>
+        <ul>
+          <li><strong>PYTHON</strong> - Core logic and data processing</li>
+          <li><strong>HYPIXEL API</strong> - Real-time market data stream</li>
+          <li><strong>ASYNCIO</strong> - Asynchronous non-blocking item scanning</li>
+          <li><strong>REQUESTS</strong> - HTTP communication handling</li>
+          <li><strong>JSON</strong> - Data parsing and state management</li>
+        </ul>
+      </div>
+
+      <div class="github-link">
+        <h3>// SOURCE_CODE</h3>
+        <p>Explore the full source code:</p>
+        <div class="btn-group">
+          <!-- Linking to a file if it existed, otherwise Repo -->
+          <a href="test.py" class="btn-tech" style="margin-bottom: 10px;">
+            <i class="fab fa-python"></i> VIEW_TEST.PY
+          </a>
+          <br>
+          <a href="https://github.com/Bazaarflipper/BazaarFlipper" class="btn-tech" target="_blank">
+            <i class="fab fa-github"></i> VIEW_FULL_REPO
           </a>
         </div>
       </div>
@@ -170,79 +176,12 @@
     </div>
   </footer>
 
-  <!-- Back to Top Button -->
-  <a href="#" class="back-to-top" aria-label="Back to Top">
-    <span class="arrow"></span>
-  </a>
-
   <!-- Scripts -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script>
-    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
-
-    // Animated bot output - simulates real terminal
-    const botMessages = [
-      { text: '> Initializing Bazaar Scanner...', delay: 0 },
-      { text: '> Connecting to Hypixel API...', delay: 800 },
-      { text: '> Connection established ✓', delay: 1500 },
-      { text: '> Scanning 400+ products...', delay: 2200 },
-      { text: '> Analyzing price trends...', delay: 3000 },
-      { text: '> ━━━━━━━━━━━━━━━━━━━━━━━━━━━', delay: 3800 },
-      { text: '> ALERT: Enchanted Diamond', delay: 4500, highlight: true },
-      { text: '>   Current: 1,240 coins', delay: 5000 },
-      { text: '>   24h Change: -23.4%', delay: 5400, warning: true },
-      { text: '>   Volume: 847,293 units', delay: 5800 },
-      { text: '> Recommendation: BUY', delay: 6400, success: true },
-      { text: '> ━━━━━━━━━━━━━━━━━━━━━━━━━━━', delay: 7000 },
-      { text: '> ALERT: Enchanted Gold Block', delay: 7800, highlight: true },
-      { text: '>   Current: 54,120 coins', delay: 8200 },
-      { text: '>   24h Change: +18.7%', delay: 8600, success: true },
-      { text: '> Recommendation: HOLD', delay: 9200 },
-      { text: '> ━━━━━━━━━━━━━━━━━━━━━━━━━━━', delay: 9800 },
-      { text: '> Monitoring market...', delay: 10500 },
-      { text: '> Next scan in 30s', delay: 11000 }
-    ];
-
-    const botOutput = document.getElementById('bot-output');
-    botOutput.innerHTML = '';
-
-    botMessages.forEach(msg => {
-      setTimeout(() => {
-        const p = document.createElement('p');
-        p.textContent = msg.text;
-        p.style.opacity = '0';
-        p.style.transform = 'translateY(10px)';
-        p.style.transition = 'all 0.3s ease';
-
-        if (msg.highlight) p.style.color = '#FFD700';
-        if (msg.warning) p.style.color = '#ff6b6b';
-        if (msg.success) p.style.color = '#51cf66';
-
-        botOutput.appendChild(p);
-        botOutput.scrollTop = botOutput.scrollHeight;
-
-        // Animate in
-        setTimeout(() => {
-          p.style.opacity = '1';
-          p.style.transform = 'translateY(0)';
-        }, 50);
-      }, msg.delay);
-    });
-
-    window.addEventListener('scroll', () => {
-      const scrollProgress = document.getElementById('scroll-progress');
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      scrollProgress.style.width = `${progress}%`;
-
-      const backToTop = document.querySelector('.back-to-top');
-      if (window.scrollY > 300) {
-        backToTop.classList.add('show');
-      } else {
-        backToTop.classList.remove('show');
-      }
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="../shared-interactions.js"></script>
+  <script src="Project4.js"></script>
 </body>
 
 </html>

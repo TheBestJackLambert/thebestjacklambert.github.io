@@ -1,6 +1,6 @@
 :root{
   --bg:#0d0d0d; --text:#f5f5f5; --muted:#cfcfcf;
-  --card:#141414; --line:#262626; --accent:#ffd700;
+  --card:#141414; --line:#262626; --accent:#ff4d00;
 }
 *{box-sizing:border-box}
 html,body{

@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
   particlesJS('particles-js', {
     particles: {
       number: { value: 80, density: { enable: true, value_area: 800 } },
-      color: { value: '#ffd700' }, // Gold color
+      color: { value: '#ff4d00' }, // Gold color
       shape: { type: 'circle' },
       opacity: { value: 0.5 },
       size: { value: 3, random: true },
-      line_linked: { enable: true, distance: 150, color: '#ffd700', opacity: 0.4, width: 1 },
+      line_linked: { enable: true, distance: 150, color: '#ff4d00', opacity: 0.4, width: 1 },
       move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false },
     },
     interactivity: {

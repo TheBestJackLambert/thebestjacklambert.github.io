@@ -4,13 +4,13 @@
 :root {
   --bg-color: #0a0a0a;
   --bg-grid-color: #1a1a1a;
-  --accent-color: #FFD700;
-  /* Yellow */
-  --accent-dim: #D4AF37;
+  --accent-color: #FF4D00;
+  /* Orange */
+  --accent-dim: #CC3D00;
   --text-main: #e0e0e0;
   --text-muted: #888888;
-  --grid-line: rgba(255, 215, 0, 0.1);
-  --border-tech: 1px solid rgba(255, 215, 0, 0.3);
+  --grid-line: rgba(255, 77, 0, 0.1);
+  --border-tech: 1px solid rgba(255, 77, 0, 0.3);
 
   --font-tech: 'Space Mono', monospace;
   --font-body: 'Inter', sans-serif;
@@ -56,7 +56,7 @@ body {
   width: 100%;
   height: 100px;
   z-index: 9999;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 215, 0, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 77, 0, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
   opacity: 0.1;
   position: fixed;
   bottom: 100%;
@@ -292,8 +292,8 @@ body {
 }
 
 .btn-tech:hover {
-  background: rgba(255, 215, 0, 0.1);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  background: rgba(255, 77, 0, 0.1);
+  box-shadow: 0 0 20px rgba(255, 77, 0, 0.2);
 }
 
 .btn-tech::before {
@@ -303,7 +303,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 77, 0, 0.2), transparent);
   transition: 0.5s;
 }
 
@@ -359,86 +359,7 @@ body {
   }
 }
 
-/* Glitch Effect (Simplistic version) */
-.glitch {
-  position: relative;
-}
 
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.glitch::before {
-  left: 2px;
-  text-shadow: -1px 0 red;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim 5s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-  left: -2px;
-  text-shadow: -1px 0 blue;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim2 5s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-  0% {
-    clip: rect(33px, 9999px, 11px, 0);
-  }
-
-  20% {
-    clip: rect(88px, 9999px, 96px, 0);
-  }
-
-  40% {
-    clip: rect(10px, 9999px, 83px, 0);
-  }
-
-  60% {
-    clip: rect(55px, 9999px, 4px, 0);
-  }
-
-  80% {
-    clip: rect(22px, 9999px, 66px, 0);
-  }
-
-  100% {
-    clip: rect(77px, 9999px, 33px, 0);
-  }
-}
-
-@keyframes glitch-anim2 {
-  0% {
-    clip: rect(11px, 9999px, 88px, 0);
-  }
-
-  20% {
-    clip: rect(99px, 9999px, 2px, 0);
-  }
-
-  40% {
-    clip: rect(4px, 9999px, 33px, 0);
-  }
-
-  60% {
-    clip: rect(66px, 9999px, 55px, 0);
-  }
-
-  80% {
-    clip: rect(22px, 9999px, 77px, 0);
-  }
-
-  100% {
-    clip: rect(88px, 9999px, 11px, 0);
-  }
-}
 
 /* Responsive */
 @media screen and (max-width: 768px) {
@@ -696,6 +617,31 @@ section h2::before {
   background: rgba(26, 26, 26, 0.9);
 }
 
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 0;
+  filter: grayscale(100%);
+}
+
+.bento-card:hover .card-image {
+  opacity: 0.4;
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+.bento-card>* {
+  position: relative;
+  z-index: 1;
+}
+
 .bento-full {
   grid-column: span 2;
 }
@@ -731,15 +677,15 @@ section h2::before {
   font-size: 0.75rem;
   font-family: var(--font-tech);
   color: var(--accent-color);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid rgba(255, 77, 0, 0.3);
   padding: 2px 8px;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
 
 .tech-tag:hover {
-  background: rgba(255, 215, 0, 0.15);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  background: rgba(255, 77, 0, 0.15);
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.3);
   border-color: var(--accent-color);
 }
 
@@ -815,7 +761,7 @@ section h2::before {
   align-items: center;
   gap: 15px;
   padding: 15px;
-  background: rgba(255, 215, 0, 0.05);
+  background: rgba(255, 77, 0, 0.05);
   border-left: 3px solid var(--accent-color);
 }
 
@@ -944,6 +890,7 @@ footer {
   padding-top: 20px;
   border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
+
 /* ==========================================================================
    CLASSES GRID (Replacing scrolling-data)
    ========================================================================== */
@@ -956,8 +903,8 @@ footer {
 
 .class-tag {
   display: inline-block;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(255, 77, 0, 0.1);
+  border: 1px solid rgba(255, 77, 0, 0.3);
   color: var(--accent-color);
   font-family: var(--font-tech);
   font-size: 0.75rem;
@@ -967,8 +914,8 @@ footer {
 }
 
 .class-tag:hover {
-  background: rgba(255, 215, 0, 0.2);
+  background: rgba(255, 77, 0, 0.2);
   border-color: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(255, 77, 0, 0.2);
 }

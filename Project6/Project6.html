@@ -20,6 +20,9 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="../shared-styles.css">
 
+  <!-- Chessboard.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
   <style>
     .video-grid {
       display: grid;
@@ -144,6 +147,14 @@
 
 <body>
 
+  <!-- Loading Screen Removed -->
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
+
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
@@ -152,30 +163,72 @@
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_06</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_06</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
   <!-- Project Hero -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">JACK LAMBERT CHESS</h1>
+      <div class="outcome-badge" data-aos="fade-up">50K+ Views Personal Brand</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">JACK LAMBERT CHESS</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        YouTube channel with 50K+ views featuring chess tutorials and analysis.
+        Created a successful chess youtube channel with over 50k views.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">YOUTUBE</span>
         <span class="tech-tag">CONTENT CREATION</span>
-        <span class="tech-tag">50K+ VIEWS</span>
-        <span class="tech-tag">VIDEO EDITING</span>
-        <span class="tech-tag">STRATEGY</span>
+        <span class="tech-tag">54K+ VIEWS</span>
       </div>
       <a href="https://www.youtube.com/@TheBestJackLambert" target="_blank" class="btn-tech channel-link"
-        data-aos="fade-up" data-aos-delay="300">
+        data-aos="fade-up" data-aos-delay="200">
         @TheBestJackLambert
       </a>
     </div>
   </header>
+
+  <!-- Project Outcomes - Quantified Impact -->
+  <section class="project-section" style="padding-top: 40px;">
+    <div class="container">
+      <div class="project-outcome" data-aos="fade-up">
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">54K+</div>
+          <div class="project-outcome-label">Total Views</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">799</div>
+          <div class="project-outcome-label">Subscribers</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">6</div>
+          <div class="project-outcome-label">Videos Produced</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">939</div>
+          <div class="project-outcome-label">USCF Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Videos Section -->
   <section class="project-section">
@@ -185,15 +238,16 @@
         <div class="video-card" data-aos="fade-up">
           <span class="badge">POPULAR</span>
           <div class="ratio">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Popular video" loading="lazy"
-              allowfullscreen>
+            <iframe id="popular-iframe" src="https://www.youtube.com/embed/Opq-21D-7Z8"
+              title="Magnus Carlsen Highlights" loading="lazy" allowfullscreen>
             </iframe>
           </div>
         </div>
         <div class="video-card" data-aos="fade-up" data-aos-delay="100">
           <span class="badge">RECENT</span>
           <div class="ratio">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Recent video" loading="lazy" allowfullscreen>
+            <iframe id="recent-iframe" src="https://www.youtube.com/embed/RHO9hBxzRHE" title="Chess Strategy Tutorial"
+              loading="lazy" allowfullscreen>
             </iframe>
           </div>
         </div>
@@ -207,19 +261,19 @@
       <h2 class="section-header" data-aos="fade-right">// CHANNEL_STATS</h2>
       <div class="stats-grid">
         <div class="stat" data-aos="zoom-in">
-          <span class="stat-number">200+</span>
+          <span class="stat-number" id="stat-subs">799</span>
           <span class="stat-label">Subscribers</span>
         </div>
         <div class="stat" data-aos="zoom-in" data-aos-delay="100">
-          <span class="stat-number">50+</span>
+          <span class="stat-number" id="stat-videos">6</span>
           <span class="stat-label">Videos</span>
         </div>
         <div class="stat" data-aos="zoom-in" data-aos-delay="200">
-          <span class="stat-number">50K+</span>
+          <span class="stat-number" id="stat-views">54K+</span>
           <span class="stat-label">Views</span>
         </div>
         <div class="stat" data-aos="zoom-in" data-aos-delay="300">
-          <span class="stat-number">1400</span>
+          <span class="stat-number" id="stat-elo">939</span>
           <span class="stat-label">USCF Rating</span>
         </div>
       </div>
@@ -230,25 +284,28 @@
   <section class="project-section">
     <div class="container">
       <h2 class="section-header" data-aos="fade-right">// MY_REPERTOIRE</h2>
-      <div class="cheat-grid">
-        <div class="cheat-card" data-aos="fade-up">
-          <h4>Traxler (Wilkes-Barre)</h4>
-          <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 <strong>Bc5!?</strong></p>
-          <ul class="cheat-bullets">
-            <li>Don't tilt: develop, castle, punish over-attackers</li>
-            <li>If 5.Nxf7? ...Bxf2+ ideas → watch the king hunt motifs</li>
-            <li>Practical line I use OTB</li>
-          </ul>
-        </div>
-        <div class="cheat-card" data-aos="fade-up" data-aos-delay="100">
-          <h4>Scotch (Main line)</h4>
-          <p class="cheat-line">1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 <strong>Bc5</strong></p>
-          <ul class="cheat-bullets">
-            <li>Clean plans: space, piece activity, simple tactics</li>
-            <li>Good for rapid; endgame edges show up early</li>
-          </ul>
-        </div>
+
+      <div class="repertoire-item">
+        <h4>Traxler (Wilkes-Barre)</h4>
+        <div id="board-traxler" style="width: 100%; max-width: 400px; margin: 10px 0;"></div>
+        <p class="pgn-string">1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 Bc5!?</p>
+        <ul>
+          <li>Don't tilt: develop, castle, punish over-attackers</li>
+          <li>If 5.Nxf7? ...Bxf2+ ideas → watch the king hunt motifs</li>
+          <li>Practical line I use OTB</li>
+        </ul>
       </div>
+
+      <div class="repertoire-item" style="margin-top:20px;">
+        <h4>Scotch (Main line)</h4>
+        <div id="board-scotch" style="width: 100%; max-width: 400px; margin: 10px 0;"></div>
+        <p class="pgn-string">1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Nxd4 Bc5</p>
+        <ul>
+          <li>Clean plans: space, piece activity, simple tactics</li>
+          <li>Good for rapid; endgame edges show up early</li>
+        </ul>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -284,6 +341,15 @@
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
+
+  <!-- Chess Libraries -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+  <!-- Main Project Script -->
+  <script type="module" src="Project6.js"></script>
 </body>
 
 </html>

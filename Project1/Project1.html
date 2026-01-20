@@ -3,9 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Theremin Project - A hands-free musical instrument using analog circuits.">
-  <meta name="keywords" content="Theremin, Musical Instrument, Analog Circuits, Signal Processing">
-  <meta name="author" content="Jack Lambert">
+  <meta name="description" content="Theremin Project - Hands-free Musical Instrument">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PROJECT_01 // THEREMIN | Jack Lambert</title>
 
@@ -18,44 +16,95 @@
 
   <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Shared Styles (Design System) -->
+  <!-- Shared Styles -->
   <link rel="stylesheet" href="../shared-styles.css">
-
-  <!-- Project-Specific Styles -->
   <link rel="stylesheet" href="Project1.css">
 </head>
 
 <body>
 
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
 
-  <!-- Scroll Progress Bar -->
+  <!-- Scroll Progress -->
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_01</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_01</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
-  <!-- Project Hero -->
+  <!-- Hero Section -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">THEREMIN</h1>
+      <div class="outcome-badge" data-aos="fade-up">GTRI Internship Project</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">THEREMIN</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        A hands-free musical instrument built from analog operational amplifiers during my GTRI internship.
+        Designed and built a functional theremin from operational amplifiers and discrete components.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">GTRI</span>
         <span class="tech-tag">CIRCUIT DESIGN</span>
-        <span class="tech-tag">GTRI</span>
         <span class="tech-tag">ANALOG</span>
-        <span class="tech-tag">FFT</span>
+        <span class="tech-tag">RF OSCILLATION</span>
       </div>
     </div>
   </header>
+
+  <!-- Project Overview & Specs -->
+  <section class="project-section" style="padding-top: 40px;">
+    <div class="container project-overview-grid" style="display:flex; gap:40px; flex-wrap:wrap;">
+      <!-- Left Column -->
+      <div class="column left" style="flex:1; min-width:300px;" data-aos="fade-right">
+        <h2 class="section-header">// MISSION_OVERVIEW</h2>
+        <p style="color:var(--text-muted); line-height:1.6; margin-bottom:20px;">
+          The goal of this project was to creating a musical instrument that could be played without physical contact.
+          We applied principles of analog signal processing, heterodyning, and RF oscillation to detect hand proximity
+          via antenna capacitance.
+        </p>
+      </div>
+
+      <!-- Right Column -->
+      <div class="column right" style="flex:1; min-width:300px;" data-aos="fade-left">
+        <h2 class="section-header">// TECHNOLOGIES</h2>
+        <div class="tech-stack" style="justify-content: flex-start;">
+          <span class="tech-tag">Analog Op-Amps</span>
+          <span class="tech-tag">Colpitts Oscillator</span>
+          <span class="tech-tag">Heterodyning</span>
+          <span class="tech-tag">LT Spice</span>
+          <span class="tech-tag">PCB Soldering</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Gallery Section -->
   <section class="project-section">
@@ -63,40 +112,13 @@
       <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
       <div class="gallery-grid">
         <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
-          <img src="../MainSite/images/theramin.png" alt="Theremin Project - Hands-free Musical Instrument"
-            loading="lazy">
+          <img src="../MainSite/images/theramin.png" alt="Theremin Final Build" loading="lazy">
         </div>
         <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
-          <img src="../MainSite/images/theramininaction.png" alt="Theremin in Action" loading="lazy">
+          <img src="../MainSite/images/theramininaction.png" alt="Theremin Testing" loading="lazy">
         </div>
         <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
-          <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Board of Theremin" loading="lazy">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Overview Section -->
-  <section class="project-section">
-    <div class="container">
-      <div class="content-grid">
-        <div class="content-main" data-aos="fade-up">
-          <h2 class="section-header">// MISSION_OVERVIEW</h2>
-          <p>
-            During the theremin project, our goal was to create a musical instrument that could be played without
-            touching it from scratch. We designed and built a functional theremin using operational amplifiers and
-            discrete components, applying principles of analog signal processing and RF oscillation.
-          </p>
-
-          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-            TECHNOLOGIES_USED</h3>
-          <div class="tech-stack">
-            <span class="tech-tag">Fast Fourier Transforms</span>
-            <span class="tech-tag">Colpitts Oscillator</span>
-            <span class="tech-tag">Heterodyning & Mixing</span>
-            <span class="tech-tag">LT Spice Simulation</span>
-            <span class="tech-tag">Analog Circuit Design</span>
-          </div>
+          <img src="../MainSite/images/Theramincircuit.png" alt="Circuit Schematic" loading="lazy">
         </div>
       </div>
     </div>
@@ -129,23 +151,17 @@
   </a>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
-    // Initialize AOS
-    AOS.init({
-      duration: 800,
-      once: true,
-      easing: 'ease-out-cubic'
-    });
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 
-    // Scroll Progress Bar
     window.addEventListener('scroll', () => {
       const scrollProgress = document.getElementById('scroll-progress');
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       scrollProgress.style.width = `${progress}%`;
 
-      // Back to top button
       const backToTop = document.querySelector('.back-to-top');
       if (window.scrollY > 300) {
         backToTop.classList.add('show');
@@ -154,6 +170,7 @@
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
 </body>
 
 </html>

@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Wi-Fi detector project made during my internship at GTRI">
-  <meta name="author" content="Jack Lambert">
+  <meta name="description" content="Wi-Fi Detector - RF Signal Analysis Project">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PROJECT_02 // WI-FI DETECTOR | Jack Lambert</title>
 
@@ -17,46 +16,109 @@
 
   <!-- AOS CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Shared Styles -->
   <link rel="stylesheet" href="../shared-styles.css">
+  <link rel="stylesheet" href="Project2.css">
 </head>
 
 <body>
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
 
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
 
-  <!-- Scroll Progress Bar -->
+  <!-- Scroll Progress -->
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_02</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_02</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
-  <!-- Project Hero -->
+  <!-- Hero Section -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">WI-FI DETECTOR</h1>
+      <div class="outcome-badge" data-aos="fade-up">GTRI Internship Project</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">WI-FI DETECTOR</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        A wireless device that detects Wi-Fi signals and indicates strength using LED brightness. Built at GTRI.
+        Portable RF device for detecting and analyzing Wi-Fi signal strength.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
-        <span class="tech-tag">GTRI</span>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">GTRI</span>
         <span class="tech-tag">RF SENSORS</span>
+        <span class="tech-tag">PORTABLE</span>
         <span class="tech-tag">CIRCUIT DESIGN</span>
-        <span class="tech-tag">DSP</span>
       </div>
     </div>
   </header>
 
+  <!-- Project Overview & Specs -->
+  <section class="project-section" style="padding-top: 40px;">
+    <div class="container project-overview-grid">
+      <!-- Left Column -->
+      <div class="column left" data-aos="fade-right">
+        <h2 class="section-header">// MISSION_OVERVIEW</h2>
+        <div class="project-writeup">
+          <p>
+            This project involved designing a hand-held detector capable of sniffing 2.4GHz Wi-Fi signals.
+            The device provides real-time visual feedback via LED intensity corresponding to signal strength,
+            allowing for physical area mapping of network coverage.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="column right" data-aos="fade-left">
+        <h2 class="section-header">// TECHNOLOGIES</h2>
+        <div class="tech-stack" style="justify-content: flex-start;">
+          <span class="tech-tag">Germanium Diodes</span>
+          <span class="tech-tag">LT Spice Simulation</span>
+          <span class="tech-tag">Signal Processing</span>
+          <span class="tech-tag">Antenna Design</span>
+        </div>
+
+        <h3 style="color:var(--primary-color); font-family:var(--font-tech); margin-top:20px; margin-bottom:10px;">//
+          KEY FEATURES</h3>
+        <ul style="list-style:none; padding:0; color:var(--text-muted);">
+          <li style="margin-bottom:5px;">> Portable & Battery Powered</li>
+          <li style="margin-bottom:5px;">> Real-time Analog Feedback</li>
+          <li style="margin-bottom:5px;">> Dual Band Detection (2.4/5GHz)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- Gallery Section -->
   <section class="project-section">
     <div class="container">
-      <h2 class="section-header" data-aos="fade-right">// GALLERY</h2>
+      <h2 class="section-header" data-aos="fade-right">// SCHEMATICS_AND_PROTOTYPES</h2>
       <div class="gallery-grid">
         <div class="gallery-item" data-aos="fade-up" data-aos-delay="0">
           <img src="../MainSite/images/circuitdiagram.png" alt="Circuit Diagram" loading="lazy">
@@ -66,36 +128,6 @@
         </div>
         <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
           <img src="../MainSite/images/ant.png" alt="Antenna Design" loading="lazy">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Overview Section -->
-  <section class="project-section">
-    <div class="container">
-      <div class="content-main" data-aos="fade-up">
-        <h2 class="section-header">// MISSION_OVERVIEW</h2>
-        <p>
-          Our goal during the Wi-Fi detector project was to create a wireless device that could detect if a Wi-Fi signal
-          was nearby and tell us how strong it was using the brightness of an LED bulb.
-        </p>
-
-        <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-          TECHNOLOGIES_USED</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">Germanium Diodes</span>
-          <span class="tech-tag">LT Spice</span>
-          <span class="tech-tag">Digital Signal Processing</span>
-          <span class="tech-tag">Soldering</span>
-        </div>
-
-        <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-          KEY_FEATURES</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">Brightness based on signal strength</span>
-          <span class="tech-tag">Fully Wireless</span>
-          <span class="tech-tag">2.4GHz & 5GHz Detection</span>
         </div>
       </div>
     </div>
@@ -128,6 +160,7 @@
   </a>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
     AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
@@ -146,6 +179,7 @@
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
 </body>
 
 </html>

@@ -32,7 +32,7 @@
 
     .model-tab {
       background: transparent;
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 77, 0, 0.3);
       color: var(--text-muted);
       font-family: var(--font-tech);
       font-size: 0.8rem;
@@ -43,7 +43,7 @@
 
     .model-tab.active,
     .model-tab:hover {
-      background: rgba(255, 215, 0, 0.1);
+      background: rgba(255, 77, 0, 0.1);
       border-color: var(--accent-color);
       color: var(--accent-color);
     }
@@ -51,7 +51,7 @@
     .model-viewer-container {
       width: 100%;
       height: 400px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 77, 0, 0.3);
     }
 
     model-viewer {
@@ -95,6 +95,14 @@
 
 <body>
 
+  <!-- Loading Screen Removed -->
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
+
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
@@ -103,26 +111,68 @@
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_05</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_05</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
   <!-- Project Hero -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">WATER GAME ROBOT</h1>
+      <div class="outcome-badge" data-aos="fade-up">High-Efficiency Marine Engineerng</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">WATER GAME ROBOT</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        A floating robot with VEX motors, chain drive, and high-efficiency propellers.
+        VEX motor powered floating robot involving gear ratios and circuits.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
-        <span class="tech-tag">VEX ROBOTICS</span>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">MIT DESIGN</span>
+        <span class="tech-tag">VEX</span>
         <span class="tech-tag">ROBOTC</span>
-        <span class="tech-tag">MECHANICAL</span>
-        <span class="tech-tag">HYDRODYNAMICS</span>
       </div>
     </div>
   </header>
+
+  <!-- Project Outcomes - Quantified Impact -->
+  <section class="project-section" style="padding-top: 40px;">
+    <div class="container">
+      <div class="project-outcome" data-aos="fade-up">
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">1:48</div>
+          <div class="project-outcome-label">High-Torque Ratio</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">MIT</div>
+          <div class="project-outcome-label">Propeller Profile</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">1ft³</div>
+          <div class="project-outcome-label">Compact Frame</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">360°</div>
+          <div class="project-outcome-label">Vector Control</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- 3D Model Section -->
   <section class="project-section">
@@ -166,33 +216,40 @@
   <section class="project-section">
     <div class="container">
       <div class="two-col">
-        <div class="writeup" data-aos="fade-up">
-          <h2 class="section-header">// GOAL</h2>
-          <p>Create a robot that floats, maneuvers in water, and pushes an opponent into a wall before being pushed into
-            one. Build fits within a 1-foot cube; electronics are ≥1.5" above the water.</p>
+        <!-- Left Column -->
+        <div class="column left" data-aos="fade-right">
+          <div class="project-writeup">
+            <h3>// GOAL</h3>
+            <p>Create a robot that floats, maneuvers in water, and pushes an opponent into a wall before being pushed
+              into one. Build fits within a 1-foot cube; electronics are ≥1.5" above the water.</p>
 
-          <h3>// DESIGN_HIGHLIGHTS</h3>
-          <ul>
-            <li>Two in-water props driven via chain from geared motor clusters</li>
-            <li>High gear ratio (1:48) for prop RPM</li>
-            <li>Lightweight frame + bottle buoyancy</li>
-            <li>Differential control for tight turning</li>
-            <li>High efficiency propeller design from MIT</li>
-            <li>Variable speed for each propeller including direction changes</li>
-          </ul>
+            <div class="technical-specs" style="margin-top: 30px;">
+              <h3>// DESIGN_HIGHLIGHTS</h3>
+              <ul>
+                <li>Two in-water props driven via chain from geared motor clusters</li>
+                <li>High gear ratio (1:48) for prop RPM</li>
+                <li>Lightweight frame + bottle buoyancy</li>
+                <li>Differential control for tight turning</li>
+                <li>High efficiency propeller design from MIT</li>
+                <li>Variable speed for each propeller including direction changes</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div class="writeup" data-aos="fade-up" data-aos-delay="100">
-          <h3>// ITERATION_NOTES</h3>
-          <ul>
-            <li>Buoyancy trim with an aft bottle solved pitch issues</li>
-            <li>Hot-glued enclosure added sealed air volume</li>
-            <li>Gear cracked due to high torque</li>
-            <li>High tension on chain leading to gears getting stuck on axles</li>
-          </ul>
+        <!-- Right Column -->
+        <div class="column right" data-aos="fade-left">
+          <div class="key-features">
+            <h3>// ITERATION_NOTES</h3>
+            <ul>
+              <li>Buoyancy trim with an aft bottle solved pitch issues</li>
+              <li>Hot-glued enclosure added sealed air volume</li>
+              <li>Gear cracked due to high torque</li>
+              <li>High tension on chain leading to gears getting stuck on axles</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
   </section>
 
   <!-- Slides Section -->
@@ -252,6 +309,7 @@
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
 </body>
 
 </html>

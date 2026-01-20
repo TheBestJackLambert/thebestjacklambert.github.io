@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Link Joint (Planar Arm) Calculator — Interactive FK visualization">
+  <meta name="description" content="Link Joint (Planar Arm) Calculator — Interactive FK/IK visualization">
   <meta name="author" content="Jack Lambert">
   <title>PROJECT_07 // ARM CALCULATOR | Jack Lambert</title>
 
@@ -24,123 +24,17 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="../shared-styles.css">
 
-  <style>
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: var(--spacing-lg);
-    }
-
-    .canvas-container {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      padding: var(--spacing-md);
-    }
-
-    #arm-canvas {
-      width: 100%;
-      height: 400px;
-      display: block;
-    }
-
-    .controls {
-      margin-top: var(--spacing-md);
-    }
-
-    .control-row {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .control-row label {
-      font-family: var(--font-tech);
-      font-size: 0.8rem;
-      color: var(--accent-color);
-      min-width: 100px;
-    }
-
-    .control-row input {
-      background: var(--bg-color);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      color: var(--text-main);
-      font-family: var(--font-tech);
-      padding: 8px 12px;
-      width: 80px;
-    }
-
-    .btn-small {
-      background: transparent;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      color: var(--accent-color);
-      font-family: var(--font-tech);
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: all var(--transition-medium);
-    }
-
-    .btn-small:hover {
-      background: rgba(255, 215, 0, 0.1);
-      border-color: var(--accent-color);
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--spacing-md);
-      margin-top: var(--spacing-lg);
-    }
-
-    .result-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: var(--spacing-md);
-    }
-
-    .result-card h4 {
-      color: var(--accent-color);
-      font-size: 0.8rem;
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .result-card p {
-      font-family: var(--font-tech);
-      font-size: 1.2rem;
-      color: var(--text-main);
-    }
-
-    .math-block {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      padding: var(--spacing-md);
-      font-family: var(--font-tech);
-      font-size: 0.85rem;
-      color: var(--accent-color);
-      overflow-x: auto;
-      white-space: pre;
-    }
-
-    .feature-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .feature-list li {
-      color: var(--text-muted);
-      margin-bottom: var(--spacing-sm);
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-    }
-
-    .feature-list i {
-      color: var(--accent-color);
-    }
-  </style>
+  <!-- Project 7 Specific Styles -->
+  <link rel="stylesheet" href="Project7.css">
 </head>
 
 <body>
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
 
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
@@ -150,91 +44,219 @@
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_07</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_07</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
   <!-- Project Hero -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">LINK-JOINT ARM CALCULATOR</h1>
+      <div class="outcome-badge" data-aos="fade-up">Interactive Visualization Tool</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">LINK-JOINT ARM CALCULATOR</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        Interactive forward kinematics visualizer for N-link planar robotic arms.
+        Algorithm in Python for arm joints calculation without external libraries.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">OPEN SOURCE</span>
         <span class="tech-tag">PYTHON</span>
-        <span class="tech-tag">KINEMATICS</span>
-        <span class="tech-tag">VISUALIZATION</span>
-        <span class="tech-tag">ALGORITHMS</span>
+        <span class="tech-tag">ALGORITHM</span>
       </div>
     </div>
   </header>
 
-  <!-- Interactive Section -->
-  <section class="project-section">
+  <!-- Project Outcomes - Quantified Impact -->
+  <section class="project-section" style="padding-top: 40px;">
     <div class="container">
-      <div class="two-col">
-        <!-- Canvas Column -->
-        <div data-aos="fade-up">
-          <h2 class="section-header">// VISUALIZER</h2>
-          <div class="canvas-container">
-            <canvas id="arm-canvas" width="600" height="400"></canvas>
-          </div>
-
-          <div class="controls">
-            <div class="control-row">
-              <label>JOINTS (N)</label>
-              <input type="number" id="link-count" value="3" min="1" max="12">
-              <button class="btn-small" id="randomize">RANDOMIZE</button>
-              <button class="btn-small" id="reset">RESET</button>
-            </div>
-          </div>
-
-          <div class="results-grid">
-            <div class="result-card">
-              <h4>END-EFFECTOR (X, Y)</h4>
-              <p><span id="ee-x">0</span>, <span id="ee-y">0</span></p>
-            </div>
-            <div class="result-card">
-              <h4>TOTAL ORIENTATION</h4>
-              <p><span id="ee-theta">0</span>°</p>
-            </div>
-          </div>
+      <div class="project-outcome" data-aos="fade-up">
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">N-Link</div>
+          <div class="project-outcome-label">Scalable Solver</div>
         </div>
-
-        <!-- Description Column -->
-        <div data-aos="fade-up" data-aos-delay="100">
-          <h2 class="section-header">// ABOUT</h2>
-          <p style="margin-bottom: var(--spacing-lg);">
-            This visualizer computes and draws the individual vectors for any number of revolute joints. Enter link
-            lengths and joint angles to see the arm update in real time.
-          </p>
-
-          <h3 style="color: var(--accent-color); margin-bottom: var(--spacing-md);">// FEATURES</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check-circle"></i> Any number of revolute links</li>
-            <li><i class="fas fa-check-circle"></i> Real-time canvas rendering & grid</li>
-            <li><i class="fas fa-check-circle"></i> Reach circle visualization</li>
-            <li><i class="fas fa-check-circle"></i> Homogeneous transform output</li>
-          </ul>
-
-          <h3 style="color: var(--accent-color); margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">//
-            MATH (PLANAR FK)</h3>
-          <div class="math-block">x = Σ Lᵢ cos(Σ θⱼ)
-            y = Σ Lᵢ sin(Σ θⱼ)
-            θ_total = Σ θᵢ
-
-            T = [[cos θ, -sin θ, x],
-            [sin θ, cos θ, y],
-            [ 0, 0, 1]]</div>
-
-          <a href="Arm Calculator.py" download class="btn-tech"
-            style="margin-top: var(--spacing-lg); display: inline-block;">
-            DOWNLOAD_PYTHON_SCRIPT
-          </a>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">Real-time</div>
+          <div class="project-outcome-label">Rendering Engine</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">FK/IK</div>
+          <div class="project-outcome-label">Kinematics</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">3D</div>
+          <div class="project-outcome-label">Projection</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Main Content Areas -->
+  <section class="project-section">
+    <div class="container">
+
+
+      <!-- Documentation & Download -->
+      <div style="margin-top: 20px;">
+        <h3 style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 30px;">// SOURCE CODE & VISUALIZATION
+        </h3>
+
+        <!-- FK.py -->
+        <div class="doc-section two-col-doc">
+          <div class="doc-content">
+            <div class="doc-header">
+              <h3>// 2D_FWD_KINEMATICS (FK.PY)</h3>
+              <a href="FK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD</a>
+            </div>
+            <p class="doc-desc">
+              Calculates end-effector (hand) position from joint angles. Used for "where is my hand?" when I know my
+              joint angles.
+              Implements scratch-built trigonometry (Taylor Series) and custom matrix multiplication.
+            </p>
+            <ul class="tech-list">
+              <li><strong>Input:</strong> Link Lengths (L), Joint Angles (θ).</li>
+              <li><strong>Algorithm:</strong> Computes end-effector position using explicitly implemented
+                trigonometry (Taylor Series) and custom Matrix Multiplication.</li>
+              <li><strong>Output:</strong> End Effector Coordinates (x, y) and Orientation (θ_total).</li>
+            </ul>
+          </div>
+
+          <!-- Embedded Visualizer for 2D FK -->
+          <div class="viz-wrapper" id="viz-container-fk2d">
+            <div class="canvas-container small">
+              <!-- Canvas injected here -->
+              <canvas id="canvas-fk2d" width="400" height="300"></canvas>
+            </div>
+            <div class="mini-controls" id="controls-fk2d">
+              <!-- Controls injected here -->
+            </div>
+            <div class="viz-actions">
+              <button class="btn-xs" data-action="reset">RESET</button>
+              <button class="btn-xs" data-action="recenter">RECENTER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- IK.py -->
+        <div class="doc-section two-col-doc">
+          <div class="doc-content">
+            <div class="doc-header">
+              <h3>// 2D_INV_KINEMATICS (IK.PY)</h3>
+              <a href="IK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD</a>
+            </div>
+            <p class="doc-desc">
+              Solves the "Reaching" problem: Given a target (x, y), what angles do I need?
+              Uses an iterative gradient descent approach (Jacobian-like optimization) to minimize distance to target.
+              <br><br>
+              <em style="color:var(--primary-color)">Interactive: Click and Drag the canvas to move the target.</em>
+            </p>
+            <ul class="tech-list">
+              <li><strong>Input:</strong> Target Coordinates (x, y), Link Lengths.</li>
+              <li><strong>Algorithm:</strong> Iterative Gradient Descent. Adjusts joint angles to minimize distance
+                to target using a custom Jacobian-like approach.</li>
+              <li><strong>Output:</strong> Required Joint Angles (q1, q2...) to reach the target position.</li>
+            </ul>
+          </div>
+
+          <!-- Embedded Visualizer for 2D IK -->
+          <div class="viz-wrapper" id="viz-container-ik2d">
+            <div class="canvas-container small">
+              <canvas id="canvas-ik2d" width="400" height="300"></canvas>
+            </div>
+            <div class="mini-controls" id="controls-ik2d"></div>
+            <div class="viz-actions">
+              <button class="btn-xs" data-action="reset">RESET</button>
+              <button class="btn-xs" data-action="recenter">RECENTER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3dFK.py -->
+        <div class="doc-section two-col-doc">
+          <div class="doc-content">
+            <div class="doc-header">
+              <h3>// 3D_FWD_KINEMATICS (3DFK.PY)</h3>
+              <a href="3dFK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD</a>
+            </div>
+            <p class="doc-desc">
+              Extends Forward Kinematics into 3D space. Handles rotation around arbitrary axes (x, y, or z)
+              using complex 4x4 transformation matrices.
+            </p>
+            <ul class="tech-list">
+              <li><strong>Input:</strong> Joint Angles, Axes of Rotation (x/y/z), Link Lengths.</li>
+              <li><strong>Algorithm:</strong> Generates 4x4 Homogeneous Transformation Matrices for each joint
+                (Rotation + Translation) and multiplies them sequentially.</li>
+              <li><strong>Output:</strong> Final 4x4 Transformation Matrix containing 3D position (x, y, z) and
+                orientation.</li>
+            </ul>
+          </div>
+
+          <!-- Embedded Visualizer for 3D FK -->
+          <div class="viz-wrapper" id="viz-container-fk3d">
+            <div class="canvas-container small">
+              <canvas id="canvas-fk3d" width="400" height="300"></canvas>
+            </div>
+            <div class="mini-controls" id="controls-fk3d"></div>
+            <div class="viz-actions">
+              <button class="btn-xs" data-action="reset">RESET</button>
+              <button class="btn-xs" data-action="recenter">RECENTER</button>
+              <label class="toggle-xs"><input type="checkbox" id="auto-rotate-fk3d"> Auto-Rotate</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3dIk.py -->
+        <div class="doc-section two-col-doc">
+          <div class="doc-content">
+            <div class="doc-header">
+              <h3>// 3D_INV_KINEMATICS (3DIK.PY)</h3>
+              <a href="3dIk.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD</a>
+            </div>
+            <p class="doc-desc">
+              Advanced solver for 6-DOF robotic arms in 3D space. Calculates joint configurations to reach
+              any point (x, y, z) while maintaining orientation constraints.
+              <br><br>
+              <em style="color:var(--primary-color)">Interactive: Click and Drag to move target in 3D space.</em>
+            </p>
+            <ul class="tech-list">
+              <li><strong>Input:</strong> Target Position (x, y, z), Link Lengths.</li>
+              <li><strong>Algorithm:</strong> Cyclic Coordinate Descent (CCD) optimization to solve for 6-DOF
+                robotic arms in 3D space. Includes reachability checks.</li>
+              <li><strong>Output:</strong> Optimal Joint Angles to reach target while maintaining constraints.</li>
+            </ul>
+          </div>
+
+          <!-- Embedded Visualizer for 3D IK -->
+          <div class="viz-wrapper" id="viz-container-ik3d">
+            <div class="canvas-container small">
+              <canvas id="canvas-ik3d" width="400" height="300"></canvas>
+            </div>
+            <div class="mini-controls" id="controls-ik3d"></div>
+            <div class="viz-actions">
+              <button class="btn-xs" data-action="reset">RESET</button>
+              <button class="btn-xs" data-action="recenter">RECENTER</button>
+              <label class="toggle-xs"><input type="checkbox" id="auto-rotate-ik3d"> Auto-Rotate</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -253,7 +275,7 @@
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="Project7.js"></script>
+  <script src="Project7.js?v=2.0"></script>
   <script>
     AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 
@@ -271,6 +293,7 @@
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
 </body>
 
 </html>

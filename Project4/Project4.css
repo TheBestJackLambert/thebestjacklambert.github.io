@@ -1,505 +1,284 @@
 /* Project4.css */
 
 /* =====================================================
-   Reset and Base Styles
+   Reset and Base Styles (Tech Theme)
 ===================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  .btn {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    padding: 15px 35px;
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    color: var(--text-color);
-    border: none;
-    border-radius: 50px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
-    text-decoration: none;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Gold shadow */
-  }
-  
-  .btn:hover {
-    background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
-    color: var(--bg-color);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); /* Enhanced Gold shadow */
-    transform: translateY(-5px);
-  }
-  
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 215, 0, 0.2);
-    transition: all 0.5s;
-    z-index: -1;
-  }
-  
-  .btn:hover::before {
-    left: 0;
-  }
-  
-  .btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 300%;
-    height: 300%;
-    background: rgba(255, 215, 0, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.5s ease;
-    z-index: -1;
-  }
-  
-  .btn:hover::after {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  
-  .back-btn {
-    margin-top: 30px;
-  }
-  :root {
-    --bg-color: #0d0d0d;
-    --primary-color: #ffd700; /* Gold */
-    --secondary-color: #1a1a1a; /* Near-black */
-    --accent-color: #ff8c00; /* Dark Orange for contrast */
-    --text-color: #ffffff; /* White */
-    --font-family: 'Poppins', sans-serif;
-    --background-color: #1a1a1a; /* Added for bot-output background */
-  }
-  
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-family);
-    overflow-x: hidden;
-    cursor: none; /* Hide default cursor */
-    position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  /* =====================================================
-     Scroll Progress Bar Styles
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #0d0d0d;
+  --primary-color: #ff4d00;
+  /* Orange */
+  --secondary-color: #1a1a1a;
+  /* Near-black */
+  --accent-color: #ff8c00;
+  /* Dark Orange */
+  --text-main: #ffffff;
+  --text-muted: #cfcfcf;
+  --card-bg: #141414;
+  --line-color: #262626;
+  --font-family: 'Inter', sans-serif;
+  --font-tech: 'Space Mono', monospace;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+  cursor: none;
+  /* Fallback */
+}
+
+/* =====================================================
+     Scroll Progress
   ===================================================== */
-  #scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: var(--primary-color); /* Gold */
-    width: 0%;
-    z-index: 10000; /* Ensure it's above other elements */
-    transition: width 0.25s ease;
-  }
-  
-  /* =====================================================
-     Custom Cursor Styles
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--primary-color);
+  width: 0%;
+  z-index: 10000;
+  transition: width 0.25s ease;
+}
+
+/* =====================================================
+     Hero Section
   ===================================================== */
-  .cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    mix-blend-mode: difference;
-    transition: transform 0.2s ease, background 0.3s ease;
-  }
-  
-  .cursor--active {
-    transform: translate(-50%, -50%) scale(1.5);
-    background: var(--accent-color);
-  }
-  
-  /* =====================================================
-     Hero Section Styles
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  overflow: hidden;
+}
+
+.background-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+#main-title {
+  color: var(--primary-color);
+  font-family: var(--font-tech);
+  font-size: 4rem;
+  letter-spacing: -2px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#sub-title {
+  color: var(--accent-color);
+  font-family: var(--font-family);
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  display: block;
+}
+
+/* =====================================================
+     Project Layout
   ===================================================== */
-  #hero {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    overflow: hidden;
-  }
-  
-  .background-particles {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1; /* Behind hero content */
-    pointer-events: auto; /* Enable pointer events */
-  }
-  
-  .hero-content {
-    position: relative;
-    z-index: 2; /* Above particles.js */
-    text-align: center;
-  }
-  
-  .hero-content * {
-    pointer-events: auto; /* Enable pointer events on child elements */
-  }
-  
-  #main-title {
-    color: var(--primary-color);
-    font-size: 4rem;
-    text-align: center;
-    animation: fadeInTitle 2s ease-in-out;
-  }
-  
-  #sub-title {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-    margin-top: 20px;
-    display: block;
-    animation: fadeInTyped 2s ease-in-out;
-  }
-  
-  @keyframes fadeInTitle {
-    0% {
-      opacity: 0;
-      transform: translateY(-50px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeInTyped {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* =====================================================
-     Project Overview Styles
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.project-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* =====================================================
+     Left Column (Bot Interface)
   ===================================================== */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
+.column.left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.bot-messages-box {
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid var(--primary-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(255, 77, 0, 0.15);
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.bot-messages-box h3 {
+  color: var(--primary-color);
+  font-family: var(--font-tech);
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+#bot-output {
+  background-color: #000;
+  padding: 15px;
+  border-radius: 4px;
+  height: 350px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 77, 0, 0.3);
+  color: #00ff00;
+  /* Classic Terminal Green */
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Scrollbar for logs */
+#bot-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+#bot-output::-webkit-scrollbar-track {
+  background: #111;
+}
+
+#bot-output::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+/* Log Messages */
+.log-msg {
+  color: #888;
+}
+
+.system-msg {
+  color: #fff;
+  border-left: 2px solid var(--primary-color);
+  padding-left: 8px;
+}
+
+.success-msg {
+  color: #00ffaa;
+}
+
+.info-msg {
+  color: #00ccff;
+}
+
+.action-msg {
+  color: #ffaa00;
+  font-weight: bold;
+}
+
+.error-msg {
+  color: #ff4444;
+}
+
+.message {
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+
+/* =====================================================
+     Right Column (Info)
+  ===================================================== */
+.column.right {
+  flex: 1.5;
+  min-width: 300px;
+}
+
+.key-features h3,
+.technical-specs h3,
+.github-link h3 {
+  color: var(--primary-color);
+  font-family: var(--font-tech);
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  border-left: 3px solid var(--primary-color);
+  padding-left: 15px;
+}
+
+.key-features p,
+.key-features li,
+.technical-specs li {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.key-features strong {
+  color: var(--text-main);
+  font-family: var(--font-tech);
+}
+
+/* Buttons */
+.btn-tech {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-family: var(--font-tech);
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-tech:hover {
+  background: rgba(255, 77, 0, 0.1);
+  box-shadow: 0 0 15px rgba(255, 77, 0, 0.4);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.btn-tech.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* =====================================================
+     Responsive
+  ===================================================== */
+@media (max-width: 900px) {
   .project-overview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-top: 40px;
+    flex-direction: column;
   }
-  
-  /* =====================================================
-     Left Column Styles
-  ===================================================== */
-  .column.left {
-    flex: 1;
-    min-width: 300px;
+
+  #main-title {
+    font-size: 2.5rem;
   }
-  
-  /* Bot Messages Box */
-  .bot-messages-box {
-    background-color: var(--secondary-color);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-    margin-bottom: 30px;
-  }
-  
-  .bot-messages-box h3 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  #bot-output {
-    background-color: var(--background-color);
-    padding: 15px;
-    border-radius: 5px;
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid var(--primary-color);
-    color: var(--text-color);
-    font-family: monospace;
-    white-space: pre-wrap; /* Preserves formatting */
-  }
-  
-  /* Message Styling */
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: var(--secondary-color);
-    border-left: 4px solid var(--primary-color);
-    border-radius: 3px;
-  }
-  
-  .message p {
-    margin: 0;
-    font-size: 1em;
-    color: var(--text-color);
-  }
-  
-  /* Technical Specifications */
-  .technical-specs {
-    margin-bottom: 30px;
-  }
-  
-  .technical-specs h3 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-    margin-bottom: 20px;
-  }
-  
-  .technical-specs ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  .technical-specs li {
-    margin-bottom: 10px;
-    font-size: 1.1em;
-  }
-  
-  .technical-specs li strong {
-    color: var(--primary-color);
-  }
-  
-  /* =====================================================
-     Right Column Styles
-  ===================================================== */
-  .column.right {
-    flex: 1.5;
-    min-width: 300px;
-  }
-  
-  .key-features {
-    margin-bottom: 30px;
-  }
-  
-  .key-features h3 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-    margin-bottom: 20px;
-  }
-  
-  .key-features ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  .key-features li {
-    margin-bottom: 10px;
-    font-size: 1.1em;
-  }
-  
-  /* GitHub Link Styles */
-  .github-link {
-    text-align: center;
-  }
-  
-  .github-link h3 {
-    color: var(--primary-color);
-    font-size: 1.8em;
-    margin-bottom: 10px;
-  }
-  
-  .github-link p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-  }
-  
-  .github-btn {
-    background: var(--primary-color);
-    color: var(--bg-color);
-    padding: 10px 20px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-size: 1em;
-    transition: background 0.3s, transform 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .github-btn:hover {
-    background: var(--accent-color);
-    transform: translateY(-5px);
-  }
-  
-  /* =====================================================
-     Back to Top Button Styles
-  ===================================================== */
-  .back-to-top {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    background: var(--primary-color);
-    color: #fff;
-    padding: 15px;
-    border-radius: 50%;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease, background 0.3s, color 0.3s;
-    z-index: 1000;
-  }
-  
-  .back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  .back-to-top:hover {
-    background: var(--text-color);
-    color: var(--primary-color);
-  }
-  
-  .back-to-top .arrow.up {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 3px 3px 0;
-    transform: rotate(-135deg);
-    transition: border-color 0.3s;
-  }
-  
-  .back-to-top .arrow.up:hover {
-    border-color: var(--primary-color);
-  }
-  
-  /* =====================================================
-     Footer Styles
-  ===================================================== */
-  footer {
-    background: var(--bg-color);
-    text-align: center;
-    padding: 25px 0;
-    margin-top: 120px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  
-  footer.aos-animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  footer p {
-    color: var(--text-color);
-    font-size: 1em;
-  }
-  
-  /* =====================================================
-     Additional Animations
-  ===================================================== */
-  @keyframes slideInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  footer.aos-animate {
-    animation: slideInUp 0.6s forwards;
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  
-  .technical-specs.aos-animate,
-  .key-features.aos-animate,
-  .github-link.aos-animate,
-  .bot-messages-box.aos-animate {
-    animation: fadeInUp 0.6s forwards;
-  }
-  
-  /* =====================================================
-     Responsive Design
-  ===================================================== */
-  @media (max-width: 1200px) {
-    .project-overview {
-      flex-direction: column;
-    }
-    
-    .column.left,
-    .column.right {
-      width: 100%;
-    }
-    
-    .github-btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    #main-title {
-      font-size: 2.5rem;
-    }
-  
-    #sub-title {
-      font-size: 1.2rem;
-    }
-  
-    .github-btn {
-      font-size: 0.9rem;
-      padding: 10px 15px;
-    }
-  
-    .bot-messages-box h3,
-    .key-features h3,
-    .technical-specs h3,
-    .github-link h3 {
-      font-size: 1.5em;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .github-btn {
-      padding: 8px 12px;
-      font-size: 0.8rem;
-    }
-  
-    #bot-output {
-      height: 150px;
-    }
-  }
-  
+}

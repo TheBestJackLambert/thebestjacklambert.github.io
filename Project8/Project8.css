@@ -11,7 +11,7 @@
   --line: #282828;
   --text: #f6f6f6;
   --muted: #c9c9c9;
-  --primary: #ffd700;
+  --primary: #ff4d00;
   --accent: #ff8c00;
   --radius-lg: 18px;
   --radius-md: 14px;
@@ -22,7 +22,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: radial-gradient(circle at top, rgba(255, 215, 0, 0.08), transparent 55%), var(--bg);
+  background: radial-gradient(circle at top, rgba(255, 77, 0, 0.08), transparent 55%), var(--bg);
   color: var(--text);
   font-family: var(--font);
   line-height: 1.65;
@@ -72,7 +72,7 @@ a:hover { text-decoration: underline; }
 .project-hero {
   position: relative;
   padding: 120px 0 88px;
-  background: linear-gradient(160deg, rgba(255, 215, 0, 0.12), rgba(0, 0, 0, 0)) no-repeat, var(--bg-alt);
+  background: linear-gradient(160deg, rgba(255, 77, 0, 0.12), rgba(0, 0, 0, 0)) no-repeat, var(--bg-alt);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -153,8 +153,8 @@ a:hover { text-decoration: underline; }
 .project-tags span {
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 215, 0, 0.12);
-  border: 1px solid rgba(255, 215, 0, 0.25);
+  background: rgba(255, 77, 0, 0.12);
+  border: 1px solid rgba(255, 77, 0, 0.25);
   color: var(--primary);
   font-size: 0.82rem;
 }
@@ -186,10 +186,10 @@ a:hover { text-decoration: underline; }
 
 .btn:hover,
 .btn:focus-visible {
-  background: rgba(255, 215, 0, 0.18);
-  border-color: rgba(255, 215, 0, 0.5);
+  background: rgba(255, 77, 0, 0.18);
+  border-color: rgba(255, 77, 0, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(255, 215, 0, 0.18);
+  box-shadow: 0 10px 24px rgba(255, 77, 0, 0.18);
   text-decoration: none;
 }
 
@@ -310,8 +310,8 @@ a:hover { text-decoration: underline; }
 }
 
 .gallery-nav:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: rgba(255, 215, 0, 0.45);
+  background: rgba(255, 77, 0, 0.2);
+  border-color: rgba(255, 77, 0, 0.45);
 }
 
 .gallery-nav.prev { left: 14px; }
@@ -436,9 +436,9 @@ a:hover { text-decoration: underline; }
 }
 
 .code-tab.active {
-  background: rgba(255, 215, 0, 0.18);
+  background: rgba(255, 77, 0, 0.18);
   color: var(--text);
-  border-color: rgba(255, 215, 0, 0.4);
+  border-color: rgba(255, 77, 0, 0.4);
 }
 
 .code-toolbar {

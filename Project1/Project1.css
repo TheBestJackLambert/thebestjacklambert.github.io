@@ -1,5 +1,7 @@
+/* Project1.css - Theremin */
+
 /* =====================================================
-   Reset and Base Styles
+   Base + Theme
 ===================================================== */
 * {
   margin: 0;
@@ -9,466 +11,207 @@
 
 :root {
   --bg-color: #0d0d0d;
-  --primary-color: #ffd700; /* Gold */
-  --secondary-color: #1a1a1a; /* Near-black */
-  --accent-color: #ff8c00; /* Dark Orange for contrast */
-  --text-color: #ffffff; /* White */
-  --font-family: 'Poppins', sans-serif;
+  --primary-color: #ff4d00;
+  /* Orange */
+  --secondary-color: #1a1a1a;
+  /* Near-black */
+  --accent-color: #ff8c00;
+  /* Dark Orange */
+  --text-main: #ffffff;
+  --text-muted: #cfcfcf;
+  --card-bg: #141414;
+  --line-color: #262626;
+  --font-family: 'Inter', sans-serif;
+  --font-tech: 'Space Mono', monospace;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background: var(--bg-color);
+  color: var(--text-main);
   font-family: var(--font-family);
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor */
-  position: relative;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: none;
 }
 
-/* =====================================================
-   Custom Cursor Styles
-===================================================== */
-.cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  background: gold;
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  mix-blend-mode: difference;
-}
-
-/* =====================================================
-   Scroll Progress Bar Styles
-===================================================== */
 #scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   height: 4px;
-  background: var(--primary-color); /* Gold */
+  background: var(--primary-color);
   width: 0%;
-  z-index: 10000; /* Ensure it's above other elements */
+  z-index: 10000;
   transition: width 0.25s ease;
 }
 
 /* =====================================================
-   Project Details Section
+     Hero Section
 ===================================================== */
-#project-details {
+.project-hero {
   position: relative;
-  padding: 120px 0;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  overflow: hidden;
-}
-
-#particles-js {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-}
-
-#project-details .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-  position: relative;
-}
-
-#project-details h2 {
-  text-align: center;
-  font-size: 3em;
-  margin-bottom: 60px;
-  color: var(--primary-color); /* Gold */
-  min-height: 1.2em; /* Prevent layout shift */
-}
-
-#typed-text {
-  border-right: 0.15em solid var(--text-color);
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
-}
-
-/* =====================================================
-   Project Overview Styles
-===================================================== */
-.project-overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 50px;
-  align-items: start;
-  justify-items: center;
-}
-
-.project-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  align-items: start;
-}
-
-.project-images h3 {
-  color: var(--primary-color);
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.project-image {
-  width: 100%;
-  max-width: 300px; /* Adjust as needed */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  object-fit: cover;
-}
-
-.project-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.project-description {
-  flex: 1;
-  min-width: 350px;
-  opacity: 0; /* For animation */
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.project-description.aos-animate { /* Updated from .active */
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.project-description h3 {
-  color: var(--primary-color); /* Gold */
-  margin-bottom: 15px;
-  font-size: 1.5em;
-}
-
-.project-description p {
-  font-size: 1.1em;
-  line-height: 1.8;
-  margin-bottom: 25px;
-}
-
-.project-description ul {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 25px;
-}
-
-.project-description ul li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  color: var(--text-color);
-  font-size: 1.1em;
-}
-
-.project-description ul li .check-icon {
-  color: var(--primary-color);
-  font-weight: bold;
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-
-.presentation-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-  height: 0;
-  overflow: hidden;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Gold shadow */
-  margin-top: 25px;
-}
-
-.presentation-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  opacity: 0; /* For animation */
-  transform: scale(0.95);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.presentation-container.aos-animate iframe { /* Updated from .active iframe */
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* =====================================================
-   Button Styles
-===================================================== */
-.btn {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  padding: 15px 35px;
-  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-  color: var(--text-color);
-  border: none;
-  border-radius: 50px;
-  font-size: 1.1em;
-  cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
-  text-decoration: none;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); /* Gold shadow */
-}
-
-.btn:hover {
-  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
-  color: var(--bg-color);
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); /* Enhanced Gold shadow */
-  transform: translateY(-5px);
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 215, 0, 0.2);
-  transition: all 0.5s;
-  z-index: -1;
-}
-
-.btn:hover::before {
-  left: 0;
-}
-
-.btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background: rgba(255, 215, 0, 0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s ease;
-  z-index: -1;
-}
-
-.btn:hover::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.back-btn {
-  margin-top: 30px;
-}
-
-/* =====================================================
-   Back to Top Button Styles
-===================================================== */
-.back-to-top {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  background: var(--primary-color); /* Gold */
-  color: #fff;
-  padding: 15px;
-  border-radius: 50%;
-  text-decoration: none;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease, background 0.3s, color 0.3s;
-  z-index: 1000;
+  background: none;
+  overflow: hidden;
+  text-align: center;
 }
 
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible;
+.project-hero h1 {
+  font-family: var(--font-tech);
+  font-size: 4rem;
+  letter-spacing: -2px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
 }
 
-.back-to-top:hover {
-  background: var(--text-color);
-  color: var(--primary-color); /* Gold */
+.project-hero .lead {
+  font-family: var(--font-family);
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
 }
 
-.back-to-top .arrow.up {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border: solid #fff;
-  border-width: 0 3px 3px 0;
-  transform: rotate(-135deg);
-  transition: border-color 0.3s;
+/* =====================================================
+     Content Sections
+===================================================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.back-to-top .arrow.up:hover {
+.project-section {
+  padding: 80px 0;
+}
+
+.section-header {
+  font-family: var(--font-tech);
+  color: var(--text-main);
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 20px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+/* Technical Specs & Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.gallery-item {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 77, 0, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
   border-color: var(--primary-color);
 }
 
-/* =====================================================
-   Footer Styles
-===================================================== */
-footer {
-  background: var(--bg-color);
-  text-align: center;
-  padding: 25px 0;
-  margin-top: 120px;
-  opacity: 0; /* For animation */
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-footer.aos-animate { /* Updated from .active */
-  opacity: 1;
-  transform: translateY(0);
+/* Presentation */
+.presentation-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+  border: 1px solid rgba(255, 77, 0, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-footer p {
-  color: var(--text-color);
-  font-size: 1em;
-}
-
-/* =====================================================
-   Additional Animations for Enhanced Engagement
-===================================================== */
-
-/* Slide-in from bottom for footer */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-footer.aos-animate { /* Updated from .active */
-  animation: slideInUp 0.6s forwards;
-}
-
-/* Fade-in for images and descriptions */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.project-image.aos-animate,
-.project-description.aos-animate,
-.presentation-container.aos-animate iframe {
-  animation: fadeInUp 0.6s forwards;
-}
-
-/* Hover ripple effect on buttons */
-.btn::before {
-  content: '';
+.presentation-wrapper iframe {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background: rgba(255, 215, 0, 0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s ease;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
-.btn:hover::before {
-  transform: translate(-50%, -50%) scale(1);
+/* Buttons */
+.btn-tech {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-family: var(--font-tech);
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
 }
 
-/* Floating Decorative Elements */
-.floating-circle {
-  position: fixed;
-  top: 20%;
-  left: 80%;
-  width: 100px;
-  height: 100px;
-  background: rgba(255, 215, 0, 0.2);
-  border-radius: 50%;
-  z-index: -1;
-  animation: float 6s ease-in-out infinite;
+.btn-tech:hover {
+  background: rgba(255, 77, 0, 0.1);
+  box-shadow: 0 0 15px rgba(255, 77, 0, 0.4);
+  transform: translateY(-2px);
+  color: #fff;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-25px);
-  }
+/* Tech Stack Tags */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
-/* =====================================================
-   Responsive Design Adjustments for Project Page
-===================================================== */
-@media (max-width: 1200px) {
-  .project-overview {
-    grid-template-columns: 1fr 1fr;
-  }
+.tech-tag {
+  background: rgba(255, 77, 0, 0.1);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  border-radius: 4px;
 }
 
+.authority-tag {
+  background: var(--primary-color);
+  color: #000;
+  padding: 6px 12px;
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .project-overview {
-    grid-template-columns: 1fr;
+  .project-hero h1 {
+    font-size: 2.5rem;
   }
-}
 
-@media (max-width: 480px) {
-  .btn {
-    padding: 12px 25px;
-    font-size: 1em;
+  .section-header {
+    font-size: 1.5rem;
   }
-  
-  .project-image {
-    max-width: 100%;
-  }
-}
-
-/* =====================================================
-   Typing Animation Styles
-===================================================== */
-#typed-text::after {
-  content: '|'; /* Custom blinking cursor */
-  display: inline-block;
-  margin-left: 0.1em;
-  animation: blink 1s steps(2, start) infinite;
-}
-
-@keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-/* =====================================================
-   Smooth Scroll Behavior
-===================================================== */
-html {
-  scroll-behavior: smooth;
 }

@@ -55,7 +55,7 @@
 
     .code-block {
       background: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 77, 0, 0.3);
       padding: var(--spacing-lg);
       overflow-x: auto;
       font-family: var(--font-tech);
@@ -129,6 +129,14 @@
 
 <body>
 
+  <!-- Loading Screen Removed -->
+
+  <!-- Floating Orbs -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
+
   <!-- Blueprint Background -->
   <div class="blueprint-overlay"></div>
   <div class="scanline"></div>
@@ -137,26 +145,69 @@
   <div id="scroll-progress"></div>
 
   <!-- Navigation -->
-  <nav class="tech-nav">
-    <div class="nav-brand">[ JL_PROTO_V1 ] // PROJ_08</div>
-    <a href="../index.html" class="back-btn">← RETURN_TO_BASE</a>
+  <nav class="hud-nav">
+    <div class="hud-brand">[ JL ] // PROJ_08</div>
+    <ul class="hud-links">
+      <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+      <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+      <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+      <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+    </ul>
+    <div class="hud-status">
+      <div class="hud-indicator">
+        <span class="label">SCROLL</span>
+        <span class="value" id="hud-scroll">0%</span>
+      </div>
+    </div>
+    <div class="hud-toggle">
+      <span class="toggle-label">MODE</span>
+      <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+    </div>
+    <div class="hud-coords" id="hud-coords">
+      X:<span class="coord">0</span> Y:<span class="coord">0</span>
+    </div>
   </nav>
 
   <!-- Project Hero -->
   <header class="project-hero">
     <div class="container">
-      <h1 data-aos="fade-up">2-DOF ROBOT ARM</h1>
+      <div class="outcome-badge" data-aos="fade-up">Analytical Kinematics Implementation</div>
+      <h1 data-aos="fade-up" data-aos-delay="50">2-DOF ROBOT ARM</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">
-        Planar two-link arm running analytical inverse kinematics on a VEX microcontroller.
+        Analytical Inverse Kinematics driven VEX arm with servo calibration. Built to test workspace theories.
       </p>
-      <div class="tech-stack" data-aos="fade-up" data-aos-delay="200">
-        <span class="tech-tag">VEX V5</span>
-        <span class="tech-tag">ROBOTC</span>
-        <span class="tech-tag">INVERSE KINEMATICS</span>
+      <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+        <span class="authority-tag">VEX V5</span>
+        <span class="tech-tag">ROBOTICS</span>
+        <span class="tech-tag">KINEMATICS</span>
         <span class="tech-tag">PYTHON</span>
       </div>
     </div>
   </header>
+
+  <!-- Project Outcomes - Quantified Impact -->
+  <section class="project-section" style="padding-top: 40px;">
+    <div class="container">
+      <div class="project-outcome" data-aos="fade-up">
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">2-DOF</div>
+          <div class="project-outcome-label">Planar Control</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">Analytical</div>
+          <div class="project-outcome-label">IK Solver</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">Real-time</div>
+          <div class="project-outcome-label">Trajectory Calc</div>
+        </div>
+        <div class="project-outcome-item">
+          <div class="project-outcome-value">v5</div>
+          <div class="project-outcome-label">VEX Platform</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Gallery Section -->
   <section class="project-section">
@@ -213,82 +264,79 @@
   <section class="project-section">
     <div class="container">
       <div class="two-col">
-        <!-- Narrative Column -->
-        <div class="narrative-section" data-aos="fade-up">
-          <h2 class="section-header">// BUILD_NARRATIVE</h2>
+        <!-- Left Column -->
+        <div class="column left">
+          <div class="project-writeup">
+            <h3>// GOAL</h3>
+            <p>Create a robot arm with 2 degrees of freedom that can reliably reach any coordinate within two
+              popsicle-stick lengths of the base.</p>
 
-          <h3>// GOAL</h3>
-          <p>Create a robot arm with 2 degrees of freedom that can reliably reach any coordinate within two
-            popsicle-stick lengths of the base.</p>
+            <h3 style="margin-top: 30px;">// APPROACH</h3>
+            <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder. I
+              modeled the links with equal length (L₁ = L₂ = 1) so the analytical IK routine stays compact, then ported
+              that solver into RobotC.</p>
 
-          <h3>// APPROACH</h3>
-          <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder. I
-            modeled the links with equal length (L₁ = L₂ = 1) so the analytical IK routine stays compact, then ported
-            that solver into RobotC.</p>
+            <h4 style="margin-top: 15px;">FORWARD KINEMATICS</h4>
+            <div class="code-block">q1 = angle 1, q2 = angle 2
+              x = cos(q1) + cos(q1 + q2)
+              y = sin(q1) + sin(q1 + q2)</div>
 
-          <div class="equations">
-            <h4>FORWARD KINEMATICS</h4>
-            <pre>q1 = angle 1, q2 = angle 2
-x = cos(q1) + cos(q1 + q2)
-y = sin(q1) + sin(q1 + q2)</pre>
+            <h4 style="margin-top: 15px;">INVERSE KINEMATICS</h4>
+            <div class="code-block">r = x² + y²
+              q1 = acos(r/2 - 1)
+              <ul>
+                <li>Originally planned upper servo at second stick, switched to chain and gear for stability</li>
+                <li>Changed from numerical to analytical approach after seeing RobotC runtime</li>
+              </ul>
+            </div>
 
-            <h4>INVERSE KINEMATICS</h4>
-            <pre>r  = x² + y²
-q1 = acos(r/2 - 1)
-q2 = atan2(y, x) - q1/2</pre>
+            <!-- Code Column -->
+            <div data-aos="fade-up" data-aos-delay="100">
+              <h2 class="section-header">// ROBOTC_CODE</h2>
+              <div class="code-block">
+                <span class="comment">// IK Controller for 2-DOF Arm</span>
+                <span class="keyword">#pragma</span> config (Motor, port2, shoulder)
+                <span class="keyword">#pragma</span> config (Motor, port3, elbow)
+
+                <span class="keyword">const float</span> PI = <span class="number">3.14159265</span>;
+                <span class="keyword">const float</span> gorp = <span class="number">180.0</span>/PI;
+
+                <span class="keyword">int</span> <span class="function">toCmd</span>(float deg) {
+                <span class="keyword">if</span>(deg < <span class="number">0</span>) deg = <span
+                    class="number">0</span>;
+                  <span class="keyword">if</span>(deg > <span class="number">120</span>) deg = <span
+                    class="number">120</span>;
+                  <span class="keyword">return</span> (<span class="keyword">int</span>)(-<span
+                    class="number">127</span> +
+                  (deg * (<span class="number">254.0</span>/<span class="number">120.0</span>)));
+                  }
+
+                  <span class="keyword">float</span> <span class="function">elbo</span>(float x, float y) {
+                  <span class="keyword">float</span> r = pow(x,<span class="number">2</span>) + pow(y,<span
+                    class="number">2</span>);
+                  <span class="keyword">float</span> q1 = acos(r/<span class="number">2</span> - <span
+                    class="number">1</span>);
+                  <span class="keyword">return</span> q1;
+                  }
+
+                  <span class="keyword">float</span> <span class="function">sholder</span>(float x, float y) {
+                  <span class="keyword">float</span> b = elbo(x, y);
+                  <span class="keyword">float</span> q2 = atan2(y, x) - b/<span class="number">2</span>;
+                  <span class="keyword">return</span> q2;
+                  }
+
+                  <span class="keyword">task</span> <span class="function">main</span>() {
+                  <span class="keyword">float</span> k = <span class="number">1</span>, l = <span
+                    class="number">1</span>;
+                  motor[shoulder] = toCmd(sholder(k,l)*gorp);
+                  motor[elbow] = toCmd(elbo(k,l)*gorp);
+                  <span class="keyword">while</span>(<span class="keyword">true</span>) wait1Msec(<span
+                    class="number">20</span>);
+                  }
+              </div>
+            </div>
           </div>
-
-          <h3>// ITERATION_NOTES</h3>
-          <ul>
-            <li>Originally planned upper servo at second stick, switched to chain and gear for stability</li>
-            <li>Changed from numerical to analytical approach after seeing RobotC runtime</li>
-          </ul>
         </div>
-
-        <!-- Code Column -->
-        <div data-aos="fade-up" data-aos-delay="100">
-          <h2 class="section-header">// ROBOTC_CODE</h2>
-          <div class="code-block">
-            <span class="comment">// IK Controller for 2-DOF Arm</span>
-            <span class="keyword">#pragma</span> config (Motor, port2, shoulder)
-            <span class="keyword">#pragma</span> config (Motor, port3, elbow)
-
-            <span class="keyword">const float</span> PI = <span class="number">3.14159265</span>;
-            <span class="keyword">const float</span> gorp = <span class="number">180.0</span>/PI;
-
-            <span class="keyword">int</span> <span class="function">toCmd</span>(float deg) {
-            <span class="keyword">if</span>(deg < <span class="number">0</span>) deg = <span class="number">0</span>;
-              <span class="keyword">if</span>(deg > <span class="number">120</span>) deg = <span
-                class="number">120</span>;
-              <span class="keyword">return</span> (<span class="keyword">int</span>)(-<span class="number">127</span> +
-              (deg * (<span class="number">254.0</span>/<span class="number">120.0</span>)));
-              }
-
-              <span class="keyword">float</span> <span class="function">elbo</span>(float x, float y) {
-              <span class="keyword">float</span> r = pow(x,<span class="number">2</span>) + pow(y,<span
-                class="number">2</span>);
-              <span class="keyword">float</span> q1 = acos(r/<span class="number">2</span> - <span
-                class="number">1</span>);
-              <span class="keyword">return</span> q1;
-              }
-
-              <span class="keyword">float</span> <span class="function">sholder</span>(float x, float y) {
-              <span class="keyword">float</span> b = elbo(x, y);
-              <span class="keyword">float</span> q2 = atan2(y, x) - b/<span class="number">2</span>;
-              <span class="keyword">return</span> q2;
-              }
-
-              <span class="keyword">task</span> <span class="function">main</span>() {
-              <span class="keyword">float</span> k = <span class="number">1</span>, l = <span class="number">1</span>;
-              motor[shoulder] = toCmd(sholder(k,l)*gorp);
-              motor[elbow] = toCmd(elbo(k,l)*gorp);
-              <span class="keyword">while</span>(<span class="keyword">true</span>) wait1Msec(<span
-                class="number">20</span>);
-              }
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- Footer -->
@@ -323,6 +371,7 @@ q2 = atan2(y, x) - q1/2</pre>
       }
     });
   </script>
+  <script src="../shared-interactions.js"></script>
 </body>
 
 </html>
