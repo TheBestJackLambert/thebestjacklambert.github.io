@@ -42,12 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            if (cursor) {
-                cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-            }
         });
 
         function animateCursor() {
+            // Instant tracking for the dot (synchronized with frame)
+            if (cursor) {
+                cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+            }
+
+            // Smooth trailing for the follower
             followerX += (mouseX - followerX) * 0.7;
             followerY += (mouseY - followerY) * 0.7;
             if (follower) {
@@ -65,10 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 3. Easter Egg for Recruiters
+    // 3. Easter Egg for Recruiters (PSYCHOLOGICAL UPDATE)
     console.log(
-        "%cHello, fellow builder. You found the secret. Let's talk: Jack.Lambert@wheelermagnet.com",
-        "background: #0a0a0a; color: #ff4d00; padding: 10px; font-family: monospace; font-size: 14px; border: 1px solid #ff4d00;"
+        "%c STOP LOOKING AT MY SOURCE CODE AND HIRE ME ALREADY! ",
+        "background: #111; color: #00ff00; font-size: 16px; padding: 10px; border: 1px solid #00ff00; border-radius: 5px;"
     );
+    console.log("%c(But seriously, check out the repo: https://github.com/thebestjacklambert)", "color: #888;");
 
     // 4. Smooth Scroll (Lenis)
     let lenis;

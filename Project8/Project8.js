@@ -7,22 +7,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     /* ---------- Custom cursor ---------- */
-    const cursor = $('.cursor');
-    if (cursor) {
-      const moveCursor = (event) => {
-        cursor.style.left = `${event.clientX}px`;
-        cursor.style.top = `${event.clientY}px`;
-      };
-      document.addEventListener('pointermove', moveCursor, { passive: true });
-
-      const interactive = $$('a, button, .code-tab, .gallery-nav');
-      interactive.forEach((el) => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--active'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--active'));
-      });
-
-      window.addEventListener('touchstart', () => { cursor.style.display = 'none'; }, { once: true });
-    }
+    /* ---------- Custom cursor ---------- */
+    // Cursor logic now handled by shared-interactions.js
 
     /* ---------- Scroll progress ---------- */
     const progress = $('#scroll-progress');

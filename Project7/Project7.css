@@ -206,7 +206,8 @@ body {
   position: relative;
 }
 
-.canvas-container.small canvas {
+.canvas-container.small canvas,
+.canvas-container.small svg {
   width: 100%;
   height: auto;
   display: block;

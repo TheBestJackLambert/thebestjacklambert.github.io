@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     interactivity: {
       detect_on: 'canvas',
-      events: { 
-        onhover: { enable: true, mode: 'repulse' }, 
-        onclick: { enable: true, mode: 'push' } 
+      events: {
+        onhover: { enable: true, mode: 'repulse' },
+        onclick: { enable: true, mode: 'push' }
       },
     },
     retina_detect: true,
@@ -39,17 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Particles.js initialized successfully.');
 
-  // Custom Cursor Movement
-  const cursor = document.querySelector('.cursor');
-
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-    });
-  } else {
-    console.error('Cursor element not found.');
-  }
+  // Custom Cursor Logic handled by shared-interactions.js
 
   // Back to Top Button Functionality
   const backToTop = document.querySelector('.back-to-top');

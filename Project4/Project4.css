@@ -82,7 +82,7 @@ body {
 
 #main-title {
   color: var(--primary-color);
-  font-family: var(--font-tech);
+  /* font-family: var(--font-tech); Removed to match P8 design */
   font-size: 4rem;
   letter-spacing: -2px;
   text-align: center;

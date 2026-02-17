@@ -97,17 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
     yearSpan.textContent = new Date().getFullYear();
   }
 
-  // 8. Contact Modal Logic
-  const modal = document.getElementById('email-modal'); // If you kept the modal
-  const contactBtn = document.getElementById('tutoring-btn'); // If button exists
-  if (modal && contactBtn) {
-    const closeBtn = modal.querySelector('.close-btn');
-    contactBtn.addEventListener('click', () => modal.style.display = 'block');
-    closeBtn.addEventListener('click', () => modal.style.display = 'none');
-    window.addEventListener('click', (e) => {
-      if (e.target == modal) modal.style.display = 'none';
-    });
-  }
 
 });
 

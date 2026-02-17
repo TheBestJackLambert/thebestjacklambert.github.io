@@ -216,20 +216,24 @@ class RobotArm {
 /* ============================================================================
    APP CONTROLLER (INSTANCE)
    ============================================================================ */
+/* ============================================================================
+   APP CONTROLLER (INSTANCE) - VECTOR SVW VERSION
+   ============================================================================ */
 class App {
   constructor(config) {
-    this.canvas = document.getElementById(config.canvasId);
-    if (!this.canvas) return;
+    this.svg = document.getElementById(config.canvasId);
+    if (!this.svg) return;
 
-    this.ctx = this.canvas.getContext('2d');
     this.controlsContainer = document.getElementById(config.controlsId);
     this.container = document.getElementById(config.containerId);
     this.mode = config.mode;
+    this.svgNS = "http://www.w3.org/2000/svg";
 
     this.width = 400;
     this.height = 300;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+    // SVGs scale automatically, but we set internal viewBox
+    this.svg.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
+    this.svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
     this.arm = new RobotArm(this.mode);
 
@@ -241,10 +245,14 @@ class App {
 
     this.uiRefs = {};
 
+    // SVG Groups for layering
+    this.groups = {};
+
     this.init();
   }
 
   init() {
+    this.createLayers();
     this.setupListeners();
     let count = 3;
     if (this.mode.includes('3D')) count = 4;
@@ -252,12 +260,32 @@ class App {
     this.loop();
   }
 
+  createLayers() {
+    // Clear existing
+    this.svg.innerHTML = '';
+
+    // Background Color
+    const bg = document.createElementNS(this.svgNS, 'rect');
+    bg.setAttribute('width', '100%');
+    bg.setAttribute('height', '100%');
+    bg.setAttribute('fill', '#0a0a0a'); // Match theme
+    this.svg.appendChild(bg);
+
+    // Create groups in order
+    ['grid', 'reach', 'arm', 'target'].forEach(name => {
+      const g = document.createElementNS(this.svgNS, 'g');
+      g.id = `${name}-layer`;
+      this.svg.appendChild(g);
+      this.groups[name] = g;
+    });
+  }
+
   setupListeners() {
-    this.canvas.addEventListener('wheel', (e) => this.handleWheel(e), { passive: false });
-    this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+    this.svg.addEventListener('wheel', (e) => this.handleWheel(e), { passive: false });
+    this.svg.addEventListener('mousedown', (e) => this.handleMouseDown(e));
     window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
     window.addEventListener('mouseup', () => this.handleMouseUp());
-    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    this.svg.addEventListener('contextmenu', (e) => e.preventDefault());
 
     if (this.container) {
       const resetBtn = this.container.querySelector('[data-action="reset"]');
@@ -271,21 +299,21 @@ class App {
     }
   }
 
-  handleWheel(e) { /* ... unchanged ... */
+  handleWheel(e) {
     e.preventDefault();
     const zoomSensitivity = 0.001;
     this.camera.zoom -= e.deltaY * zoomSensitivity;
     this.camera.zoom = Math.max(0.1, Math.min(5.0, this.camera.zoom));
   }
 
-  handleMouseDown(e) { /* ... unchanged ... */
+  handleMouseDown(e) {
     const x = e.clientX;
     const y = e.clientY;
     this.lastMouse = { x, y };
 
     if (e.button === 2 || e.shiftKey) {
       this.isPanning = true;
-      this.canvas.style.cursor = 'move';
+      this.svg.style.cursor = 'move';
     } else {
       if (this.mode.includes('IK')) {
         this.isDragging = true;
@@ -294,7 +322,7 @@ class App {
     }
   }
 
-  handleMouseMove(e) { /* ... unchanged ... */
+  handleMouseMove(e) {
     if (this.isPanning) {
       const dx = e.clientX - this.lastMouse.x;
       const dy = e.clientY - this.lastMouse.y;
@@ -309,36 +337,43 @@ class App {
   handleMouseUp() {
     this.isPanning = false;
     this.isDragging = false;
-    this.canvas.style.cursor = 'default';
+    this.svg.style.cursor = 'default';
   }
 
-  handleIKInput(clientX, clientY) { /* ... unchanged ... */
-    const rect = this.canvas.getBoundingClientRect();
-    const mouseXCanvas = clientX - rect.left;
-    const mouseYCanvas = clientY - rect.top;
-    const scaleX = this.canvas.width / rect.width;
-    const scaleY = this.canvas.height / rect.height;
-    const screenX = mouseXCanvas * scaleX;
-    const screenY = mouseYCanvas * scaleY;
+  handleIKInput(clientX, clientY) {
+    const rect = this.svg.getBoundingClientRect();
+    const splitScaleX = this.width / rect.width;
+    const splitScaleY = this.height / rect.height;
 
+    // Mouse relative to SVG 0,0 (in viewbox coords)
+    const mouseX = (clientX - rect.left) * splitScaleX;
+    const mouseY = (clientY - rect.top) * splitScaleY;
+
+    // Visual Center (adjusted by pan)
     const cx = (this.width / 2) + this.camera.panX;
     const cy = (this.height / 2 + 50) + this.camera.panY;
     const visualScale = this.getScale();
 
+    // Invert the projection
+    const screenX = mouseX;
+    const screenY = mouseY;
+
     if (this.mode.includes('2D')) {
       const worldX = (screenX - cx) / visualScale;
+      // Y is flipped in Canvas/SVG relative to Cartestian
       const worldY = (cy - screenY) / visualScale;
+
       this.arm.target.x = worldX;
       this.arm.target.y = worldY;
       this.arm.target.z = 0;
     } else {
       const worldX = (screenX - cx) / visualScale;
       const worldY = (cy - screenY) / visualScale;
+      // For 3D mouse input, we map 2D plane to x/y, Z needs discrete control
       this.arm.target.x = worldX;
       this.arm.target.y = worldY;
     }
 
-    // Update Target Inputs
     this.updateTargetInputs();
   }
 
@@ -346,143 +381,101 @@ class App {
 
   setLinkCount(n) {
     n = Math.max(1, Math.min(10, n));
-
     const currentJoints = this.arm.getJoints();
     const newJoints = [];
-
     for (let i = 0; i < n; i++) {
       if (currentJoints[i]) newJoints.push(currentJoints[i]);
-      else {
-        newJoints.push({
-          length: Math.max(25, 80 * Math.pow(0.85, i)),
-          theta: 0.1,
-          axis: 'z'
-        });
-      }
+      else newJoints.push({ length: Math.max(25, 80 * Math.pow(0.85, i)), theta: 0.1, axis: 'z' });
     }
     this.arm.setJoints(newJoints);
     this.rebuildInputs();
   }
 
   rebuildInputs() {
+    // (Same logic as Canvas version, kept brevity)
     if (!this.controlsContainer) return;
     this.controlsContainer.innerHTML = '';
 
-    // --- 1. Header: Link Count Controls ---
+    // HEADER
     const headerRow = document.createElement('div');
     headerRow.className = 'control-row header';
-    headerRow.style.justifyContent = 'space-between';
-    headerRow.style.marginBottom = '10px';
-    headerRow.style.borderBottom = '1px dashed #333';
-    headerRow.style.paddingBottom = '5px';
+    headerRow.style.cssText = 'justify-content:space-between; margin-bottom:10px; border-bottom:1px dashed #333; padding-bottom:5px';
 
     const label = document.createElement('span');
-    label.textContent = `LINKS: ${this.arm.getJoints().length}`;
-    label.style.fontFamily = 'var(--font-tech)';
-    label.style.fontSize = '0.75rem';
-    label.style.color = 'var(--text-muted)';
+    label.innerText = `LINKS: ${this.arm.getJoints().length}`;
+    label.style.cssText = 'font-family:var(--font-tech); font-size:0.75rem; color:var(--text-muted)';
 
     const btnGroup = document.createElement('div');
     btnGroup.style.display = 'flex';
     btnGroup.style.gap = '5px';
 
-    const minusBtn = document.createElement('button');
-    minusBtn.textContent = '-';
-    minusBtn.className = 'btn-xs';
-    minusBtn.addEventListener('click', () => this.setLinkCount(this.arm.getJoints().length - 1));
+    const minus = document.createElement('button'); minus.className = 'btn-xs'; minus.innerText = '-';
+    minus.onclick = () => this.setLinkCount(this.arm.getJoints().length - 1);
 
-    const plusBtn = document.createElement('button');
-    plusBtn.textContent = '+';
-    plusBtn.className = 'btn-xs';
-    plusBtn.addEventListener('click', () => this.setLinkCount(this.arm.getJoints().length + 1));
+    const plus = document.createElement('button'); plus.className = 'btn-xs'; plus.innerText = '+';
+    plus.onclick = () => this.setLinkCount(this.arm.getJoints().length + 1);
 
-    btnGroup.appendChild(minusBtn);
-    btnGroup.appendChild(plusBtn);
-    headerRow.appendChild(label);
-    headerRow.appendChild(btnGroup);
-    this.controlsContainer.appendChild(headerRow);
+    btnGroup.append(minus, plus);
+    headerRow.append(label, btnGroup);
+    this.controlsContainer.append(headerRow);
 
-    // --- 2. IK Target Inputs (If IK Mode) ---
+    // TARGET INPUTS
     if (this.mode.includes('IK')) {
-      const targetRow = document.createElement('div');
-      targetRow.className = 'control-row target-inputs';
-      targetRow.style.marginBottom = '15px';
+      const row = document.createElement('div');
+      row.className = 'control-row target-inputs';
+      row.style.marginBottom = '15px';
 
-      // X Input
-      const tx = this.createInput('X', this.arm.target.x, (v) => this.arm.target.x = v);
-      const ty = this.createInput('Y', this.arm.target.y, (v) => this.arm.target.y = v);
-      targetRow.appendChild(tx.label); targetRow.appendChild(tx.input);
-      targetRow.appendChild(ty.label); targetRow.appendChild(ty.input);
-
-      // Add to uiRefs for auto-update
+      const tx = this.createInput('X', this.arm.target.x, v => this.arm.target.x = v);
+      const ty = this.createInput('Y', this.arm.target.y, v => this.arm.target.y = v);
+      row.append(tx.label, tx.input, ty.label, ty.input);
       this.uiRefs.targetX = tx.input;
       this.uiRefs.targetY = ty.input;
 
       if (this.mode.includes('3D')) {
-        const tz = this.createInput('Z', this.arm.target.z || 0, (v) => this.arm.target.z = v);
-        targetRow.appendChild(tz.label); targetRow.appendChild(tz.input);
+        const tz = this.createInput('Z', this.arm.target.z || 0, v => this.arm.target.z = v);
+        row.append(tz.label, tz.input);
         this.uiRefs.targetZ = tz.input;
       }
-      this.controlsContainer.appendChild(targetRow);
+      this.controlsContainer.append(row);
     }
 
-    // --- 3. Link Rows ---
-    const joints = this.arm.getJoints();
-    joints.forEach((j, i) => {
+    // LINKS
+    this.arm.getJoints().forEach((j, i) => {
       const row = document.createElement('div');
       row.className = 'control-row';
 
-      const lLabel = document.createElement('label');
-      lLabel.textContent = `L${i + 1}`;
+      const lbl = document.createElement('label'); lbl.innerText = `L${i + 1}`;
+      const lInp = document.createElement('input'); lInp.type = 'number'; lInp.value = Math.round(j.length);
+      lInp.oninput = e => j.length = parseFloat(e.target.value);
+      row.append(lbl, lInp);
 
-      const lInp = document.createElement('input');
-      lInp.type = 'number';
-      lInp.value = Math.round(j.length);
-      lInp.addEventListener('input', (e) => { j.length = parseFloat(e.target.value); });
-
-      row.appendChild(lLabel);
-      row.appendChild(lInp);
-
-      // Angle: If FK, Editable. If IK, Read-Only.
-      const tInp = document.createElement('input');
-      tInp.type = 'number';
-      tInp.value = Math.round(Math3D.toDeg(j.theta));
-      tInp.step = 5;
-
+      const tInp = document.createElement('input'); tInp.type = 'number';
+      tInp.value = Math.round(Math3D.toDeg(j.theta)); tInp.step = 5;
       if (this.mode.includes('IK')) {
-        tInp.readOnly = true;
-        tInp.style.opacity = '0.6';
-        tInp.style.borderStyle = 'dashed';
-        tInp.title = 'Calculated Angle';
-        // Store ref to update in loop
+        tInp.readOnly = true; tInp.style.opacity = '0.6'; tInp.style.borderStyle = 'dashed';
         j._domInput = tInp;
       } else {
-        tInp.addEventListener('input', (e) => { j.theta = Math3D.toRad(parseFloat(e.target.value)); });
+        tInp.oninput = e => j.theta = Math3D.toRad(parseFloat(e.target.value));
       }
-      row.appendChild(tInp);
+      row.append(tInp);
 
       if (this.mode.includes('3D')) {
-        const axisSel = document.createElement('select');
+        const sel = document.createElement('select');
         ['x', 'y', 'z'].forEach(ax => {
-          const opt = document.createElement('option');
-          opt.value = ax;
-          opt.text = ax.toUpperCase();
+          const opt = document.createElement('option'); opt.value = ax; opt.text = ax.toUpperCase();
           if (j.axis === ax) opt.selected = true;
-          axisSel.appendChild(opt);
+          sel.appendChild(opt);
         });
-        axisSel.addEventListener('change', (e) => { j.axis = e.target.value; });
-        row.appendChild(axisSel);
+        sel.onchange = e => j.axis = e.target.value;
+        row.appendChild(sel);
       }
-
       this.controlsContainer.appendChild(row);
     });
 
-    // --- 4. Output Section ---
-    const outputRow = document.createElement('div');
-    outputRow.className = 'output-row';
-    outputRow.textContent = '...';
-    this.controlsContainer.appendChild(outputRow);
-    this.uiRefs.output = outputRow;
+    const outRow = document.createElement('div');
+    outRow.className = 'output-row';
+    this.controlsContainer.append(outRow);
+    this.uiRefs.output = outRow;
   }
 
   createInput(labelName, val, callback) {
@@ -498,45 +491,28 @@ class App {
     return { label, input };
   }
 
-  updateTargetInputs() {
+  updateTargetInputs() { /* Same as before */
     if (!this.mode.includes('IK')) return;
-
-    if (this.uiRefs.targetX && document.activeElement !== this.uiRefs.targetX)
-      this.uiRefs.targetX.value = this.arm.target.x.toFixed(0);
-
-    if (this.uiRefs.targetY && document.activeElement !== this.uiRefs.targetY)
-      this.uiRefs.targetY.value = this.arm.target.y.toFixed(0);
-
-    if (this.mode.includes('3D') && this.uiRefs.targetZ && document.activeElement !== this.uiRefs.targetZ)
-      this.uiRefs.targetZ.value = this.arm.target.z.toFixed(0);
+    if (this.uiRefs.targetX && document.activeElement !== this.uiRefs.targetX) this.uiRefs.targetX.value = this.arm.target.x.toFixed(0);
+    if (this.uiRefs.targetY && document.activeElement !== this.uiRefs.targetY) this.uiRefs.targetY.value = this.arm.target.y.toFixed(0);
+    if (this.mode.includes('3D') && this.uiRefs.targetZ && document.activeElement !== this.uiRefs.targetZ) this.uiRefs.targetZ.value = this.arm.target.z.toFixed(0);
   }
 
-  updateOutputs(fkResult) {
+  updateOutputs(fkResult) { /* Same as before */
     if (!this.uiRefs.output) return;
-
-    const endEffector = fkResult.positions[fkResult.positions.length - 1];
-    const x = endEffector.x.toFixed(1);
-    const y = endEffector.y.toFixed(1);
-    const z = endEffector.z.toFixed(1);
+    const ee = fkResult.positions[fkResult.positions.length - 1];
+    const x = ee.x.toFixed(1); const y = ee.y.toFixed(1); const z = ee.z.toFixed(1);
 
     if (this.mode.includes('IK')) {
-      // Show Joint Angles (Solution)
       const angles = this.arm.getJoints().map(j => Math.round(Math3D.toDeg(j.theta))).join(', ');
       this.uiRefs.output.textContent = `> SOLUTION:\nAngles: [${angles}]`;
     } else {
-      // Show End Effector Position (Result)
-      if (this.mode.includes('3D')) {
-        this.uiRefs.output.textContent = `> END_EFFECTOR:\nX:${x}  Y:${y}  Z:${z}`;
-      } else {
-        this.uiRefs.output.textContent = `> END_EFFECTOR:\nX:${x}  Y:${y}`;
-      }
+      if (this.mode.includes('3D')) this.uiRefs.output.textContent = `> END_EFFECTOR:\nX:${x}  Y:${y}  Z:${z}`;
+      else this.uiRefs.output.textContent = `> END_EFFECTOR:\nX:${x}  Y:${y}`;
     }
   }
 
-  reset() {
-    this.arm.getJoints().forEach(j => j.theta = 0);
-    this.recenter();
-  }
+  reset() { this.arm.getJoints().forEach(j => j.theta = 0); this.recenter(); }
 
   getScale() {
     const totalLen = this.arm.getJoints().reduce((s, j) => s + j.length, 0);
@@ -548,7 +524,6 @@ class App {
   loop() {
     if (this.mode.includes('IK')) {
       this.arm.solveIK();
-      // Update the read-only angle inputs
       this.arm.getJoints().forEach(j => {
         if (j._domInput) j._domInput.value = Math.round(Math3D.toDeg(j.theta));
       });
@@ -556,30 +531,101 @@ class App {
 
     if (this.autoRotate && this.mode.includes('3D')) {
       this.rotationY += 0.01;
-    } else {
-      if (!this.autoRotate) this.rotationY = 0;
+    } else if (!this.autoRotate) {
+      this.rotationY = 0;
     }
 
     const fkResult = this.arm.solveFK();
     this.updateOutputs(fkResult);
     this.render(fkResult);
-
     requestAnimationFrame(() => this.loop());
   }
 
+  // --- VECTOR RENDERER ---
   render(fkResult) {
-    // ... (Render logic unchanged) ...
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.width, this.height);
-
     const cx = (this.width / 2) + this.camera.panX;
     const cy = (this.height / 2 + 50) + this.camera.panY;
     const scale = this.getScale();
+    const positions = fkResult.positions;
 
-    this.drawGrid(cx, cy, scale);
-    this.drawReach(cx, cy, scale);
+    // 1. Draw Grid
+    this.renderGrid(cx, cy, scale);
 
-    // IK Target
+    // 2. Draw Reach Radius
+    this.renderReach(cx, cy, scale);
+
+    // 3. Draw Target (IK Only)
+    this.renderTarget(cx, cy, scale);
+
+    // 4. Draw Arm
+    this.renderArm(positions, cx, cy, scale);
+  }
+
+  renderGrid(cx, cy, scale) {
+    const group = this.groups.grid;
+    // Simple approach: Clear and redraw path (efficient enough for SVG usually)
+    // Optimization: Reuse path element
+    let path = group.firstElementChild;
+    if (!path) {
+      path = document.createElementNS(this.svgNS, 'path');
+      path.setAttribute('stroke', '#1a1a1a');
+      path.setAttribute('stroke-width', '1');
+      path.setAttribute('fill', 'none');
+      group.appendChild(path);
+    }
+
+    // Axes line
+    let axesPath = group.children[1];
+    if (!axesPath) {
+      axesPath = document.createElementNS(this.svgNS, 'path');
+      axesPath.setAttribute('stroke', '#333');
+      axesPath.setAttribute('stroke-width', '2');
+      axesPath.setAttribute('fill', 'none');
+      group.appendChild(axesPath);
+    }
+
+    const step = 20 * scale;
+    let d = '';
+    const w = this.width; const h = this.height;
+
+    // Grid lines
+    if (step > 2) { // Don't render ridiculously dense grids
+      let startX = cx % step;
+      if (startX < 0) startX += step;
+      for (let x = startX; x <= w; x += step) d += `M${x},0 L${x},${h} `;
+
+      let startY = cy % step;
+      if (startY < 0) startY += step;
+      for (let y = startY; y <= h; y += step) d += `M0,${y} L${w},${y} `;
+    }
+    path.setAttribute('d', d);
+
+    // Axes
+    axesPath.setAttribute('d', `M${cx},0 L${cx},${h} M0,${cy} L${w},${cy}`);
+  }
+
+  renderReach(cx, cy, scale) {
+    const group = this.groups.reach;
+    const totalLen = this.arm.getJoints().reduce((s, j) => s + j.length, 0);
+    const r = totalLen * scale;
+
+    let circle = group.firstElementChild;
+    if (!circle) {
+      circle = document.createElementNS(this.svgNS, 'circle');
+      circle.setAttribute('stroke', 'rgba(255, 77, 0, 0.15)');
+      circle.setAttribute('fill', 'none');
+      circle.setAttribute('stroke-dasharray', '5,5');
+      group.appendChild(circle);
+    }
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    circle.setAttribute('r', Math.max(0, r));
+  }
+
+  renderTarget(cx, cy, scale) {
+    const group = this.groups.target;
+    group.innerHTML = ''; // lazy clear
+
     if (this.mode.includes('IK')) {
       let tScreen;
       if (this.mode.includes('3D')) {
@@ -588,20 +634,23 @@ class App {
         tScreen = { x: cx + this.arm.target.x * scale, y: cy - this.arm.target.y * scale };
       }
 
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.3)';
-      ctx.beginPath();
-      ctx.arc(tScreen.x, tScreen.y, 8 * this.camera.zoom, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#0ff';
-      ctx.beginPath();
-      ctx.arc(tScreen.x, tScreen.y, 3, 0, Math.PI * 2);
-      ctx.fill();
-    }
+      const halo = document.createElementNS(this.svgNS, 'circle');
+      halo.setAttribute('cx', tScreen.x); halo.setAttribute('cy', tScreen.y);
+      halo.setAttribute('r', 8 * this.camera.zoom);
+      halo.setAttribute('fill', 'rgba(0, 255, 255, 0.3)');
+      group.appendChild(halo);
 
-    // Arm
-    const positions = fkResult.positions;
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
+      const dot = document.createElementNS(this.svgNS, 'circle');
+      dot.setAttribute('cx', tScreen.x); dot.setAttribute('cy', tScreen.y);
+      dot.setAttribute('r', 3);
+      dot.setAttribute('fill', '#0ff');
+      group.appendChild(dot);
+    }
+  }
+
+  renderArm(positions, cx, cy, scale) {
+    const group = this.groups.arm;
+    group.innerHTML = ''; // lazy clear for dynamic number of links
 
     const projected = positions.map(p => {
       if (this.mode.includes('3D')) {
@@ -614,25 +663,26 @@ class App {
     for (let i = 0; i < projected.length - 1; i++) {
       const start = projected[i];
       const end = projected[i + 1];
-
       const zAvg = (start.z + end.z) / 2;
       const alpha = this.mode.includes('3D') ? Math.max(0.2, 1 - (zAvg / 1000)) : 1;
 
-      ctx.beginPath();
-      ctx.moveTo(start.x, start.y);
-      ctx.lineTo(end.x, end.y);
-      ctx.strokeStyle = `rgba(255, 77, 0, ${alpha})`;
-      ctx.lineWidth = 5 * this.camera.zoom;
-      ctx.stroke();
+      const line = document.createElementNS(this.svgNS, 'line');
+      line.setAttribute('x1', start.x); line.setAttribute('y1', start.y);
+      line.setAttribute('x2', end.x); line.setAttribute('y2', end.y);
+      line.setAttribute('stroke', `rgba(255, 77, 0, ${alpha})`);
+      line.setAttribute('stroke-width', 5 * this.camera.zoom);
+      line.setAttribute('stroke-linecap', 'round');
+      group.appendChild(line);
 
-      ctx.beginPath();
-      ctx.arc(start.x, start.y, 3 * this.camera.zoom, 0, Math.PI * 2);
-      ctx.fillStyle = '#fff';
-      ctx.fill();
+      const joint = document.createElementNS(this.svgNS, 'circle');
+      joint.setAttribute('cx', start.x); joint.setAttribute('cy', start.y);
+      joint.setAttribute('r', 3 * this.camera.zoom);
+      joint.setAttribute('fill', '#fff');
+      group.appendChild(joint);
     }
   }
 
-  orbit(p) {
+  orbit(p) { /* Same as before */
     if (this.rotationY === 0) return p;
     const cos = Math.cos(this.rotationY);
     const sin = Math.sin(this.rotationY);
@@ -641,44 +691,5 @@ class App {
       y: p.y,
       z: p.x * sin + p.z * cos
     };
-  }
-
-  drawGrid(cx, cy, scale) { /* ... unchanged ... */
-    const ctx = this.ctx;
-    const step = 20 * scale;
-
-    ctx.strokeStyle = '#1a1a1a';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-
-    const xStart = 0; const xEnd = this.width;
-    const yStart = 0; const yEnd = this.height;
-
-    for (let x = cx; x < xEnd; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, this.height); }
-    for (let x = cx; x > xStart; x -= step) { ctx.moveTo(x, 0); ctx.lineTo(x, this.height); }
-
-    for (let y = cy; y < yEnd; y += step) { ctx.moveTo(0, y); ctx.lineTo(this.width, y); }
-    for (let y = cy; y > yStart; y -= step) { ctx.moveTo(0, y); ctx.lineTo(this.width, y); }
-
-    ctx.stroke();
-
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(cx, 0); ctx.lineTo(cx, this.height);
-    ctx.moveTo(0, cy); ctx.lineTo(this.width, cy);
-    ctx.stroke();
-  }
-
-  drawReach(cx, cy, scale) { /* ... unchanged ... */
-    const ctx = this.ctx;
-    const totalLen = this.arm.getJoints().reduce((s, j) => s + j.length, 0);
-
-    ctx.strokeStyle = 'rgba(255, 77, 0, 0.15)';
-    ctx.setLineDash([5, 5]);
-    ctx.beginPath();
-    ctx.arc(cx, cy, totalLen * scale, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
   }
 }

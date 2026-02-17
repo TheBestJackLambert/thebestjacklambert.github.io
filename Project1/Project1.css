@@ -62,7 +62,7 @@ body {
 }
 
 .project-hero h1 {
-  font-family: var(--font-tech);
+  /* font-family: var(--font-tech); Removed to match P8 design (Cormorant) */
   font-size: 4rem;
   letter-spacing: -2px;
   color: var(--primary-color);

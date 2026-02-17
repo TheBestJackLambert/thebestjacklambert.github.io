@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     interactivity: {
       detect_on: 'canvas',
-      events: { 
-        onhover: { enable: true, mode: 'repulse' }, 
-        onclick: { enable: true, mode: 'push' } 
+      events: {
+        onhover: { enable: true, mode: 'repulse' },
+        onclick: { enable: true, mode: 'push' }
       },
       modes: {
         repulse: { distance: 100 },
@@ -44,26 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Particles.js initialized successfully.');
 
   // Custom Cursor Movement
-  const cursor = document.querySelector('.cursor');
-
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-    });
-
-    // Add animations to the cursor on hover over interactive elements
-    document.querySelectorAll('a, button, model-viewer').forEach(el => { // Added 'model-viewer' for interactivity
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('cursor--active');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('cursor--active');
-      });
-    });
-  } else {
-    console.error('Cursor element not found.');
-  }
+  // Custom Cursor Movement
+  // Cursor logic now handled by shared-interactions.js
 
   // Back to Top Button Functionality
   const backToTop = document.querySelector('.back-to-top');

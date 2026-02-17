@@ -83,9 +83,9 @@
     --font-display: 'Cormorant Garamond', serif;
 
     /* Mastery - Technical Monospace */
-    --font-tech: 'JetBrains Mono', 'Space Mono', monospace;
-    --font-body: 'JetBrains Mono', sans-serif;
-    /* Unifying body to mono for "Raw Code" feel or keep clean sans? Guide said "Technical Monospace for details". Let's use it for body too for that "Terminal" feel, or keep a clean sans if readable. Let's stick to the prompt: "Technical Monospace (e.g., JetBrains Mono) for details". We'll use it for body text to be safe/bold. */
+    --font-tech: 'Space Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+    /* Unifying body to Inter. */
 
     /* Spacing & Layout */
     --spacing-xs: 4px;
@@ -134,6 +134,8 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    isolation: isolate;
+    /* Fixes stacking context for negative z-index background elements */
 }
 
 /* Noise Texture Overlay - adds tactile depth */
@@ -212,6 +214,7 @@ body::before {
     mix-blend-mode: difference;
     /* Only transition non-transform props for performance */
     transition: opacity 0.3s, background-color 0.3s;
+    will-change: transform;
 }
 
 .cursor-follower {
@@ -227,6 +230,7 @@ body::before {
     mix-blend-mode: difference;
     /* CRITICAL: Do NOT transition 'transform', 'top', 'left' to avoid lag */
     transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+    will-change: transform, width, height;
 }
 
 .cursor-follower.active {
@@ -2326,6 +2330,7 @@ body.blueprint-mode .gradient-text {
     color: var(--text-primary) !important;
     -webkit-text-fill-color: var(--text-primary) !important;
 }
+
 /* ==========================================================================
    LIGHTBOX STYLES (Added for Project Page Image Viewing)
    ========================================================================== */
