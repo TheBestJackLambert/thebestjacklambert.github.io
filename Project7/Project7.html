@@ -100,8 +100,8 @@
           <div class="project-outcome-label">Kinematics</div>
         </div>
         <div class="project-outcome-item">
-          <div class="project-outcome-value">3D</div>
-          <div class="project-outcome-label">Projection</div>
+          <div class="project-outcome-value">ZERO</div>
+          <div class="project-outcome-label">External Libraries</div>
         </div>
       </div>
     </div>
@@ -114,8 +114,8 @@
 
       <!-- Documentation & Download -->
       <div style="margin-top: 20px;">
-        <h3 style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 30px;">// SOURCE CODE & VISUALIZATION
-        </h3>
+        <h1 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 30px;"> SOURCE CODE & VISUALIZATION
+        </h1>
 
         <!-- FK.py -->
         <div class="doc-section two-col-doc tech-panel">
@@ -125,18 +125,17 @@
               <a href="FK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD_SOURCE</a>
             </div>
             <p class="doc-desc">
-              <strong>AUTHENTICITY NOTE:</strong> This script uses <em>zero</em> external libraries.
+              <strong>About:</strong>
               Instead of importing `math.sin` or `numpy`, I implemented the <strong>Taylor Series expansion</strong>
               manually (`fac`, `sin`, `cos` functions) to calculate trigonometric values from scratch.
               Matrix multiplication is also handled via custom nested loops (`multiplyMatrix`).
             </p>
             <ul class="tech-list">
               <li><strong>Input:</strong> Joint Angles (aa), Link Lengths (ll).</li>
-              <li><strong>Core Logic:</strong>
-                1. Converts inputs to radians using a custom Pi approximation loop (15000 iterations).<br>
-                2. Iterates through each joint, building 3x3 Homogeneous Transformation Matrices.<br>
-                3. Manually calculates sine/cosine values using Taylor Series (25 iterations for precision).<br>
-                4. Multiplies matrices to find the final End Effector position.
+              <li><strong>Core Logic:</strong> <br>
+                1. Converts inputs to radians.<br>
+                2. Puts all joints into 3x3 Homogeneous Transformation Matrices.<br>
+                3. Multiplies matrices to find the final End Effector position.
               </li>
               <li><strong>Output:</strong> Final X, Y coordinates and orientation.</li>
             </ul>
@@ -166,19 +165,19 @@
               <a href="IK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD_SOURCE</a>
             </div>
             <p class="doc-desc">
-              <strong>AUTHENTICITY NOTE:</strong> Features a custom iterative solver implementing a <strong>Gradient
+              <strong>About:</strong> Features a custom iterative solver implementing a <strong>Gradient
                 Descent / Hill Climbing</strong> approach.
               Rather than using Jacobian matrices, it iteratively perturbs angles to minimize local error.
             </p>
             <ul class="tech-list">
               <li><strong>Input:</strong> Target (x, y), Link Lengths (ll).</li>
-              <li><strong>Core Logic:</strong>
+              <li><strong>Core Logic:</strong><br>
                 1. <strong>Reachability Check:</strong> Verifies if the target is within the total arm span.<br>
-                2. <strong>Gradient Steps:</strong> Inside the main loop, it compares the current angle to the optimal
-                vector angle.<br>
+                2. <strong>Gradient Steps:</strong> Inside the main loop, it compares the current angle to the inverse tangent of the slope from a specific join position to the target.<br>
                 3. <strong>Micro-Perturbations:</strong> If the angle is off, it nudges the joint by a fixed step size
                 of <strong>+/- 0.00005 radians</strong>.<br>
-                4. <strong>Convergence:</strong> Continues until 2.5 million iterations (`glorbulation` limit) or error
+                4. <strong>Cycles</strong> through every joint, adding one to the iteration count (glorbulation).
+                4. <strong>Convergence:</strong> Continues until 2.5 million iterations (`glorbulation` limit) or distance from target is 
                 < 0.001. </li>
               <li><strong>Output:</strong> Converged joint angles (q1, q2...) for the target.</li>
             </ul>
@@ -205,13 +204,14 @@
               <a href="3dFK.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD_SOURCE</a>
             </div>
             <p class="doc-desc">
+              <strong>About:</strong>
               Extends the manual math approach to 3D.
               Implements <code>createMatrixForJointAndLink...</code> to generate 4x4 Homogeneous Transformation Matrices
               based on the axis of rotation ('x', 'y', or 'z').
             </p>
             <ul class="tech-list">
               <li><strong>Input:</strong> Axis Strings ('x','y','z'), Angles, Lengths.</li>
-              <li><strong>Core Logic:</strong>
+              <li><strong>Core Logic:</strong><br>
                 1. Defines rotation matrices manually for each axis.<br>
                 2. Calculates `sin`/`cos` using Taylor Series (25 iterations) and recursive factorial function
                 `fac`.<br>
@@ -243,19 +243,19 @@
               <a href="3dIk.py" class="btn-small" download><i class="fas fa-download"></i> DOWNLOAD_SOURCE</a>
             </div>
             <p class="doc-desc">
-              <strong>AUTHENTICITY NOTE:</strong> A massive 700+ line script. It implements a custom <strong>Cyclic
+              <strong>About:</strong> It implements a custom <strong>Cyclic
                 Coordinate Descent (CCD)</strong> style solver from scratch.
               The logic relies on projecting 3D vectors onto 2D planes to solve for individual joint angles iteratively.
             </p>
             <ul class="tech-list">
               <li><strong>Input:</strong> Target (x,y,z), Joints.</li>
-              <li><strong>Core Logic:</strong>
+              <li><strong>Core Logic:</strong><br>
                 1. <strong>Geometric Projection:</strong> The `anglefind` function projects the vector-to-target and
-                vector-to-effector onto the plane perpendicular to each joint's rotation axis.<br>
+                vector-to-effector onto the plane perpendicular to each joint's rotation axis after adjusting for the rotations of the joints that came before it.<br>
                 2. <strong>Cyclic Descent:</strong> Iterates through each joint, calculating the angular difference
-                between these projected vectors and applying a correction.<br>
-                3. <strong>Convergence Loop:</strong> A `while` loop (capped by a `glorbulation` counter) repeats this
-                process until the distance error drops below 0.0001.
+                between these projected vectors and applying an adaptive correction depending on how large the difference is.<br>
+                3. <strong>Convergence Loop:</strong> A while loop repeats this
+                process until the distance error drops below 0.0001 or our iterations hit a certain number.
               </li>
               <li><strong>Output:</strong> List of joint angles (in radians).</li>
             </ul>
