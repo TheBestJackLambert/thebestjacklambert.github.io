@@ -69,16 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. VanillaTilt for Cards
-  if (typeof VanillaTilt !== 'undefined') {
-    VanillaTilt.init(document.querySelectorAll(".bento-card, .specs-image-wrapper"), {
-      max: 5,
-      speed: 400,
-      glare: true,
-      "max-glare": 0.1,
-      scale: 1.02
-    });
-  }
+  // 5. 3D Tilt Effect for Cards (custom implementation)
+  // Handled in section 9 below via mousemove
 
   // 6. Glitch Effect Trigger on Hover
   const glitchText = document.querySelector('.hero-title');
@@ -106,66 +98,203 @@ document.addEventListener('DOMContentLoaded', () => {
   if (filterBtns.length > 0 && projectItems.length > 0) {
     let currentFilter = 'all';
     let currentSearch = '';
+    let pendingTimers = [];
 
-    // Core function to evaluate visibility INSTANTLY
-    const evaluateVisibility = () => {
+    // Initialize cards
+    projectItems.forEach(item => {
+      item.style.display = 'flex';
+      item.style.opacity = '1';
+    });
+
+    // Cancel all pending animation timers and reset cards to clean state
+    const cancelAnimation = () => {
+      pendingTimers.forEach(id => clearTimeout(id));
+      pendingTimers = [];
+
+      projectItems.forEach(item => {
+        item.style.transition = '';
+        item.style.transform = '';
+        item.style.borderColor = '';
+        item.style.boxShadow = '';
+        item.classList.remove('card-materialize');
+      });
+    };
+
+    // Set correct display state instantly (no animation)
+    const snapToState = () => {
       projectItems.forEach(item => {
         const tags = item.getAttribute('data-tags') || '';
         const title = item.querySelector('.project-title')?.textContent.toLowerCase() || '';
         const desc = item.querySelector('.project-desc')?.textContent.toLowerCase() || '';
 
-        // Check Tag Match
         const matchesFilter = currentFilter === 'all' || tags.includes(currentFilter);
-
-        // Check Search Match
         const matchesSearch = currentSearch === '' ||
           title.includes(currentSearch) ||
           desc.includes(currentSearch) ||
           tags.includes(currentSearch);
 
-        const shouldBeVisible = matchesFilter && matchesSearch;
-
-        // INSTANT DISPLAY TOGGLE + SNAPPY ANIMATION
-        if (shouldBeVisible) {
+        if (matchesFilter && matchesSearch) {
           item.style.display = 'flex';
           item.style.opacity = '1';
-          item.classList.remove('crisp-animate');
-          void item.offsetWidth; // Force Reflow
-          item.classList.add('crisp-animate');
         } else {
           item.style.display = 'none';
-          item.classList.remove('crisp-animate');
+          item.style.opacity = '0';
         }
       });
-
-      // Refresh AOS instantly
-      if (typeof AOS !== 'undefined') {
-        AOS.refresh();
-      }
     };
 
-    // Handle Filter Button Clicks
+    // Premium two-phase "Phase Shift" transition (fully interruptible)
+    const evaluateVisibility = () => {
+      // Cancel any running animation
+      cancelAnimation();
+
+      const shouldShow = [];
+      const shouldHide = [];
+
+      projectItems.forEach(item => {
+        const tags = item.getAttribute('data-tags') || '';
+        const title = item.querySelector('.project-title')?.textContent.toLowerCase() || '';
+        const desc = item.querySelector('.project-desc')?.textContent.toLowerCase() || '';
+
+        const matchesFilter = currentFilter === 'all' || tags.includes(currentFilter);
+        const matchesSearch = currentSearch === '' ||
+          title.includes(currentSearch) ||
+          desc.includes(currentSearch) ||
+          tags.includes(currentSearch);
+
+        const isVisible = item.style.display !== 'none';
+        const wantsVisible = matchesFilter && matchesSearch;
+
+        if (wantsVisible && !isVisible) shouldShow.push(item);
+        else if (!wantsVisible && isVisible) shouldHide.push(item);
+      });
+
+      if (shouldHide.length === 0 && shouldShow.length === 0) return;
+
+      // ── PHASE 1: Exit ──────────────────────────────────
+      const exitStagger = 20;
+
+      shouldHide.forEach((item, i) => {
+        const t = setTimeout(() => {
+          item.style.transition = 'opacity 0.18s ease-in, transform 0.18s ease-in';
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.96) translateY(8px)';
+        }, i * exitStagger);
+        pendingTimers.push(t);
+      });
+
+      const exitWait = shouldHide.length > 0
+        ? 180 + (shouldHide.length * exitStagger)
+        : 30;
+
+      const phaseTwo = setTimeout(() => {
+        // Remove exited cards from layout
+        shouldHide.forEach(item => {
+          item.style.display = 'none';
+          item.style.transition = '';
+          item.style.transform = '';
+          item.style.opacity = '0';
+        });
+
+        // Prep entering cards
+        shouldShow.forEach(item => {
+          item.style.display = 'flex';
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.96) translateY(18px)';
+          item.style.transition = '';
+          item.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+          item.style.boxShadow = 'none';
+        });
+
+        void document.body.offsetHeight; // Reflow
+
+        // ── PHASE 2: Materialize ─────────────────────────
+        const enterStagger = 65;
+        shouldShow.forEach((item, i) => {
+          const enterT = setTimeout(() => {
+            item.style.transition = [
+              'opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
+              'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
+              'border-color 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+              'box-shadow 0.7s ease-out'
+            ].join(', ');
+            item.style.opacity = '1';
+            item.style.transform = 'scale(1) translateY(0)';
+
+            // Orange activation flash
+            item.style.borderColor = 'rgba(255, 77, 0, 0.6)';
+            item.style.boxShadow = '0 0 25px rgba(255, 77, 0, 0.2)';
+
+            // Scan-line sweep
+            item.classList.remove('card-materialize');
+            void item.offsetWidth;
+            item.classList.add('card-materialize');
+
+            // Fade glow back
+            const fadeT = setTimeout(() => {
+              item.style.transition = 'border-color 0.8s ease, box-shadow 0.8s ease';
+              item.style.borderColor = '';
+              item.style.boxShadow = '';
+            }, 450);
+            pendingTimers.push(fadeT);
+
+            // Cleanup
+            const cleanT = setTimeout(() => {
+              item.style.transition = '';
+              item.style.transform = '';
+              item.classList.remove('card-materialize');
+            }, 1000);
+            pendingTimers.push(cleanT);
+          }, i * enterStagger);
+          pendingTimers.push(enterT);
+        });
+
+        // AOS refresh
+        const aosT = setTimeout(() => {
+          if (typeof AOS !== 'undefined') AOS.refresh();
+        }, shouldShow.length * enterStagger + 800);
+        pendingTimers.push(aosT);
+
+      }, exitWait);
+      pendingTimers.push(phaseTwo);
+    };
+
+    // Handle Filter Button Clicks (spam-clickable)
+    let searchDebounce = null;
+
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         currentFilter = btn.getAttribute('data-filter');
 
-        // Update active class
+        // Button pulse
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        btn.style.transform = 'scale(1.08)';
+        setTimeout(() => { btn.style.transform = ''; }, 150);
 
-        evaluateVisibility();
+        // Cancel current animation, snap to correct state, then animate new changes
+        cancelAnimation();
+        snapToState();
 
-        // Update URL
+        // Tiny delay so snap settles, then run the animated transition
+        const kickoff = setTimeout(() => evaluateVisibility(), 20);
+        pendingTimers.push(kickoff);
+
         const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tag=' + currentFilter + '#projects';
         window.history.pushState({ path: newUrl }, '', newUrl);
       });
     });
 
-    // Handle Search Input
+    // Handle Search Input (debounced)
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
-        currentSearch = e.target.value.toLowerCase().trim();
-        evaluateVisibility();
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(() => {
+          currentSearch = e.target.value.toLowerCase().trim();
+          cancelAnimation();
+          snapToState();
+          setTimeout(() => evaluateVisibility(), 20);
+        }, 150);
       });
     }
 
@@ -201,14 +330,31 @@ document.addEventListener('DOMContentLoaded', () => {
    PREMIUM ENHANCEMENTS
    ========================================================================== */
 
-// 9. Card Glow Effect - tracks mouse position
-document.querySelectorAll('.bento-card, .card').forEach(card => {
+// 9. Card 3D Tilt + Glow Effect
+document.querySelectorAll('.bento-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'border-color 0.3s, background 0.3s, box-shadow 0.3s';
+  });
+
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mouse-x', x + '%');
-    card.style.setProperty('--mouse-y', y + '%');
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateY = -((x - centerX) / centerX) * 10;
+    const rotateX = -((centerY - y) / centerY) * 10;
+
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+    card.style.setProperty('--mouse-x', (x / rect.width * 100) + '%');
+    card.style.setProperty('--mouse-y', (y / rect.height * 100) + '%');
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.5s ease-out';
+    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
   });
 });
 

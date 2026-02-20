@@ -595,10 +595,9 @@ section h2::before {
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 8px 20px;
-  border-radius: 4px;
-  /* The original 4px boxy design */
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, transform 0.15s ease;
 }
 
 .filter-btn:hover {
@@ -639,8 +638,7 @@ section h2::before {
   width: 100%;
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  /* Matches 4px boxy design */
+  border-radius: 0;
   padding: 10px 15px 10px 40px;
   color: #fff;
   font-family: var(--font-tech);
@@ -667,22 +665,42 @@ section h2::before {
 
 /* Legacy CSS classes removed - Filtering happens via instant inline-styles */
 
-@keyframes crispPop {
+/* Card materialize scan-line sweep */
+@keyframes scanSweep {
   0% {
-    opacity: 0;
-    transform: scale(0.96) translateY(10px);
-    filter: blur(2px);
+    left: -100%;
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
   }
 
   100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0);
+    left: 100%;
+    opacity: 0;
   }
 }
 
-.crisp-animate {
-  animation: crispPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+.card-materialize::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 77, 0, 0.06) 20%,
+      rgba(255, 77, 0, 0.2) 50%,
+      rgba(255, 77, 0, 0.06) 80%,
+      transparent) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  animation: scanSweep 0.6s ease-out forwards !important;
+  opacity: 1 !important;
+  background-size: auto !important;
+  background-image: none !important;
 }
 
 /* ==========================================================================
@@ -690,30 +708,28 @@ section h2::before {
    ========================================================================== */
 .bento-grid {
   display: grid;
-  /* Original, orthodox predictable grid: approx 300px min width */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
 .bento-card {
   background: rgba(26, 26, 26, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  /* Original 4px boxy design */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
   padding: 25px;
   position: relative;
-  transition: all 0.3s;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
   overflow: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
 }
 
 .bento-card:hover {
   border-color: var(--accent-color);
-  transform: translateY(-5px);
-  background: rgba(26, 26, 26, 0.9);
-  /* Original hover styling */
+  background: rgba(26, 26, 26, 0.95);
+  box-shadow: 0 0 30px rgba(255, 77, 0, 0.15), inset 0 0 60px rgba(255, 77, 0, 0.03);
 }
 
 .card-image {
@@ -793,6 +809,27 @@ section h2::before {
   color: #bbb;
   margin-bottom: 20px;
   flex-grow: 1;
+}
+
+/* Cursor-tracking glow */
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle 250px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 77, 0, 0.12),
+      transparent 60%);
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
 }
 
 /* Hover "Blueprint" Effect */
