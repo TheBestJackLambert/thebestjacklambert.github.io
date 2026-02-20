@@ -163,78 +163,78 @@
     <div class="container">
       <div class="two-col">
         <!-- Left Column -->
-        <div class="column left">
+        <div class="column left" data-aos="fade-right">
           <div class="project-writeup">
             <h3>// GOAL</h3>
             <p>Create a robot arm with 2 degrees of freedom that can reliably reach any coordinate within two
               popsicle-stick lengths of the base.</p>
 
-            <h3 style="margin-top: 30px;">// APPROACH</h3>
-            <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder. I
-              modeled the links with equal length (L₁ = L₂ = 1) so the analytical IK routine stays compact, then ported
-              that solver into RobotC.</p>
+            <div class="technical-specs" style="margin-top: 30px;">
+              <h3>// APPROACH</h3>
+              <p>A horizontal two-link arm uses gear and chain to drive the elbow and a standard servo on the shoulder.
+                I modeled the links with equal length (<code>L₁ = L₂ = 1</code>) so the analytical IK routine stays
+                compact, then ported that solver into RobotC.</p>
 
-            <h4 style="margin-top: 15px;">FORWARD KINEMATICS</h4>
-            <div class="code-block">q1 = angle 1, q2 = angle 2
-              x = cos(q1) + cos(q1 + q2)
-              y = sin(q1) + sin(q1 + q2)</div>
-
-            <h4 style="margin-top: 15px;">INVERSE KINEMATICS</h4>
-            <div class="code-block">r = x² + y²
-              q1 = acos(r/2 - 1)
               <ul>
                 <li>Originally planned upper servo at second stick, switched to chain and gear for stability</li>
                 <li>Changed from numerical to analytical approach after seeing RobotC runtime</li>
               </ul>
             </div>
 
-            <!-- Code Column -->
-            <div data-aos="fade-up" data-aos-delay="100">
-              <h2 class="section-header">// SOURCE_CODE</h2>
-              <div class="code-block">
-                <span class="comment">// IK Controller for 2-DOF Arm</span>
-                <span class="keyword">#pragma</span> config (Motor, port2, shoulder)
-                <span class="keyword">#pragma</span> config (Motor, port3, elbow)
+            <div class="technical-specs" style="margin-top: 30px;">
+              <h3>// KINEMATICS</h3>
 
-                <span class="keyword">const float</span> PI = <span class="number">3.14159265</span>;
-                <span class="keyword">const float</span> gorp = <span class="number">180.0</span>/PI;
+              <h4>// FORWARD_KINEMATICS</h4>
+              <pre class="equation-block"><code>q1 = angle 1,  q2 = angle 2
+x  = cos(q1) + cos(q1 + q2)
+y  = sin(q1) + sin(q1 + q2)</code></pre>
 
-                <span class="keyword">int</span> <span class="function">toCmd</span>(float deg) {
-                <span class="keyword">if</span>(deg < <span class="number">0</span>) deg = <span
-                    class="number">0</span>;
-                  <span class="keyword">if</span>(deg > <span class="number">120</span>) deg = <span
-                    class="number">120</span>;
-                  <span class="keyword">return</span> (<span class="keyword">int</span>)(-<span
-                    class="number">127</span> +
-                  (deg * (<span class="number">254.0</span>/<span class="number">120.0</span>)));
-                  }
-
-                  <span class="keyword">float</span> <span class="function">elbo</span>(float x, float y) {
-                  <span class="keyword">float</span> r = pow(x,<span class="number">2</span>) + pow(y,<span
-                    class="number">2</span>);
-                  <span class="keyword">float</span> q1 = acos(r/<span class="number">2</span> - <span
-                    class="number">1</span>);
-                  <span class="keyword">return</span> q1;
-                  }
-
-                  <span class="keyword">float</span> <span class="function">sholder</span>(float x, float y) {
-                  <span class="keyword">float</span> b = elbo(x, y);
-                  <span class="keyword">float</span> q2 = atan2(y, x) - b/<span class="number">2</span>;
-                  <span class="keyword">return</span> q2;
-                  }
-
-                  <span class="keyword">task</span> <span class="function">main</span>() {
-                  <span class="keyword">float</span> k = <span class="number">1</span>, l = <span
-                    class="number">1</span>;
-                  motor[shoulder] = toCmd(sholder(k,l)*gorp);
-                  motor[elbow] = toCmd(elbo(k,l)*gorp);
-                  <span class="keyword">while</span>(<span class="keyword">true</span>) wait1Msec(<span
-                    class="number">20</span>);
-                  }
-              </div>
+              <h4>// INVERSE_KINEMATICS</h4>
+              <pre class="equation-block"><code>r  = x² + y²
+q1 = acos(r/2 - 1)</code></pre>
             </div>
           </div>
         </div>
+
+        <!-- Right Column -->
+        <div class="column right" data-aos="fade-left">
+          <div class="key-features tech-panel">
+            <h3>// SOURCE_CODE</h3>
+            <pre class="source-code"><code><span class="comment">// IK Controller for 2-DOF Arm</span>
+<span class="keyword">#pragma</span> config (Motor, port2, shoulder)
+<span class="keyword">#pragma</span> config (Motor, port3, elbow)
+
+<span class="keyword">const float</span> PI = <span class="number">3.14159265</span>;
+<span class="keyword">const float</span> gorp = <span class="number">180.0</span>/PI;
+
+<span class="keyword">int</span> <span class="function">toCmd</span>(float deg) {
+  <span class="keyword">if</span>(deg &lt; <span class="number">0</span>) deg = <span class="number">0</span>;
+  <span class="keyword">if</span>(deg &gt; <span class="number">120</span>) deg = <span class="number">120</span>;
+  <span class="keyword">return</span> (<span class="keyword">int</span>)(-<span class="number">127</span> + (deg * (<span class="number">254.0</span>/<span class="number">120.0</span>)));
+}
+
+<span class="keyword">float</span> <span class="function">elbo</span>(float x, float y) {
+  <span class="keyword">float</span> r = pow(x,<span class="number">2</span>) + pow(y,<span class="number">2</span>);
+  <span class="keyword">float</span> q1 = acos(r/<span class="number">2</span> - <span class="number">1</span>);
+  <span class="keyword">return</span> q1;
+}
+
+<span class="keyword">float</span> <span class="function">sholder</span>(float x, float y) {
+  <span class="keyword">float</span> b = elbo(x, y);
+  <span class="keyword">float</span> q2 = atan2(y, x) - b/<span class="number">2</span>;
+  <span class="keyword">return</span> q2;
+}
+
+<span class="keyword">task</span> <span class="function">main</span>() {
+  <span class="keyword">float</span> k = <span class="number">1</span>, l = <span class="number">1</span>;
+  motor[shoulder] = toCmd(sholder(k,l)*gorp);
+  motor[elbow] = toCmd(elbo(k,l)*gorp);
+  <span class="keyword">while</span>(<span class="keyword">true</span>) wait1Msec(<span class="number">20</span>);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->

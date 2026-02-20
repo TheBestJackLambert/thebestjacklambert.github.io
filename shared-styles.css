@@ -210,7 +210,7 @@ body::before {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 99999;
     mix-blend-mode: difference;
     /* Only transition non-transform props for performance */
     transition: opacity 0.3s, background-color 0.3s;
@@ -226,7 +226,7 @@ body::before {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9998;
+    z-index: 99998;
     mix-blend-mode: difference;
     /* CRITICAL: Do NOT transition 'transform', 'top', 'left' to avoid lag */
     transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
@@ -2385,4 +2385,34 @@ body.blueprint-mode .gradient-text {
 .lightbox-close:hover {
     transform: rotate(90deg);
     color: #fff;
+}
+
+.lightbox-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 3rem;
+    cursor: pointer;
+    font-family: var(--font-tech);
+    transition: all 0.2s ease;
+    padding: 20px;
+    z-index: 10001;
+    opacity: 0.7;
+}
+
+.lightbox-btn:hover {
+    color: var(--accent-color);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+    left: 20px;
+}
+
+.lightbox-next {
+    right: 20px;
 }

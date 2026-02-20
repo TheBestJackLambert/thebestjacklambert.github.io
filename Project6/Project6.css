@@ -128,9 +128,9 @@ body {
 
 .card {
   position: relative;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   padding: 14px
 }
 
@@ -184,11 +184,19 @@ body {
 }
 
 .stat {
-  background: linear-gradient(180deg, #101010, #0b0b0b);
-  border: 1px solid var(--line);
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 14px;
-  border-radius: 14px;
-  text-align: center
+  border-radius: 4px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
+  background: rgba(26, 26, 26, 0.9);
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
 }
 
 .stat-number {
@@ -212,12 +220,11 @@ body {
 }
 
 .skill-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   padding: 16px;
-  box-shadow: 0 0 12px rgba(255, 77, 0, .18);
-  transition: transform .25s, box-shadow .25s;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
 }
 
 .skill-card:hover {
@@ -260,10 +267,17 @@ body {
 
 .wf-step {
   position: relative;
-  background: linear-gradient(180deg, #101010, #0b0b0b);
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   padding: 14px 14px 14px 54px;
+  transition: all 0.3s;
+}
+
+.wf-step:hover {
+  border-color: var(--accent-color);
+  background: rgba(26, 26, 26, 0.9);
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
 }
 
 .wf-step h4 {
@@ -304,9 +318,9 @@ body {
 }
 
 .about-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   padding: 16px
 }
 
@@ -490,10 +504,17 @@ footer {
 }
 
 .cheat {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.cheat:hover {
+  border-color: var(--accent-color);
+  background: rgba(26, 26, 26, 0.9);
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
 }
 
 .cheat-head {

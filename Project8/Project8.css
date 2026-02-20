@@ -28,7 +28,6 @@ html {
 }
 
 body {
-  background: radial-gradient(circle at top, rgba(255, 77, 0, 0.08), transparent 55%), var(--bg);
   color: var(--text);
   font-family: var(--font);
   line-height: 1.65;
@@ -62,8 +61,6 @@ a:hover {
 .project-hero {
   position: relative;
   padding: 120px 0 88px;
-  background: linear-gradient(160deg, rgba(255, 77, 0, 0.12), rgba(0, 0, 0, 0)) no-repeat, var(--bg-alt);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .hero-content {
@@ -612,17 +609,80 @@ pre.code {
   font-weight: 600;
 }
 
-.code-block {
-  background: rgba(0, 0, 0, 0.7);
+.equation-block {
+  background: rgba(0, 0, 0, 0.55);
   border: 1px solid rgba(255, 77, 0, 0.3);
-  padding: var(--spacing-lg);
-  overflow-x: auto;
-  font-family: var(--font-tech);
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--text-muted);
   border-radius: var(--radius-md);
+  padding: 16px 20px;
   margin-top: 10px;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.equation-block code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.source-code {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 77, 0, 0.3);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  margin-top: 10px;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.source-code code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.source-code .keyword {
+  color: #ff79c6;
+}
+
+.source-code .function {
+  color: var(--accent, #ff8c00);
+}
+
+.source-code .comment {
+  color: #6272a4;
+}
+
+.source-code .number {
+  color: #bd93f9;
+}
+
+.project-writeup code,
+.technical-specs code {
+  background: rgba(255, 77, 0, 0.1);
+  border: 1px solid rgba(255, 77, 0, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.88em;
+  color: var(--primary);
+}
+
+.technical-specs h4 {
+  color: var(--accent, #ff8c00);
+  font-size: 0.95rem;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.04em;
 }
 
 .code-block .keyword {
@@ -663,27 +723,43 @@ pre.code {
   margin: 8px 0;
 }
 
-.narrative-section h3 {
+.narrative-section p,
+.project-writeup p,
+.technical-specs p {
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.narrative-section h3,
+.project-writeup h3,
+.technical-specs h3,
+.key-features h3 {
   color: var(--accent-color);
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
 }
 
-.narrative-section ul {
+.narrative-section ul,
+.technical-specs ul,
+.key-features ul {
   list-style: none;
   padding: 0;
 }
 
-.narrative-section li {
-  color: var(--text-muted);
+.narrative-section li,
+.technical-specs li,
+.key-features li {
+  color: var(--text);
   margin-bottom: 8px;
   /* var(--spacing-sm) */
-  padding-left: 16px;
+  padding-left: 20px;
   /* var(--spacing-md) */
   position: relative;
 }
 
-.narrative-section li::before {
+.narrative-section li::before,
+.technical-specs li::before,
+.key-features li::before {
   content: '>';
   position: absolute;
   left: 0;

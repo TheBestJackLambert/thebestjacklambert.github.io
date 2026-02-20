@@ -98,6 +98,103 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  // 8. Project Filtering & Search Logic [APPLE-LEVEL POLISH]
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectItems = document.querySelectorAll('.project-item');
+  const searchInput = document.getElementById('project-search');
+
+  if (filterBtns.length > 0 && projectItems.length > 0) {
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    // Core function to evaluate visibility INSTANTLY
+    const evaluateVisibility = () => {
+      projectItems.forEach(item => {
+        const tags = item.getAttribute('data-tags') || '';
+        const title = item.querySelector('.project-title')?.textContent.toLowerCase() || '';
+        const desc = item.querySelector('.project-desc')?.textContent.toLowerCase() || '';
+
+        // Check Tag Match
+        const matchesFilter = currentFilter === 'all' || tags.includes(currentFilter);
+
+        // Check Search Match
+        const matchesSearch = currentSearch === '' ||
+          title.includes(currentSearch) ||
+          desc.includes(currentSearch) ||
+          tags.includes(currentSearch);
+
+        const shouldBeVisible = matchesFilter && matchesSearch;
+
+        // INSTANT DISPLAY TOGGLE + SNAPPY ANIMATION
+        if (shouldBeVisible) {
+          item.style.display = 'flex';
+          item.style.opacity = '1';
+          item.classList.remove('crisp-animate');
+          void item.offsetWidth; // Force Reflow
+          item.classList.add('crisp-animate');
+        } else {
+          item.style.display = 'none';
+          item.classList.remove('crisp-animate');
+        }
+      });
+
+      // Refresh AOS instantly
+      if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+      }
+    };
+
+    // Handle Filter Button Clicks
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.getAttribute('data-filter');
+
+        // Update active class
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        evaluateVisibility();
+
+        // Update URL
+        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tag=' + currentFilter + '#projects';
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      });
+    });
+
+    // Handle Search Input
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearch = e.target.value.toLowerCase().trim();
+        evaluateVisibility();
+      });
+    }
+
+    // Check URL parameters on load
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagParam = urlParams.get('tag');
+
+    if (tagParam) {
+      currentFilter = tagParam;
+
+      // Find and activate the correct button
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        if (b.getAttribute('data-filter') === tagParam) {
+          b.classList.add('active');
+        }
+      });
+
+      // Small delay to ensure DOM is ready before initial filtering
+      setTimeout(() => {
+        evaluateVisibility();
+        const projectsSection = document.getElementById('projects');
+        if (projectsSection) {
+          projectsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }
+
 });
 
 /* ==========================================================================

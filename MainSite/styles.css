@@ -568,18 +568,138 @@ section h2::before {
 }
 
 /* ==========================================================================
-   SCHEMATICS (PROJECTS) - BENTO GRID
+   SCHEMATICS (PROJECTS) - FILTERING & SEARCH [ORIGINAL BOXY DESIGN]
+   ========================================================================== */
+.project-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+/* Original Filter Group */
+.project-filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 4px;
+  /* The original 4px boxy design */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 77, 0, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(255, 77, 0, 0.2);
+  /* Original neon shadow */
+}
+
+.filter-btn.active {
+  background: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(255, 77, 0, 0.4);
+}
+
+/* Original Search Bar Styled like filter buttons */
+.project-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  align-items: center;
+}
+
+.project-search-wrapper .search-icon {
+  position: absolute;
+  left: 15px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+#project-search {
+  width: 100%;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  /* Matches 4px boxy design */
+  padding: 10px 15px 10px 40px;
+  color: #fff;
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#project-search::placeholder {
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+#project-search:focus {
+  background: rgba(40, 40, 40, 0.8);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(255, 77, 0, 0.2);
+}
+
+#project-search:focus+.search-icon {
+  color: var(--accent-color);
+}
+
+/* Legacy CSS classes removed - Filtering happens via instant inline-styles */
+
+@keyframes crispPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.crisp-animate {
+  animation: crispPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+}
+
+/* ==========================================================================
+   SCHEMATICS (PROJECTS) - BOXY GRID [ORIGINAL]
    ========================================================================== */
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Original, orthodox predictable grid: approx 300px min width */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-  grid-auto-flow: dense;
 }
 
 .bento-card {
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  /* Original 4px boxy design */
   padding: 25px;
   position: relative;
   transition: all 0.3s;
@@ -593,6 +713,7 @@ section h2::before {
   border-color: var(--accent-color);
   transform: translateY(-5px);
   background: rgba(26, 26, 26, 0.9);
+  /* Original hover styling */
 }
 
 .card-image {

@@ -195,22 +195,62 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!document.querySelector('.lightbox-overlay')) {
         const lightboxOverlay = document.createElement('div');
         lightboxOverlay.className = 'lightbox-overlay';
-        lightboxOverlay.innerHTML = `<button class="lightbox-close">&times;</button><img class="lightbox-content" src="" alt="Full View">`;
+        lightboxOverlay.innerHTML = `
+            <button class="lightbox-close">&times;</button>
+            <button class="lightbox-btn lightbox-prev">&#10094;</button>
+            <img class="lightbox-content" src="" alt="Full View">
+            <button class="lightbox-btn lightbox-next">&#10095;</button>
+        `;
         document.body.appendChild(lightboxOverlay);
 
         const lightboxImg = lightboxOverlay.querySelector('.lightbox-content');
         const lightboxClose = lightboxOverlay.querySelector('.lightbox-close');
+        const lightboxPrev = lightboxOverlay.querySelector('.lightbox-prev');
+        const lightboxNext = lightboxOverlay.querySelector('.lightbox-next');
+
+        let galleryImages = [];
+        let currentIndex = 0;
+
+        const updateLightbox = () => {
+            if (galleryImages.length > 0) {
+                lightboxImg.src = galleryImages[currentIndex].src;
+                lightboxImg.alt = galleryImages[currentIndex].alt;
+            }
+        };
+
+        const showNext = (e) => {
+            if (e) e.stopPropagation();
+            if (galleryImages.length > 0) {
+                currentIndex = (currentIndex + 1) % galleryImages.length;
+                updateLightbox();
+            }
+        };
+
+        const showPrev = (e) => {
+            if (e) e.stopPropagation();
+            if (galleryImages.length > 0) {
+                currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+                updateLightbox();
+            }
+        };
 
         // Open
-        document.querySelectorAll('.gallery-item img').forEach(img => {
+        document.querySelectorAll('.gallery-item img, .bento-image').forEach(img => {
             img.style.cursor = 'zoom-in';
             img.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
+                // Collect images globally or just from siblings, here we do globally within reasonable selectors
+                galleryImages = Array.from(document.querySelectorAll('.gallery-item img, .bento-image'));
+                currentIndex = galleryImages.indexOf(img);
+                if (currentIndex === -1) currentIndex = 0;
+
+                updateLightbox();
                 lightboxOverlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
         });
+
+        lightboxPrev.addEventListener('click', showPrev);
+        lightboxNext.addEventListener('click', showNext);
 
         // Close
         const closeLightbox = () => {
@@ -224,7 +264,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.addEventListener('keydown', (e) => {
+            if (!lightboxOverlay.classList.contains('active')) return;
             if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
         });
     }
 
