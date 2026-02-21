@@ -94,7 +94,7 @@ body {
 .pill {
   display: inline-block;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: 0;
   background: #1a1a1a;
   color: var(--text);
   border: 1px solid var(--line);
@@ -130,7 +130,7 @@ body {
   position: relative;
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 14px
 }
 
@@ -141,7 +141,7 @@ body {
   background: linear-gradient(45deg, var(--primary), var(--accent));
   color: #000;
   font-weight: 700;
-  border-radius: 999px;
+  border-radius: 0;
   padding: 6px 10px;
   font-size: .8rem;
   z-index: 5
@@ -151,7 +151,7 @@ body {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 0 18px rgba(255, 77, 0, .35);
   background: #000
@@ -187,7 +187,7 @@ body {
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 14px;
-  border-radius: 4px;
+  border-radius: 0;
   text-align: center;
   transition: all 0.3s;
 }
@@ -222,7 +222,7 @@ body {
 .skill-card {
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 16px;
   transition: transform .25s, box-shadow .25s, border-color .25s;
 }
@@ -269,7 +269,7 @@ body {
   position: relative;
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 14px 14px 14px 54px;
   transition: all 0.3s;
 }
@@ -320,7 +320,7 @@ body {
 .about-card {
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 16px
 }
 
@@ -345,37 +345,7 @@ footer {
   opacity: .95
 }
 
-/* Back to top + reveal */
-.back-to-top {
-  position: fixed;
-  bottom: 38px;
-  right: 38px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .35s, visibility .35s;
-  z-index: 999
-}
-
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible
-}
-
-.arrow.up {
-  width: 10px;
-  height: 10px;
-  border: solid #000;
-  border-width: 0 3px 3px 0;
-  transform: rotate(-135deg)
-}
+/* back-to-top: inherits from shared-styles.css */
 
 .reveal {
   opacity: 0;
@@ -419,7 +389,7 @@ footer {
   align-items: center;
   gap: .55rem;
   padding: .56rem .95rem;
-  border-radius: 999px;
+  border-radius: 0;
   font-weight: 700;
   letter-spacing: .2px;
   text-decoration: none;
@@ -506,7 +476,7 @@ footer {
 .cheat {
   background: rgba(26, 26, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 16px;
   transition: all 0.3s;
 }
@@ -544,7 +514,7 @@ footer {
 .pill.small {
   padding: 6px 10px;
   font-size: .8rem;
-  border-radius: 999px
+  border-radius: 0
 }
 
 .ghost {
@@ -589,7 +559,7 @@ footer {
   /* Gold border to match theme */
   box-shadow: 0 0 20px rgba(255, 77, 0, 0.2);
   /* Subtle glow */
-  border-radius: 4px;
+  border-radius: 0;
   /* Slight rounding */
 }
 

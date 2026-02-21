@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Interactive DFT calculator and digital signal processing tools built from scratch — no libraries.">
+    <title>PROJECT_10 // DSP ENGINE | Jack Lambert</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../shared-styles.css">
+    <link rel="stylesheet" href="Project10.css">
+</head>
+
+<body>
+
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    <div class="blueprint-overlay"></div>
+    <div class="scanline"></div>
+    <div id="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="hud-nav">
+        <div class="hud-brand">[ JL ] // PROJ_10</div>
+        <ul class="hud-links">
+            <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+            <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+            <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+            <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+        </ul>
+        <div class="hud-status">
+            <div class="hud-indicator">
+                <span class="label">SCROLL</span>
+                <span class="value" id="hud-scroll">0%</span>
+            </div>
+        </div>
+        <div class="hud-toggle">
+            <span class="toggle-label">MODE</span>
+            <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+        </div>
+        <div class="hud-coords" id="hud-coords">
+            X:<span class="coord">0</span> Y:<span class="coord">0</span>
+        </div>
+    </nav>
+
+    <!-- Oscilloscope Hero Canvas -->
+    <div class="scope-bg">
+        <canvas id="scope-canvas"></canvas>
+    </div>
+
+    <!-- Project Hero -->
+    <header class="project-hero">
+        <div class="container">
+            <div class="outcome-badge" data-aos="fade-up">Signal Analysis & Processing</div>
+            <h1 data-aos="fade-up" data-aos-delay="50">DSP ENGINE</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">
+                Custom digital signal processing algorithms built from scratch — no black-box libraries.
+                FFT, filters, and real-time spectral analysis, all from first principles.
+            </p>
+            <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+                <span class="authority-tag">PERSONAL PROJECT</span>
+                <span class="tech-tag">DSP</span>
+                <span class="tech-tag">FFT</span>
+                <span class="tech-tag">ALGORITHMS</span>
+                <span class="tech-tag">JAVASCRIPT</span>
+            </div>
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
+                <a href="https://github.com/thebestjacklambert" target="_blank" class="btn-tech">
+                    <i class="fab fa-github"></i>&nbsp; VIEW ON GITHUB
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Outcomes -->
+    <section class="project-section" style="padding-top: 40px;">
+        <div class="container">
+            <div class="project-outcome" data-aos="fade-up">
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">O(N²)</div>
+                    <div class="project-outcome-label">DFT Complexity</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">O(N log N)</div>
+                    <div class="project-outcome-label">FFT Complexity</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">Real-time</div>
+                    <div class="project-outcome-label">Visualization</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">0</div>
+                    <div class="project-outcome-label">External Libraries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INTERACTIVE: DFT Calculator ==================== -->
+    <section class="project-section dft-section" data-aos="fade-up">
+        <div class="container">
+            <h2 class="section-header">// DFT_CALCULATOR <span class="interactive-badge">INTERACTIVE</span></h2>
+            <p class="section-intro">Build a signal from waveforms, then watch the Discrete Fourier Transform decompose
+                it
+                into frequency components — computed in real-time using a from-scratch algorithm.</p>
+
+            <!-- Signal Builder Controls -->
+            <div class="dft-controls">
+                <div class="signal-builder">
+                    <h3>// SIGNAL BUILDER</h3>
+                    <div class="wave-row" id="wave-rows">
+                        <div class="wave-entry" data-index="0">
+                            <select class="wave-type">
+                                <option value="sine">Sine</option>
+                                <option value="cosine">Cosine</option>
+                                <option value="square">Square</option>
+                                <option value="sawtooth">Sawtooth</option>
+                                <option value="triangle">Triangle</option>
+                            </select>
+                            <div class="wave-param">
+                                <label>Freq (Hz)</label>
+                                <input type="range" class="wave-freq styled-slider" min="1" max="32" value="5">
+                                <span class="wave-freq-val">5</span>
+                            </div>
+                            <div class="wave-param">
+                                <label>Amp</label>
+                                <input type="range" class="wave-amp styled-slider" min="0" max="100" value="80">
+                                <span class="wave-amp-val">0.80</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="builder-actions">
+                        <button id="add-wave" class="control-btn"><i class="fas fa-plus"></i> ADD HARMONIC</button>
+                        <button id="add-noise" class="control-btn"><i class="fas fa-random"></i> ADD NOISE</button>
+                        <button id="reset-waves" class="control-btn"><i class="fas fa-redo"></i> RESET</button>
+                    </div>
+                    <div class="sample-info">
+                        <span>N = <strong id="sample-count">128</strong> samples</span>
+                        <span>Fs = <strong>128</strong> Hz</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dual Canvas Display -->
+            <div class="dft-display">
+                <div class="dft-canvas-wrap">
+                    <div class="canvas-label">TIME DOMAIN — x[n]</div>
+                    <canvas id="time-canvas" width="600" height="250"></canvas>
+                </div>
+                <div class="dft-arrow">
+                    <span>DFT</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="dft-canvas-wrap">
+                    <div class="canvas-label">FREQUENCY DOMAIN — |X[k]|</div>
+                    <canvas id="freq-canvas" width="600" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SOURCE CODE VIEWER ==================== -->
+    <section class="project-section" data-aos="fade-up">
+        <div class="container">
+            <h2 class="section-header">// SOURCE_CODE</h2>
+            <p class="section-intro">The actual Python powering this interactive — ported line-by-line to JavaScript. No
+                Math.sin, no Math.cos. Every trig function computed from Taylor series.</p>
+
+            <div class="code-grid">
+                <div class="code-viewer">
+                    <div class="code-header">
+                        <span class="code-filename">trig.py — Custom Taylor Series Trig Library</span>
+                        <button class="control-btn copy-btn" data-target="trig-code"><i class="fas fa-copy"></i>
+                            COPY</button>
+                    </div>
+                    <pre
+                        class="source-code"><code id="trig-code"><span class="comment"># pi constant</span>
+<span class="function">pi</span> = <span class="number">3.14159265359159</span>
+
+<span class="comment"># factorial</span>
+<span class="keyword">def</span> <span class="function">fac</span>(x):
+  y = <span class="number">1</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, x+<span class="number">1</span>):
+    y *= i
+  <span class="keyword">return</span> y
+
+<span class="comment"># mod along pi</span>
+<span class="keyword">def</span> <span class="function">wrap</span>(a):
+  a = (a + pi) % (<span class="number">2</span> * pi) - pi
+  <span class="keyword">return</span> a
+
+<span class="comment"># cosine — Taylor series, 25 terms</span>
+<span class="keyword">def</span> <span class="function">cos</span>(x):
+  x = wrap(x)
+  y = <span class="number">0</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">25</span>):
+    y += <span class="number">1</span>/(fac(<span class="number">2</span>*i)) * x ** (<span class="number">2</span>*i) * (-<span class="number">1</span>)**i
+  <span class="keyword">return</span> y
+
+<span class="comment"># sine — Taylor series, 25 terms</span>
+<span class="keyword">def</span> <span class="function">sin</span>(x):
+  x = wrap(x)
+  y = <span class="number">0</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">25</span>):
+    y += <span class="number">1</span>/(fac(<span class="number">1</span> + <span class="number">2</span>*i)) * x ** (<span class="number">2</span>*i + <span class="number">1</span>) * (-<span class="number">1</span>)**i
+  <span class="keyword">return</span> y
+
+<span class="comment"># signal generators</span>
+<span class="keyword">def</span> <span class="function">sine</span>(x, freq, N, phase, amp):
+    <span class="keyword">return</span> sin(x * <span class="number">2</span> * pi * freq / N + phase) * amp
+
+<span class="keyword">def</span> <span class="function">cosine</span>(x, freq, N, phase, amp):
+    <span class="keyword">return</span> cos(x * <span class="number">2</span> * pi * freq / N + phase) * amp</code></pre>
+                </div>
+
+                <div class="code-viewer">
+                    <div class="code-header">
+                        <span class="code-filename">signals.py — DFT Algorithm</span>
+                        <button id="copy-code" class="control-btn copy-btn" data-target="dft-code"><i
+                                class="fas fa-copy"></i> COPY</button>
+                    </div>
+                    <pre class="source-code"><code id="dft-code"><span class="keyword">import</span> trig
+
+<span class="keyword">def</span> <span class="function">DFT</span>(x):
+    N = len(x)
+    smp = <span class="number">1</span>  <span class="comment"># sampling rate = 1 for simplicity</span>
+
+    <span class="comment"># frequency strength lists</span>
+    freqa = []
+    freqb = []
+    stren = []
+    phase = []
+
+    <span class="comment"># cycles the frequencies</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
+        a = <span class="number">0</span>
+        b = <span class="number">0</span>
+
+        <span class="comment"># cycles the points</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):
+            a += x[j] * trig.sin(<span class="number">2</span> * trig.pi * j * i * <span class="number">1</span>/N)
+            b += x[j] * trig.cos(<span class="number">2</span> * trig.pi * j * i * <span class="number">1</span>/N)
+
+        freqa.append(a)
+        freqb.append(b)
+
+    <span class="comment"># computes magnitude and phase</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
+        stren.append(((freqa[i])**<span class="number">2</span> + (freqb[i])**<span class="number">2</span>) ** <span class="number">.5</span>)
+        phase.append(trig.arctan(freqa[i], freqb[i]))
+
+    <span class="keyword">return</span> stren, phase</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Writeup -->
+    <section class="project-section">
+        <div class="container">
+            <div class="two-col">
+                <div class="column left" data-aos="fade-right">
+                    <div class="project-writeup">
+                        <h3>// GOAL</h3>
+                        <p>Build digital signal processing tools from the ground up — no black-box libraries. Understand
+                            every
+                            transform, every filter coefficient, and every sample.</p>
+                        <div class="technical-specs" style="margin-top: 30px;">
+                            <h3>// HOW THE DFT WORKS</h3>
+                            <p>The Discrete Fourier Transform correlates the input signal with sinusoids at each
+                                frequency bin.
+                                For each frequency k, we multiply every sample by a complex exponential at that
+                                frequency and sum
+                                the results:</p>
+                            <h4>// THE_EQUATION</h4>
+                            <pre class="equation-block"><code>X[k] = Σ x[n] · e^(-j·2π·k·n/N)
+
+     = Σ x[n] · [cos(2πkn/N) - j·sin(2πkn/N)]
+
+for k = 0, 1, ..., N-1</code></pre>
+                            <p style="margin-top: 16px;">The magnitude |X[k]| tells us how much of frequency k is
+                                present in the
+                                signal. Try adding a 5 Hz sine in the interactive above — you'll see a single spike at
+                                bin 5.</p>
+                        </div>
+                        <div class="technical-specs" style="margin-top: 30px;">
+                            <h3>// CONVOLUTION</h3>
+                            <pre class="equation-block"><code>y[n] = Σ h[k] · x[n - k]
+
+Output = Input ∗ Impulse Response
+Convolution in time = Multiplication in frequency</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="column right" data-aos="fade-left">
+                    <div class="key-features tech-panel">
+                        <h3>// IMPLEMENTED MODULES</h3>
+                        <ul>
+                            <li>Discrete Fourier Transform (DFT)</li>
+                            <li>Signal Generator (sine, square, sawtooth, triangle)</li>
+                            <li>Additive Synthesis / Signal Mixer</li>
+                            <li>Magnitude Spectrum Visualization</li>
+                            <li>Real-time Canvas Rendering</li>
+                        </ul>
+                        <h3>// PLANNED</h3>
+                        <ul>
+                            <li>Fast Fourier Transform (FFT) — O(N log N)</li>
+                            <li>FIR / IIR Filter Design</li>
+                            <li>Windowing Functions (Hamming, Hann, Blackman)</li>
+                            <li>Z-Transform & Transfer Functions</li>
+                            <li>Real-time Audio Input (Web Audio API)</li>
+                        </ul>
+                        <h3>// PROJECT STATUS</h3>
+                        <div class="status-badge-info">
+                            <span class="status-dot"></span> ACTIVE DEVELOPMENT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="project-footer">
+        <div class="container">
+            <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+            <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to Top">
+        <span class="arrow"></span>
+    </a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+        window.addEventListener('scroll', () => {
+            const p = document.getElementById('scroll-progress');
+            const h = document.body.scrollHeight - window.innerHeight;
+            p.style.width = `${(window.scrollY / h) * 100}%`;
+            const b = document.querySelector('.back-to-top');
+            b.classList.toggle('show', window.scrollY > 300);
+        });
+    </script>
+    <script src="Project10.js"></script>
+    <script src="../shared-interactions.js"></script>
+</body>
+
+</html>

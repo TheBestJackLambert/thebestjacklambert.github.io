@@ -941,7 +941,7 @@ a:not(.btn-tech):not(.back-btn):not(.tech-tag):hover {
 
 ::-webkit-scrollbar-thumb {
     background: rgba(255, 77, 0, 0.3);
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -2031,6 +2031,8 @@ body.blueprint-mode .gradient-text {
     background-clip: text;
 }
 
+/* ── Toggle Easter Egg: handled in shared-interactions.js ──────────── */
+
 /* ==========================================================================
    PROJECT PAGE SPECIFIC POLISH
    ========================================================================== */
@@ -2105,7 +2107,7 @@ body.blueprint-mode .gradient-text {
     padding: 20px;
     margin-left: -20px;
     padding-left: 50px;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .mission-entry:hover {
@@ -2207,7 +2209,7 @@ body.blueprint-mode .gradient-text {
     color: var(--text-muted);
     border: 1px solid var(--border-subtle);
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: 0;
     margin-right: 10px;
     letter-spacing: 0.5px;
 }

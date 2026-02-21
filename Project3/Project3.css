@@ -112,7 +112,7 @@ body {
   height: 450px;
   border: 1px solid rgba(255, 77, 0, 0.3);
   margin-bottom: var(--spacing-lg);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
 }
@@ -131,7 +131,7 @@ model-viewer {
   /* 16:9 Aspect Ratio */
   background: #000;
   border: 1px solid rgba(255, 77, 0, 0.3);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -156,7 +156,7 @@ model-viewer {
   background: var(--card-bg);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: var(--spacing-lg);
-  border-radius: 8px;
+  border-radius: 0;
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
@@ -217,7 +217,7 @@ model-viewer {
 .file-block {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--line-color);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 20px;
   margin-bottom: 20px;
 }

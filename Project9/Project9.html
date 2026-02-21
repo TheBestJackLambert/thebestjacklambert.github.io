@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Foam model aircraft designed from scratch using parametric fuselage equations, KFm-2 airfoils, and hand-calculated aerodynamics.">
+    <title>PROJECT_09 // FOAM AIRCRAFT | Jack Lambert</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../shared-styles.css">
+    <link rel="stylesheet" href="Project9.css">
+</head>
+
+<body>
+
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    <div class="blueprint-overlay"></div>
+    <div class="scanline"></div>
+    <div id="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="hud-nav">
+        <div class="hud-brand">[ JL ] // PROJ_09</div>
+        <ul class="hud-links">
+            <li><a href="../index.html#hero" class="hud-link">HOME</a></li>
+            <li><a href="../index.html#about" class="hud-link">SPECS</a></li>
+            <li><a href="../index.html#projects" class="hud-link active">PROJECTS</a></li>
+            <li><a href="../index.html#contact" class="hud-link">RELAY</a></li>
+        </ul>
+        <div class="hud-status">
+            <div class="hud-indicator">
+                <span class="label">SCROLL</span>
+                <span class="value" id="hud-scroll">0%</span>
+            </div>
+        </div>
+        <div class="hud-toggle">
+            <span class="toggle-label">MODE</span>
+            <div class="toggle-switch render" id="view-toggle" title="Toggle Blueprint/Render mode"></div>
+        </div>
+        <div class="hud-coords" id="hud-coords">
+            X:<span class="coord">0</span> Y:<span class="coord">0</span>
+        </div>
+    </nav>
+
+    <!-- Project Hero -->
+    <header class="project-hero">
+        <div class="container">
+            <div class="outcome-badge" data-aos="fade-up">Parametric Aerospace Design</div>
+            <h1 data-aos="fade-up" data-aos-delay="50">FOAM MODEL AIRCRAFT</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">
+                Hand-designed foam glider with parametric fuselage, KFm-2 airfoils, and full weight/aerodynamic
+                analysis.
+                Every dimension calculated from first principles.
+            </p>
+            <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
+                <span class="authority-tag">AEROSPACE</span>
+                <span class="tech-tag">AERODYNAMICS</span>
+                <span class="tech-tag">CALCULUS</span>
+                <span class="tech-tag">3D PRINTING</span>
+                <span class="tech-tag">FOAM BUILD</span>
+            </div>
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
+                <a href="https://github.com/thebestjacklambert" target="_blank" class="btn-tech">
+                    <i class="fab fa-github"></i>&nbsp; VIEW ON GITHUB
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Outcomes -->
+    <section class="project-section" style="padding-top: 40px;">
+        <div class="container">
+            <div class="project-outcome" data-aos="fade-up">
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">8.64 oz</div>
+                    <div class="project-outcome-label">Total Weight</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">108 in²</div>
+                    <div class="project-outcome-label">Wing Area</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">~12 oz/ft²</div>
+                    <div class="project-outcome-label">Wing Loading</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">20–25 ft/s</div>
+                    <div class="project-outcome-label">Stall Speed</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INTERACTIVE: Fuselage Profile Renderer ==================== -->
+    <section class="project-section" data-aos="fade-up">
+        <div class="container">
+            <h2 class="section-header">// FUSELAGE_PROFILE <span class="interactive-badge">INTERACTIVE</span></h2>
+            <p class="section-intro">The fuselage follows a parametric teardrop body-of-revolution. Drag the slider to
+                trace
+                the curve and see how the cross-section changes along the body.</p>
+            <div class="canvas-panel">
+                <div class="canvas-wrapper">
+                    <canvas id="fuselage-canvas" width="800" height="400"></canvas>
+                    <div class="canvas-hud">
+                        <span id="canvas-coords">t = 0.00 | x = 0.00 | y = 12.00</span>
+                    </div>
+                </div>
+                <div class="canvas-controls">
+                    <div class="control-group">
+                        <label class="control-label">PARAMETER t</label>
+                        <input type="range" id="param-t" min="0" max="628" value="0" class="styled-slider">
+                        <div class="control-value" id="param-t-val">0.00</div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">SHOW CROSS-SECTION</label>
+                        <button id="toggle-cross" class="control-btn active">ON</button>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">ANIMATE</label>
+                        <button id="animate-btn" class="control-btn">PLAY</button>
+                    </div>
+                    <div class="equation-display">
+                        <code>y = 12·cos(t)</code><br>
+                        <code>x = 5·cos²(t/2)·sin(t)</code><br>
+                        <code class="dim">0 ≤ t ≤ 2π</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INTERACTIVE: Design Iterations ==================== -->
+    <section class="project-section" data-aos="fade-up">
+        <div class="container">
+            <h2 class="section-header">// DESIGN_EVOLUTION <span class="interactive-badge">INTERACTIVE</span></h2>
+            <p class="section-intro">Three design iterations, each improving on the last. Click to compare dimensions,
+                weight, and aerodynamic tradeoffs.</p>
+            <div class="iteration-tabs">
+                <button class="iter-tab active" data-iter="1">
+                    <span class="iter-version">V1</span>
+                    <span class="iter-name">Simple Glider</span>
+                </button>
+                <button class="iter-tab" data-iter="2">
+                    <span class="iter-version">V2</span>
+                    <span class="iter-name">Swept Wing</span>
+                </button>
+                <button class="iter-tab" data-iter="3">
+                    <span class="iter-version">V3</span>
+                    <span class="iter-name">Final Design</span>
+                </button>
+            </div>
+            <div class="iteration-display">
+                <div class="iter-visual">
+                    <canvas id="iteration-canvas" width="700" height="350"></canvas>
+                </div>
+                <div class="iter-specs" id="iter-specs">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Facts -->
+    <section class="project-section">
+        <div class="container">
+            <h2 class="section-header" data-aos="fade-right">// QUICK_FACTS</h2>
+            <dl class="stats-list">
+                <div class="stat-item" data-aos="fade-up">
+                    <dt>AIRFOIL</dt>
+                    <dd>KFm-2 (Kline-Fogleman)</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="50">
+                    <dt>WINGSPAN</dt>
+                    <dd>9 in per panel</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                    <dt>CHORD</dt>
+                    <dd>5 in</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="150">
+                    <dt>SWEEP</dt>
+                    <dd>6°</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                    <dt>DIHEDRAL</dt>
+                    <dd>6°</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="250">
+                    <dt>FUSELAGE LENGTH</dt>
+                    <dd>24 in (teardrop)</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                    <dt>FUSELAGE DIAMETER</dt>
+                    <dd>~10 in max</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="350">
+                    <dt>MATERIAL</dt>
+                    <dd>Foam (1.55 lb/ft³)</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+                    <dt>BALLAST</dt>
+                    <dd>8 quarters (underside)</dd>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="450">
+                    <dt>TOTAL WEIGHT</dt>
+                    <dd>8.64 oz</dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+
+    <!-- ==================== INTERACTIVE: Aerodynamic Calculator ==================== -->
+    <section class="project-section" data-aos="fade-up">
+        <div class="container">
+            <h2 class="section-header">// AERO_CALCULATOR <span class="interactive-badge">INTERACTIVE</span></h2>
+            <p class="section-intro">Adjust the design parameters to see how changes affect flight characteristics.
+                Pre-filled with the actual aircraft values.</p>
+            <div class="calc-panel">
+                <div class="calc-inputs">
+                    <h3>// INPUTS</h3>
+                    <div class="calc-field">
+                        <label>Wing Area (in²)</label>
+                        <input type="number" id="calc-wing-area" value="108" min="10" max="500" step="1">
+                    </div>
+                    <div class="calc-field">
+                        <label>Total Weight (oz)</label>
+                        <input type="number" id="calc-weight" value="8.64" min="0.5" max="64" step="0.01">
+                    </div>
+                    <div class="calc-field">
+                        <label>Foam Density (lb/ft³)</label>
+                        <input type="number" id="calc-density" value="1.55" min="0.5" max="5" step="0.01">
+                    </div>
+                    <div class="calc-field">
+                        <label>Wingspan (in)</label>
+                        <input type="number" id="calc-wingspan" value="18" min="4" max="60" step="0.5">
+                    </div>
+                    <div class="calc-field">
+                        <label>Fuselage Volume (in³)</label>
+                        <input type="number" id="calc-fuse-vol" value="377" min="10" max="2000" step="1">
+                    </div>
+                </div>
+                <div class="calc-outputs">
+                    <h3>// RESULTS</h3>
+                    <div class="calc-result">
+                        <span class="result-label">WING LOADING</span>
+                        <span class="result-value" id="res-wing-loading">11.52 oz/ft²</span>
+                    </div>
+                    <div class="calc-result">
+                        <span class="result-label">ASPECT RATIO</span>
+                        <span class="result-value" id="res-aspect-ratio">3.00</span>
+                    </div>
+                    <div class="calc-result">
+                        <span class="result-label">FUSELAGE WEIGHT</span>
+                        <span class="result-value" id="res-fuse-weight">5.28 oz</span>
+                    </div>
+                    <div class="calc-result">
+                        <span class="result-label">ESTIMATED STALL SPEED</span>
+                        <span class="result-value" id="res-stall-speed">22.1 ft/s</span>
+                    </div>
+                    <div class="calc-verdict" id="calc-verdict">
+                        <span class="verdict-icon">✓</span>
+                        <span class="verdict-text">FLIGHT FEASIBLE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Narrative & Technical Details -->
+    <section class="project-section">
+        <div class="container">
+            <div class="two-col">
+                <div class="column left" data-aos="fade-right">
+                    <div class="project-writeup">
+                        <h3>// GOAL</h3>
+                        <p>Design and build a foam glider aircraft entirely from scratch — no kits, no plans. Every
+                            surface
+                            defined by parametric equations or geometric primitives, then fabricated from foam using
+                            3D-printed
+                            cutting guides.</p>
+                        <div class="technical-specs" style="margin-top: 30px;">
+                            <h3>// FUSELAGE DESIGN</h3>
+                            <p>The fuselage follows a teardrop body-of-revolution. The 2D profile is defined
+                                parametrically and
+                                rotated around the x-axis:</p>
+                            <h4>// VOLUME_CALCULATION</h4>
+                            <pre class="equation-block"><code>V = π ∫₀²π [5·cos²(t/2)·sin(t)]² |12·sin(t)| dt
+  = 120π in³ ≈ 0.218 ft³
+
+At foam density 1.55 lb/ft³:
+  0.218 × 1.55 = 0.338 lbs = 5.28 oz</code></pre>
+                        </div>
+                        <div class="technical-specs" style="margin-top: 30px;">
+                            <h3>// TAIL STABILIZER</h3>
+                            <h4>// HORIZONTAL (PITCH)</h4>
+                            <pre class="equation-block"><code>Area: 2.5 × 4 = 40 in²
+Weight ≈ 0.225 oz</code></pre>
+                            <h4>// VERTICAL (YAW)</h4>
+                            <pre class="equation-block"><code>Area: ½(2+4)×5 = 15 in²
+Weight ≈ 0.085 oz
+Total tail ≈ 0.31 oz</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="column right" data-aos="fade-left">
+                    <div class="key-features tech-panel">
+                        <h3>// KFm-2 AIRFOIL</h3>
+                        <p>The Kline-Fogleman mod-2 airfoil was chosen for foam construction:</p>
+                        <ul>
+                            <li>Very easy to build from flat foam sheets</li>
+                            <li>Forward-facing center of gravity</li>
+                            <li>Gentle stall characteristics</li>
+                            <li>Durable — unlikely to bend or break</li>
+                            <li>Forgiving of building mistakes</li>
+                        </ul>
+                        <h3>// WEIGHT BREAKDOWN</h3>
+                        <div class="weight-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Weight (oz)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Fuselage</td>
+                                        <td>5.28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Airfoils</td>
+                                        <td>1.05</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tail</td>
+                                        <td>0.31</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payload</td>
+                                        <td>1.60</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Glue / Misc</td>
+                                        <td>0.40</td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td><strong>Total</strong></td>
+                                        <td><strong>8.64</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h3>// WING LOADING</h3>
+                        <pre class="equation-block"><code>144 in²/ft² × (8.64 oz / 108 in²)
+  ≈ 12 oz/ft²  ✓ Good!
+Stall speed: 20–25 ft/sec</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="project-footer">
+        <div class="container">
+            <a href="../index.html" class="btn-tech" data-aos="fade-up">← RETURN_TO_SCHEMATICS</a>
+            <p style="margin-top: var(--spacing-lg);">SYSTEM DESIGN: JACK LAMBERT // 2024</p>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to Top">
+        <span class="arrow"></span>
+    </a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+        window.addEventListener('scroll', () => {
+            const p = document.getElementById('scroll-progress');
+            const h = document.body.scrollHeight - window.innerHeight;
+            p.style.width = `${(window.scrollY / h) * 100}%`;
+            const b = document.querySelector('.back-to-top');
+            b.classList.toggle('show', window.scrollY > 300);
+        });
+    </script>
+    <script src="Project9.js"></script>
+    <script src="../shared-interactions.js"></script>
+</body>
+
+</html>

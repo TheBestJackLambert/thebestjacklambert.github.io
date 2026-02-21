@@ -551,7 +551,7 @@ section h2::before {
   color: var(--text-muted);
   background: rgba(255, 255, 255, 0.05);
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .mission-role {
@@ -794,7 +794,7 @@ section h2::before {
   color: var(--accent-color);
   border: 1px solid rgba(255, 77, 0, 0.3);
   padding: 2px 8px;
-  border-radius: 2px;
+  border-radius: 0;
   transition: all 0.3s ease;
 }
 
@@ -1017,7 +1017,7 @@ footer {
 
 .scrolling-data::-webkit-scrollbar-thumb {
   background-color: var(--accent-color);
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 /* Resume Button Container */
@@ -1045,7 +1045,7 @@ footer {
   font-family: var(--font-tech);
   font-size: 0.75rem;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 0;
   transition: all 0.3s ease;
 }
 

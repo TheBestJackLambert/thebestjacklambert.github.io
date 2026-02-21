@@ -1,0 +1,602 @@
+/* ==========================================================
+   Project 10 — DSP Engine
+   ========================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface-soft: #1e1e1e;
+    --text: #f6f6f6;
+    --muted: #c9c9c9;
+    --primary: #ff4d00;
+    --accent: #ff8c00;
+    --radius-lg: 0;
+    --radius-md: 0;
+    --font: 'Inter', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.65;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+}
+
+.hero-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.interactive-badge {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 3px 10px;
+    background: rgba(255, 77, 0, 0.15);
+    border: 1px solid rgba(255, 77, 0, 0.4);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    vertical-align: middle;
+    font-family: 'Space Mono', monospace;
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.section-intro {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 700px;
+    margin-bottom: 28px;
+    line-height: 1.7;
+}
+
+/* ==========================================================
+   Oscilloscope Hero Background
+   ========================================================== */
+.scope-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 0.25;
+}
+
+.scope-bg canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================================
+   DFT Interactive Section
+   ========================================================== */
+.dft-controls {
+    margin-bottom: 28px;
+}
+
+.signal-builder {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: var(--radius-md);
+    padding: 24px;
+}
+
+.signal-builder h3 {
+    color: var(--primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    letter-spacing: 0.08em;
+}
+
+.wave-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.wave-entry {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0;
+}
+
+.wave-entry select {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 0;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.wave-entry select option {
+    background: #111;
+}
+
+.wave-param {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wave-param label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 40px;
+}
+
+.wave-param span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text);
+    min-width: 30px;
+}
+
+.wave-remove {
+    padding: 6px 10px;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 4px;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.wave-remove:hover {
+    background: rgba(255, 107, 107, 0.3);
+}
+
+.builder-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 8px 16px;
+    background: rgba(255, 77, 0, 0.1);
+    border: 1px solid rgba(255, 77, 0, 0.3);
+    color: var(--primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.control-btn:hover {
+    background: rgba(255, 77, 0, 0.2);
+    border-color: var(--primary);
+}
+
+.control-btn i {
+    margin-right: 4px;
+}
+
+.sample-info {
+    display: flex;
+    gap: 24px;
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+/* Styled slider */
+.styled-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    outline: none;
+    flex: 1;
+}
+
+.styled-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(255, 77, 0, 0.4);
+}
+
+.styled-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* DFT Display — side by side canvases */
+.dft-display {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.dft-canvas-wrap {
+    position: relative;
+    padding: 16px;
+}
+
+.dft-canvas-wrap canvas {
+    display: block;
+    width: 100%;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+}
+
+.canvas-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+
+.dft-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 16px;
+    border-left: 1px solid rgba(255, 77, 0, 0.15);
+    border-right: 1px solid rgba(255, 77, 0, 0.15);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--primary);
+    letter-spacing: 0.1em;
+}
+
+.dft-arrow i {
+    font-size: 1.2rem;
+}
+
+/* ==========================================================
+   Source Code Viewer
+   ========================================================== */
+.code-viewer {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255, 77, 0, 0.15);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.code-filename {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--primary);
+}
+
+.source-code {
+    padding: 20px 24px;
+    margin: 0;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+    overflow-x: auto;
+}
+
+.source-code code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+.source-code .keyword {
+    color: #ff79c6;
+}
+
+.source-code .function {
+    color: var(--accent);
+}
+
+.source-code .comment {
+    color: #6272a4;
+}
+
+.source-code .number {
+    color: #bd93f9;
+}
+
+/* Side-by-side code viewers */
+.code-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.code-grid .code-viewer {
+    margin-bottom: 0;
+}
+
+.code-grid .source-code {
+    font-size: 0.78rem;
+}
+
+/* ==========================================================
+   Status Badge
+   ========================================================== */
+.status-badge-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: rgba(255, 77, 0, 0.08);
+    border: 1px solid rgba(255, 77, 0, 0.25);
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* ==========================================================
+   Existing styles (two-col, equations, etc)
+   ========================================================== */
+.two-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.stats-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.stat-item {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-md);
+    border-radius: 0;
+}
+
+.stat-item dt {
+    color: var(--accent-color);
+    font-family: var(--font-tech);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-item dd {
+    color: var(--text-main);
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.equation-block {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 77, 0, 0.3);
+    border-radius: 0;
+    padding: 16px 20px;
+    margin-top: 10px;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.equation-block code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+.narrative-section p,
+.project-writeup p,
+.technical-specs p {
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.narrative-section h3,
+.project-writeup h3,
+.technical-specs h3,
+.key-features h3 {
+    color: var(--accent-color);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.narrative-section ul,
+.technical-specs ul,
+.key-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.narrative-section li,
+.technical-specs li,
+.key-features li {
+    color: var(--text);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.narrative-section li::before,
+.technical-specs li::before,
+.key-features li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+}
+
+.technical-specs h4 {
+    color: var(--accent, #ff8c00);
+    font-size: 0.95rem;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.04em;
+}
+
+.project-writeup code,
+.technical-specs code {
+    background: rgba(255, 77, 0, 0.1);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 0;
+    padding: 2px 6px;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.88em;
+    color: var(--primary);
+}
+
+/* back-to-top: inherits from shared-styles.css */
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+@media (max-width: 1080px) {
+    .two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .dft-display {
+        grid-template-columns: 1fr;
+    }
+
+    .code-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dft-arrow {
+        flex-direction: row;
+        padding: 12px 0;
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid rgba(255, 77, 0, 0.15);
+        border-bottom: 1px solid rgba(255, 77, 0, 0.15);
+    }
+
+    .dft-arrow i {
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 720px) {
+    .project-hero {
+        padding-top: 96px;
+        padding-bottom: 72px;
+    }
+
+    .stats-list {
+        grid-template-columns: 1fr;
+    }
+
+    .wave-entry {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}

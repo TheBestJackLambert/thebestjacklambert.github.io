@@ -192,7 +192,7 @@ body {
   gap: 15px;
   background: rgba(255, 255, 255, 0.02);
   padding: 15px;
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid rgba(255, 77, 0, 0.1);
   /* Ensure it stretches with content */
   height: auto;
@@ -201,7 +201,7 @@ body {
 .canvas-container.small {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 77, 0, 0.3);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   position: relative;
 }
@@ -233,7 +233,7 @@ body {
 
 .mini-controls::-webkit-scrollbar-thumb {
   background: var(--line-color);
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .control-row {
@@ -256,7 +256,7 @@ body {
   color: var(--text-main) !important;
   font-family: var(--font-tech);
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   font-size: 0.8rem;
   flex: 1;
 }
@@ -267,7 +267,7 @@ body {
   padding: 10px;
   background: rgba(0, 0, 0, 0.6);
   border: 1px dashed var(--primary-color);
-  border-radius: 4px;
+  border-radius: 0;
   font-family: var(--font-tech);
   font-size: 0.75rem;
   color: #00ffaa;
@@ -292,7 +292,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.7rem;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .btn-xs:hover {

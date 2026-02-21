@@ -141,7 +141,7 @@ body {
 }
 
 .gallery-item {
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 77, 0, 0.2);
   transition: transform 0.3s ease, border-color 0.3s ease;
@@ -165,7 +165,7 @@ body {
   padding-bottom: 56.25%;
   background: #000;
   border: 1px solid rgba(255, 77, 0, 0.3);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -217,7 +217,7 @@ body {
   padding: 6px 12px;
   font-family: var(--font-tech);
   font-size: 0.8rem;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .authority-tag {
@@ -227,7 +227,7 @@ body {
   font-family: var(--font-tech);
   font-size: 0.8rem;
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 /* Responsive */

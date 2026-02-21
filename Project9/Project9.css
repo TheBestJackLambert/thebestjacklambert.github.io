@@ -1,0 +1,687 @@
+/* ==========================================================
+   Project 9 — Foam Model Aircraft
+   ========================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface-soft: #1e1e1e;
+    --text: #f6f6f6;
+    --muted: #c9c9c9;
+    --primary: #ff4d00;
+    --accent: #ff8c00;
+    --radius-lg: 0;
+    --radius-md: 0;
+    --font: 'Inter', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.65;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+}
+
+/* Hero Actions */
+.hero-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Interactive Badge */
+.interactive-badge {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 3px 10px;
+    background: rgba(255, 77, 0, 0.15);
+    border: 1px solid rgba(255, 77, 0, 0.4);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    vertical-align: middle;
+    font-family: 'Space Mono', monospace;
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.section-intro {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 700px;
+    margin-bottom: 28px;
+    line-height: 1.7;
+}
+
+/* ==========================================================
+   Canvas Panel — Fuselage Profile
+   ========================================================== */
+.canvas-panel {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: start;
+}
+
+.canvas-wrapper {
+    position: relative;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 77, 0, 0.25);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.canvas-wrapper canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.canvas-hud {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.7);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+}
+
+.canvas-controls {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.control-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.control-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.control-btn {
+    padding: 8px 16px;
+    background: rgba(255, 77, 0, 0.1);
+    border: 1px solid rgba(255, 77, 0, 0.3);
+    color: var(--primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.control-btn:hover,
+.control-btn.active {
+    background: rgba(255, 77, 0, 0.2);
+    border-color: var(--primary);
+}
+
+.equation-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.6;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 77, 0, 0.15);
+}
+
+.equation-display .dim {
+    color: var(--muted);
+}
+
+/* Styled range slider */
+.styled-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    outline: none;
+}
+
+.styled-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 77, 0, 0.4);
+}
+
+.styled-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* ==========================================================
+   Design Iteration Viewer
+   ========================================================== */
+.iteration-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+}
+
+.iter-tab {
+    flex: 1;
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Mono', monospace;
+}
+
+.iter-tab:first-child {
+    border-radius: var(--radius-md) 0 0 0;
+}
+
+.iter-tab:last-child {
+    border-radius: 0 var(--radius-md) 0 0;
+}
+
+.iter-tab.active {
+    background: rgba(255, 77, 0, 0.1);
+    border-color: rgba(255, 77, 0, 0.3);
+    color: var(--primary);
+}
+
+.iter-tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.iter-version {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.iter-name {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.iteration-display {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.iter-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-right: 1px solid rgba(255, 77, 0, 0.15);
+}
+
+.iter-visual canvas {
+    width: 100%;
+    height: auto;
+}
+
+.iter-specs {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+}
+
+.iter-spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.iter-spec-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+}
+
+.iter-spec-value {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.iter-change {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+}
+
+.iter-change.improved {
+    background: rgba(81, 207, 102, 0.15);
+    color: #51cf66;
+}
+
+.iter-change.new {
+    background: rgba(255, 77, 0, 0.15);
+    color: var(--primary);
+}
+
+.iter-desc {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 77, 0, 0.15);
+    font-family: 'Inter', sans-serif;
+}
+
+/* ==========================================================
+   Aerodynamic Calculator
+   ========================================================== */
+.calc-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.calc-inputs,
+.calc-outputs {
+    padding: 28px;
+}
+
+.calc-inputs {
+    border-right: 1px solid rgba(255, 77, 0, 0.15);
+}
+
+.calc-inputs h3,
+.calc-outputs h3 {
+    color: var(--primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.08em;
+}
+
+.calc-field {
+    margin-bottom: 16px;
+}
+
+.calc-field label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+}
+
+.calc-field input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+}
+
+.calc-field input:focus {
+    border-color: var(--primary);
+}
+
+.calc-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.result-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.result-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.calc-verdict {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px 20px;
+    border-radius: 0;
+    transition: all 0.3s;
+}
+
+.calc-verdict.good {
+    background: rgba(81, 207, 102, 0.1);
+    border: 1px solid rgba(81, 207, 102, 0.3);
+}
+
+.calc-verdict.bad {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.verdict-icon {
+    font-size: 1.4rem;
+}
+
+.calc-verdict.good .verdict-icon {
+    color: #51cf66;
+}
+
+.calc-verdict.bad .verdict-icon {
+    color: #ff6b6b;
+}
+
+.verdict-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.calc-verdict.good .verdict-text {
+    color: #51cf66;
+}
+
+.calc-verdict.bad .verdict-text {
+    color: #ff6b6b;
+}
+
+/* ==========================================================
+   Existing styles (two-col, stats, equations, weight table)
+   ========================================================== */
+.two-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.stats-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.stat-item {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-md);
+    border-radius: 0;
+}
+
+.stat-item dt {
+    color: var(--accent-color);
+    font-family: var(--font-tech);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-item dd {
+    color: var(--text-main);
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.equation-block {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 77, 0, 0.3);
+    border-radius: 0;
+    padding: 16px 20px;
+    margin-top: 10px;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.equation-block code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+.weight-table {
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+.weight-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.weight-table th,
+.weight-table td {
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weight-table th {
+    color: var(--accent, #ff8c00);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom-color: rgba(255, 77, 0, 0.3);
+}
+
+.weight-table .total-row td {
+    border-top: 2px solid rgba(255, 77, 0, 0.5);
+    border-bottom: none;
+    color: var(--primary);
+    font-size: 1.05rem;
+}
+
+.narrative-section p,
+.project-writeup p,
+.technical-specs p {
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.narrative-section h3,
+.project-writeup h3,
+.technical-specs h3,
+.key-features h3 {
+    color: var(--accent-color);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.narrative-section ul,
+.technical-specs ul,
+.key-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.narrative-section li,
+.technical-specs li,
+.key-features li {
+    color: var(--text);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.narrative-section li::before,
+.technical-specs li::before,
+.key-features li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+}
+
+.technical-specs h4 {
+    color: var(--accent, #ff8c00);
+    font-size: 0.95rem;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.04em;
+}
+
+.project-writeup code,
+.technical-specs code {
+    background: rgba(255, 77, 0, 0.1);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 0;
+    padding: 2px 6px;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.88em;
+    color: var(--primary);
+}
+
+/* back-to-top: inherits from shared-styles.css */
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+@media (max-width: 1080px) {
+
+    .two-col,
+    .canvas-panel,
+    .iteration-display,
+    .calc-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .iter-visual {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 77, 0, 0.15);
+    }
+
+    .calc-inputs {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 77, 0, 0.15);
+    }
+}
+
+@media (max-width: 720px) {
+    .project-hero {
+        padding-top: 96px;
+        padding-bottom: 72px;
+    }
+
+    .stats-list {
+        grid-template-columns: 1fr;
+    }
+
+    .iteration-tabs {
+        flex-direction: column;
+    }
+
+    .iter-tab:first-child {
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .iter-tab:last-child {
+        border-radius: 0;
+    }
+}
