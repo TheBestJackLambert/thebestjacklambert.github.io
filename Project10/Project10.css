@@ -60,7 +60,7 @@ a:hover {
     padding: 3px 10px;
     background: rgba(255, 77, 0, 0.15);
     border: 1px solid rgba(255, 77, 0, 0.4);
-    border-radius: 999px;
+    border-radius: 0;
     font-size: 0.65rem;
     letter-spacing: 0.1em;
     color: var(--primary);
@@ -330,7 +330,8 @@ a:hover {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 77, 0, 0.2);
     border-radius: var(--radius-md);
-    overflow: hidden;
+    position: relative;
+    /* remove overflow: hidden so sticky works inside it! */
 }
 
 .code-header {
@@ -339,7 +340,17 @@ a:hover {
     align-items: center;
     padding: 12px 20px;
     border-bottom: 1px solid rgba(255, 77, 0, 0.15);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    transition: background 0.3s;
+}
+
+.code-header:hover {
+    background: rgba(20, 20, 20, 0.98);
 }
 
 .code-filename {
@@ -350,12 +361,19 @@ a:hover {
 
 .source-code {
     padding: 20px 24px;
+    padding-bottom: 40px;
     margin: 0;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
     font-size: 0.82rem;
     line-height: 1.7;
     color: var(--text);
     overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.source-code::-webkit-scrollbar {
+    display: none;
 }
 
 .source-code code {
@@ -379,6 +397,100 @@ a:hover {
 
 .source-code .number {
     color: #bd93f9;
+}
+
+/* Expandable Code Blocks */
+.code-content-wrapper {
+    position: relative;
+    max-height: 250px;
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.code-viewer.expanded .code-content-wrapper {
+    max-height: 6000px;
+    /* arbitrary large value to accommodate entire file */
+}
+
+.code-fade {
+    position: relative;
+    margin-top: -100px;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(13, 13, 13, 0) 0%, rgba(13, 13, 13, 0.9) 60%, rgba(13, 13, 13, 1) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 20px;
+    z-index: 10;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.code-viewer.expanded .code-fade {
+    margin-top: 0;
+    height: 0;
+    padding-bottom: 0;
+    background: transparent;
+    position: sticky;
+    bottom: 90px;
+    pointer-events: none;
+    overflow: visible;
+    cursor: default;
+}
+
+.expand-code-btn {
+    display: inline-flex;
+    padding: 12px 24px;
+    background: var(--bg);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: var(--font-tech, 'Space Mono', monospace);
+    font-size: 0.85rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-medium, 0.3s cubic-bezier(0.16, 1, 0.3, 1));
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+    /* enable click when parent is pointer-events: none */
+}
+
+.expand-code-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 77, 0, 0.2), transparent);
+    transition: var(--transition-slow, 0.8s);
+}
+
+.expand-code-btn:hover::before {
+    left: 100%;
+}
+
+.code-viewer.expanded .expand-code-btn {
+    transform: translateY(-40px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 77, 0, 0.3);
+}
+
+.code-viewer.expanded .expand-code-btn:hover {
+    transform: translateY(-44px);
+}
+
+.expand-code-btn:hover {
+    background: rgba(255, 77, 0, 0.1);
+    box-shadow: 0 0 30px rgba(255, 77, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.expand-code-btn:active {
+    transform: translateY(0);
 }
 
 /* Side-by-side code viewers */
@@ -407,7 +519,7 @@ a:hover {
     padding: 10px 20px;
     background: rgba(255, 77, 0, 0.08);
     border: 1px solid rgba(255, 77, 0, 0.25);
-    border-radius: 999px;
+    border-radius: 0;
     font-family: 'Space Mono', monospace;
     font-size: 0.82rem;
     letter-spacing: 0.1em;

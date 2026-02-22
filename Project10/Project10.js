@@ -592,4 +592,74 @@
         window.addEventListener('resize', updateDFT);
     }
 
+    // =============================================================
+    //  3. SOURCE CODE EXPAND/COLLAPSE
+    // =============================================================
+    document.querySelectorAll('.code-viewer').forEach(viewer => {
+        const pre = viewer.querySelector('.source-code');
+        if (pre) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-content-wrapper';
+
+            const fade = document.createElement('div');
+            fade.className = 'code-fade';
+
+            const btn = document.createElement('button');
+            btn.className = 'expand-code-btn';
+            btn.innerHTML = '<i class="fas fa-chevron-down"></i> SHOW MORE';
+
+            fade.appendChild(btn);
+
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+            viewer.appendChild(fade);
+
+            function toggleExpand() {
+                const viewers = document.querySelectorAll('.code-viewer');
+                const isCurrentlyExpanded = viewer.classList.contains('expanded');
+                const willBeExpanded = !isCurrentlyExpanded;
+
+                viewers.forEach(v => {
+                    const vBtn = v.querySelector('.expand-code-btn');
+                    if (willBeExpanded) {
+                        v.classList.add('expanded');
+                        if (vBtn) vBtn.innerHTML = '<i class="fas fa-chevron-up"></i> SHOW LESS';
+                    } else {
+                        v.classList.remove('expanded');
+                        if (vBtn) vBtn.innerHTML = '<i class="fas fa-chevron-down"></i> SHOW MORE';
+                    }
+                });
+
+                if (!willBeExpanded) {
+                    const rect = viewer.getBoundingClientRect();
+                    if (rect.top < 60) {
+                        window.scrollBy({ top: rect.top - 80, behavior: 'smooth' });
+                    }
+                }
+            }
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleExpand();
+            });
+
+            fade.addEventListener('click', (e) => {
+                if (!viewer.classList.contains('expanded') && !e.target.closest('.expand-code-btn')) {
+                    toggleExpand();
+                }
+            });
+
+            const header = viewer.querySelector('.code-header');
+            if (header) {
+                header.style.cursor = 'pointer';
+                header.title = 'Click to expand/collapse';
+                header.addEventListener('click', (e) => {
+                    // Don't trigger if they clicked the copy button
+                    if (e.target.closest('.copy-btn')) return;
+                    toggleExpand();
+                });
+            }
+        }
+    });
+
 })();
