@@ -182,23 +182,15 @@
                         <button class="control-btn copy-btn" data-target="trig-code"><i class="fas fa-copy"></i>
                             COPY</button>
                     </div>
-                    <pre
-                        class="source-code"><code id="trig-code"><span class="comment"># pi constant</span>
-<span class="function">pi</span> = <span class="number">3.14159265359159</span>
-
-<span class="comment"># factorial</span>
+                    <pre class="source-code"><code id="trig-code">pi = <span class="number">3.14159265359159</span>
+<span class="comment">#factorial</span>
 <span class="keyword">def</span> <span class="function">fac</span>(x):
   y = <span class="number">1</span>
   <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, x+<span class="number">1</span>):
     y *= i
   <span class="keyword">return</span> y
 
-<span class="comment"># mod along pi</span>
-<span class="keyword">def</span> <span class="function">wrap</span>(a):
-  a = (a + pi) % (<span class="number">2</span> * pi) - pi
-  <span class="keyword">return</span> a
-
-<span class="comment"># cosine — Taylor series, 25 terms</span>
+<span class="comment">#cosine function</span>
 <span class="keyword">def</span> <span class="function">cos</span>(x):
   x = wrap(x)
   y = <span class="number">0</span>
@@ -206,7 +198,7 @@
     y += <span class="number">1</span>/(fac(<span class="number">2</span>*i)) * x ** (<span class="number">2</span>*i) * (-<span class="number">1</span>)**i
   <span class="keyword">return</span> y
 
-<span class="comment"># sine — Taylor series, 25 terms</span>
+<span class="comment">#sine function</span>
 <span class="keyword">def</span> <span class="function">sin</span>(x):
   x = wrap(x)
   y = <span class="number">0</span>
@@ -214,12 +206,76 @@
     y += <span class="number">1</span>/(fac(<span class="number">1</span> + <span class="number">2</span>*i)) * x ** (<span class="number">2</span>*i + <span class="number">1</span>) * (-<span class="number">1</span>)**i
   <span class="keyword">return</span> y
 
-<span class="comment"># signal generators</span>
+<span class="comment">#tan function</span>
+<span class="keyword">def</span> <span class="function">tan</span>(x):
+  y = sin(x)/cos(x)
+  <span class="keyword">return</span> y
+
+<span class="comment">#arccos function</span>
+<span class="keyword">def</span> <span class="function">arccos</span>(x, y):
+  b = abs((x**<span class="number">2</span>-y**<span class="number">2</span>))**.<span class="number">5</span>/y
+  c = arctan(y, b)
+  <span class="keyword">return</span> c
+
+<span class="comment">#mod along pi</span>
+<span class="keyword">def</span> <span class="function">wrap</span>(a):
+  a = (a + pi) % (<span class="number">2</span> * pi) - pi
+  <span class="keyword">return</span> a
+
+<span class="comment">#inverse tangent</span>
+<span class="keyword">def</span> <span class="function">arctan</span>(x, y):
+
+  <span class="comment">#if denominator is zero returns corresponding angle</span>
+  <span class="keyword">if</span> x == <span class="number">0</span>:
+    <span class="keyword">if</span> y &gt; <span class="number">0</span>: <span class="keyword">return</span> (pi/<span class="number">2</span>)
+    <span class="keyword">if</span> y &lt; <span class="number">0</span>: <span class="keyword">return</span> (-pi/<span class="number">2</span>)
+    <span class="keyword">return</span> <span class="number">0.0</span>
+  u = y / x
+
+  <span class="comment">#determines sign of angle</span>
+  sgn = <span class="number">1.0</span> <span class="keyword">if</span> u &gt;= <span class="number">0</span> else -<span class="number">1.0</span>
+  t = abs(u)
+  inv = False
+
+  <span class="comment">#if y&gt;x flips it or easier compute and signals for unflip later on</span>
+  <span class="keyword">if</span> t &gt; <span class="number">1.0</span>:
+    inv = True
+    t = <span class="number">1.0</span> / t
+  a = <span class="number">0.0</span>
+
+  <span class="comment">#does taylor series 20 times</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):
+    a += ((-<span class="number">1</span>)**i) * (t**(<span class="number">2</span>*i + <span class="number">1</span>)) / (<span class="number">2</span>*i + <span class="number">1</span>)
+
+  <span class="comment">#adjusts for sign</span>
+  a = sgn * ( (pi/<span class="number">2</span>) - a ) <span class="keyword">if</span> inv else sgn * a
+
+  <span class="comment">#puts in correct quadrant</span>
+  <span class="keyword">if</span> x &lt; <span class="number">0</span> and y &gt;= <span class="number">0</span>: a += pi
+  <span class="keyword">elif</span> x &lt; <span class="number">0</span> and y &lt; <span class="number">0</span>: a -= pi
+  <span class="keyword">return</span> a
+
+
 <span class="keyword">def</span> <span class="function">sine</span>(x, freq, N, phase, amp):
     <span class="keyword">return</span> sin(x * <span class="number">2</span> * pi * freq / N + phase) * amp
 
 <span class="keyword">def</span> <span class="function">cosine</span>(x, freq, N, phase, amp):
-    <span class="keyword">return</span> cos(x * <span class="number">2</span> * pi * freq / N + phase) * amp</code></pre>
+    <span class="keyword">return</span> cos(x * <span class="number">2</span> * pi * freq / N + phase) * amp
+
+<span class="keyword">def</span> <span class="function">square</span>(x, freq, N, phase, amp):
+  a = <span class="number">0</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">250</span>):
+    a += sin(<span class="number">2</span> * pi * (<span class="number">2</span> * i - <span class="number">1</span>) * freq * x / N) / (<span class="number">2</span> * i - <span class="number">1</span>)
+  <span class="keyword">return</span> a * <span class="number">4</span> * amp / pi
+
+<span class="keyword">def</span> <span class="function">saw</span>(x, freq, N, phase, amp):
+  a = <span class="number">0</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">250</span>):
+    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>:
+      a -= sin(<span class="number">2</span> * pi * x * i * freq / N) / (i)
+    <span class="keyword">elif</span> i % <span class="number">2</span> == <span class="number">1</span>:
+      a += sin(<span class="number">2</span> * pi * x * i * freq / N) / (i)
+  <span class="keyword">return</span> a * <span class="number">2</span> * amp / pi</code></pre>
                 </div>
 
                 <div class="code-viewer">
@@ -230,35 +286,157 @@
                     </div>
                     <pre class="source-code"><code id="dft-code"><span class="keyword">import</span> trig
 
-<span class="keyword">def</span> <span class="function">DFT</span>(x):
-    N = len(x)
-    smp = <span class="number">1</span>  <span class="comment"># sampling rate = 1 for simplicity</span>
+<span class="comment">#random noise</span>
+<span class="keyword">def</span> <span class="function">noise</span>(signal, loudness):
 
-    <span class="comment"># frequency strength lists</span>
+    <span class="comment">#defines noise parameters</span>
+    seed = <span class="number">51925</span>
+    a = <span class="number">987325234</span>
+    c = <span class="number">40871212</span>
+    m = <span class="number">1767174</span>
+    noise = [seed]
+    noisy = []
+
+    <span class="comment">#creates noise function itself</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(signal)):
+        b = ((noise[-<span class="number">1</span>] * a + c) % m )
+        noise.append(b)
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(noise)):
+        noise[i] -= m/<span class="number">2</span>
+
+    <span class="comment">#adjusts noise to not overpower signal</span>
+    <span class="comment">#finds average signal strength</span>
+    mean = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> signal:
+        mean += i
+    mean = mean/len(signal)
+
+    <span class="comment">#finds average distance from mean signal</span>
+    nice= <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> signal:
+        nice += abs(i - mean)
+    nice = nice/len(signal)
+
+    <span class="comment">#finds average magnitude of noise</span>
+    mean = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> noise:
+        mean += abs(i)
+    mean = mean/len(noise)
+
+    <span class="comment">#normalizes noise magnitude based on requested loudness</span>
+    factor = loudness * nice / mean
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(noise)):
+        noise[i] *= factor
+
+    <span class="comment">#applies noise to signal and returns</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(signal)):
+        noisy.append(signal[i] + noise[i])
+    <span class="keyword">return</span> noisy
+
+<span class="comment">#Discrete Fourier Transform</span>
+<span class="keyword">def</span> <span class="function">dft</span>(x):
+    N = len(x)
+
+    <span class="comment">#creates frequency strength lists</span>
     freqa = []
     freqb = []
     stren = []
     phase = []
 
-    <span class="comment"># cycles the frequencies</span>
+    <span class="comment">#cycles the frequencies</span>
     <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
+
+        <span class="comment">#defines our reals and imaginaries</span>
         a = <span class="number">0</span>
         b = <span class="number">0</span>
 
-        <span class="comment"># cycles the points</span>
+        <span class="comment">#cycles the points</span>
         <span class="keyword">for</span> j <span class="keyword">in</span> range(N):
             a += x[j] * trig.sin(<span class="number">2</span> * trig.pi * j * i * <span class="number">1</span>/N)
             b += x[j] * trig.cos(<span class="number">2</span> * trig.pi * j * i * <span class="number">1</span>/N)
-
+        
+        <span class="comment">#saves our thingies</span>
         freqa.append(a)
         freqb.append(b)
 
-    <span class="comment"># computes magnitude and phase</span>
+    <span class="comment">#uses our thingies</span>
     <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
-        stren.append(((freqa[i])**<span class="number">2</span> + (freqb[i])**<span class="number">2</span>) ** <span class="number">.5</span>)
+        stren.append(((freqa[i])**<span class="number">2</span> + (freqb[i])**<span class="number">2</span>) ** .<span class="number">5</span>)
         phase.append(trig.arctan(freqa[i], freqb[i]))
 
-    <span class="keyword">return</span> stren, phase</code></pre>
+    <span class="comment">#starts plotting our DFT</span>
+    <span class="keyword">return</span> stren, phase
+
+<span class="comment">#Discrete Fourier Transform BUT FAST</span>
+
+<span class="comment">#Wrapper function for me to call</span>
+<span class="keyword">def</span> <span class="function">fft</span>(x):
+
+    <span class="comment">#defining our variables</span>
+    strength = []
+    phase = []
+    N = len(x)
+    b = <span class="number">2</span>
+    <span class="comment">#changes x to a power of 2 to make it work with an fft</span>
+    <span class="keyword">while</span> N &gt; b:
+        b *= <span class="number">2</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(N, b):
+        x.append(<span class="number">0</span>)
+
+    <span class="comment">#calling complex function</span>
+    a = fftorganize(x)
+
+    <span class="comment">#organizing data into strength and phase</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
+        strength.append(((a[<span class="number">0</span>][i])**<span class="number">2</span> + (a[<span class="number">1</span>][i])**<span class="number">2</span>) ** .<span class="number">5</span>)
+        phase.append(trig.arctan(a[<span class="number">0</span>][i], a[<span class="number">1</span>][i]))
+    <span class="keyword">return</span> [strength, phase]
+
+<span class="comment">#function that makes me sad</span>
+<span class="keyword">def</span> <span class="function">fftorganize</span>(x):
+
+    <span class="comment">#defining our variables</span>
+    even = []
+    odd = []
+    counter = <span class="number">0</span>
+    neven = []
+    nodd = []
+    a = []
+    b = []
+    N = len(x)
+
+    <span class="comment">#if length is 1 gives simple a,b</span>
+    <span class="keyword">if</span> N == <span class="number">1</span>:
+        <span class="keyword">return</span> [[<span class="number">0</span>], [x[<span class="number">0</span>]]]
+    
+    <span class="comment">#breaks large chunk of signal (x) into even and odd components</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> x:
+        a.append(<span class="number">0</span>)
+        b.append(<span class="number">0</span>)
+        neven.append([<span class="number">0</span>])
+        nodd.append([<span class="number">0</span>])
+        <span class="keyword">if</span> counter == <span class="number">0</span>:
+            even.append(i)
+            counter = <span class="number">1</span>
+        else:
+            odd.append(i)
+            counter = <span class="number">0</span>
+
+    <span class="comment">#recurses until it gets broken into smallest possible buckets</span>
+    neven = (fftorganize(even))
+    nodd = (fftorganize(odd))
+
+    <span class="comment">#recombines even and odd components</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(N // <span class="number">2</span>):
+        phased = <span class="number">2</span> * trig.pi * i / N
+        temp1 = nodd[<span class="number">0</span>][i] * trig.cos(phased) + nodd[<span class="number">1</span>][i] * trig.sin(phased)
+        temp2 = nodd[<span class="number">1</span>][i] * trig.cos(phased) - nodd[<span class="number">0</span>][i] * trig.sin(phased)
+        a[i] = neven[<span class="number">0</span>][i] + temp1
+        b[i] = neven[<span class="number">1</span>][i] + temp2
+        a[i + N // <span class="number">2</span>] = neven[<span class="number">0</span>][i] - temp1
+        b[i + N // <span class="number">2</span>] = neven[<span class="number">1</span>][i] - temp2
+    <span class="keyword">return</span> [a, b]
+</code></pre>
                 </div>
             </div>
         </div>
@@ -271,9 +449,8 @@
                 <div class="column left" data-aos="fade-right">
                     <div class="project-writeup">
                         <h3>// GOAL</h3>
-                        <p>Build digital signal processing tools from the ground up — no black-box libraries. Understand
-                            every
-                            transform, every filter coefficient, and every sample.</p>
+                        <p>Build digital signal processing tools with no external libraries or copying any external code
+                        </p>
                         <div class="technical-specs" style="margin-top: 30px;">
                             <h3>// HOW THE DFT WORKS</h3>
                             <p>The Discrete Fourier Transform correlates the input signal with sinusoids at each
@@ -306,18 +483,16 @@ Convolution in time = Multiplication in frequency</code></pre>
                         <h3>// IMPLEMENTED MODULES</h3>
                         <ul>
                             <li>Discrete Fourier Transform (DFT)</li>
-                            <li>Signal Generator (sine, square, sawtooth, triangle)</li>
-                            <li>Additive Synthesis / Signal Mixer</li>
-                            <li>Magnitude Spectrum Visualization</li>
-                            <li>Real-time Canvas Rendering</li>
+                            <li>Fast Fourier Transform (FFT) — O(N log N)</li>
+                            <li>Signal Generator (sine, cosine square, sawtooth)</li>
+                            <li>Custom Noise Generator</li>
                         </ul>
                         <h3>// PLANNED</h3>
                         <ul>
-                            <li>Fast Fourier Transform (FFT) — O(N log N)</li>
                             <li>FIR / IIR Filter Design</li>
                             <li>Windowing Functions (Hamming, Hann, Blackman)</li>
                             <li>Z-Transform & Transfer Functions</li>
-                            <li>Real-time Audio Input (Web Audio API)</li>
+                            <li>Inverse Fourier Transform</li>
                         </ul>
                         <h3>// PROJECT STATUS</h3>
                         <div class="status-badge-info">

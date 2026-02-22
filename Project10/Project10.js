@@ -84,6 +84,26 @@
         return cos(x * 2 * pi * freq / N + phase) * amp;
     }
 
+    function square(x, freq, N, phase, amp) {
+        let a = 0;
+        for (let i = 1; i < 250; i++) {
+            a += sin(2 * pi * (2 * i - 1) * freq * x / N) / (2 * i - 1);
+        }
+        return a * 4 * amp / pi;
+    }
+
+    function saw(x, freq, N, phase, amp) {
+        let a = 0;
+        for (let i = 1; i < 250; i++) {
+            if (i % 2 === 0) {
+                a -= sin(2 * pi * x * i * freq / N) / i;
+            } else {
+                a += sin(2 * pi * x * i * freq / N) / i;
+            }
+        }
+        return a * 2 * amp / pi;
+    }
+
     // =============================================================
     //  signals.py DFT → JavaScript (exact port)
     // =============================================================
@@ -118,6 +138,114 @@
         }
 
         return { stren, phase };
+    }
+
+    function noiseGenerator(signal, loudness) {
+        const seed = 51925;
+        const a = 987325234;
+        const c = 40871212;
+        const m = 1767174;
+        const noiseArr = [seed];
+        const noisy = [];
+
+        for (let i = 1; i < signal.length; i++) {
+            const b = ((noiseArr[noiseArr.length - 1] * a + c) % m);
+            noiseArr.push(b);
+        }
+        for (let i = 0; i < noiseArr.length; i++) {
+            noiseArr[i] -= m / 2;
+        }
+
+        let meanSignal = 0;
+        for (let i = 0; i < signal.length; i++) {
+            meanSignal += signal[i];
+        }
+        meanSignal /= signal.length;
+
+        let nice = 0;
+        for (let i = 0; i < signal.length; i++) {
+            nice += Math.abs(signal[i] - meanSignal);
+        }
+        nice /= signal.length;
+
+        let meanNoise = 0;
+        for (let i = 0; i < noiseArr.length; i++) {
+            meanNoise += Math.abs(noiseArr[i]);
+        }
+        meanNoise /= noiseArr.length;
+
+        if (meanNoise === 0) meanNoise = 1;
+
+        const factor = loudness * nice / meanNoise;
+        for (let i = 0; i < noiseArr.length; i++) {
+            noiseArr[i] *= factor;
+        }
+
+        for (let i = 0; i < signal.length; i++) {
+            noisy.push(signal[i] + noiseArr[i]);
+        }
+        return noisy;
+    }
+
+    function fftorganize(x) {
+        const N = x.length;
+        if (N === 1) {
+            return [[0], [x[0]]];
+        }
+
+        const even = [];
+        const odd = [];
+        let counter = 0;
+        for (let i = 0; i < x.length; i++) {
+            if (counter === 0) {
+                even.push(x[i]);
+                counter = 1;
+            } else {
+                odd.push(x[i]);
+                counter = 0;
+            }
+        }
+
+        const neven = fftorganize(even);
+        const nodd = fftorganize(odd);
+
+        const a = new Array(N).fill(0);
+        const b = new Array(N).fill(0);
+
+        for (let i = 0; i < Math.floor(N / 2); i++) {
+            const phased = 2 * pi * i / N;
+            const temp1 = nodd[0][i] * cos(phased) + nodd[1][i] * sin(phased);
+            const temp2 = nodd[1][i] * cos(phased) - nodd[0][i] * sin(phased);
+
+            a[i] = neven[0][i] + temp1;
+            b[i] = neven[1][i] + temp2;
+            a[i + Math.floor(N / 2)] = neven[0][i] - temp1;
+            b[i + Math.floor(N / 2)] = neven[1][i] - temp2;
+        }
+        return [a, b];
+    }
+
+    function fft(x) {
+        const strength = [];
+        const phase = [];
+        let N = x.length;
+        let bLen = 2;
+        while (N > bLen) {
+            bLen *= 2;
+        }
+        const paddedX = [...x];
+        for (let i = N; i < bLen; i++) {
+            paddedX.push(0);
+        }
+
+        const a = fftorganize(paddedX);
+        const paddedN = paddedX.length;
+
+        for (let i = 0; i < paddedN; i++) {
+            strength.push(Math.pow(a[0][i] * a[0][i] + a[1][i] * a[1][i], 0.5));
+            phase.push(arctan(a[0][i], a[1][i]));
+        }
+        return { stren: strength, phase: phase };
     }
 
     // =============================================================
@@ -221,11 +349,12 @@
                             composite[i] += cosine(i, freq, N, 0, amp);
                             break;
                         case 'square':
-                            // Square wave built from sine()
-                            composite[i] += sine(i, freq, N, 0, 1) >= 0 ? amp : -amp;
+                            // Square wave built from custom square()
+                            composite[i] += square(i, freq, N, 0, amp);
                             break;
                         case 'sawtooth':
-                            composite[i] += amp * (2 * ((freq * i / N) % 1) - 1);
+                            // Sawtooth wave built from custom saw()
+                            composite[i] += saw(i, freq, N, 0, amp);
                             break;
                         case 'triangle':
                             composite[i] += amp * (2 * Math.abs(2 * ((freq * i / N) % 1) - 1) - 1);
@@ -235,8 +364,9 @@
             });
             // Noise
             if (noiseLevel > 0) {
+                const noisySignal = noiseGenerator(composite, noiseLevel);
                 for (let i = 0; i < N; i++) {
-                    composite[i] += (Math.random() * 2 - 1) * noiseLevel;
+                    composite[i] = noisySignal[i];
                 }
             }
             return composite;
@@ -348,10 +478,10 @@
             fctx.fillText('|X[k]|', 5, 15);
         }
 
-        // Full update — calls the ported DFT()
+        // Full update — calls the ported fft() instead of dft()
         function updateDFT() {
             const signal = buildSignal();
-            const { stren } = DFT(signal);
+            const { stren } = fft(signal);
             drawTimeDomain(signal);
             drawFreqDomain(stren);
         }
