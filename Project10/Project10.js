@@ -257,36 +257,171 @@
         return signal;
     }
 
-    // Spectral Denoiser — exact port of signals.py denoise()
-    function denoise(x) {
+    // Standard deviation — port of trig.py sd()
+    function sd(arr) {
+        let mean = 0;
+        for (let i = 0; i < arr.length; i++) mean += arr[i];
+        mean /= arr.length;
+        let dev = 0;
+        for (let i = 0; i < arr.length; i++) dev += (arr[i] - mean) * (arr[i] - mean);
+        dev /= arr.length;
+        return Math.pow(dev, 0.5);
+    }
+
+    // Spectral Denoiser — exact port of denoising.py spectral()
+    function denoiseSpectral(x) {
         const N = x.length;
         const result = fft(x);
         const mag = [...result.stren];
         const phase = [...result.phase];
+
+        // find mean magnitude
         let mean = 0;
-        for (let i = 0; i < mag.length; i++) {
-            mean += mag[i];
-        }
+        for (let i = 0; i < mag.length; i++) mean += mag[i];
         mean /= mag.length;
-        const thresh = mean * 7;
-        let meanmag = 0;
-        let count = 0;
+
+        // initial threshold
+        let thresh = mean * 7;
+
+        // find noise mean and sd below threshold
+        const noiseVals = [];
         for (let i = 0; i < mag.length; i++) {
-            if (mag[i] < thresh) {
-                meanmag += mag[i];
-                count += 1;
+            if (mag[i] <= thresh) noiseVals.push(mag[i]);
+        }
+        let noisesd = sd(noiseVals);
+        let noisemean = 0;
+        for (let i = 0; i < noiseVals.length; i++) noisemean += noiseVals[i];
+        noisemean /= noiseVals.length;
+        thresh = noisemean + 3 * noisesd;
+
+        // iterative threshold refinement (5 iterations)
+        const iterations = 5;
+        for (let j = 0; j < iterations; j++) {
+            thresh = mean * 7;
+            mean = 0;
+            let count = 0;
+            for (let i = 0; i < mag.length; i++) {
+                if (mag[i] < thresh) {
+                    mean += mag[i];
+                    count += 1;
+                }
+            }
+            if (count !== 0) mean /= count;
+        }
+
+        // subtract noise floor from surviving bins
+        for (let i = 0; i < mag.length; i++) {
+            if (mag[i] > mean) {
+                mag[i] -= mean;
+            } else {
                 mag[i] = 0;
-                phase[i] = 0;
             }
         }
-        if (count > 0) meanmag /= count;
+
+        return ift(mag, phase).slice(0, N);
+    }
+
+    // Confidence Denoiser — exact port of denoising.py confidence()
+    function denoiseConfidence(x) {
+        const N = x.length;
+        const result = fft(x);
+        const mag = [...result.stren];
+        const phase = [...result.phase];
+        const eConst = 2.718281828459045;
+
+        // generous initial threshold
+        let mean = 0;
+        for (let i = 0; i < mag.length; i++) mean += mag[i];
+        mean /= mag.length;
+        let sdVal = sd(mag);
+        let thresh = mean + 5 * sdVal;
+
+        // noise stats below threshold
+        let noiseVals = [];
         for (let i = 0; i < mag.length; i++) {
-            if (mag[i] > meanmag) {
-                mag[i] -= meanmag;
+            if (mag[i] <= thresh) noiseVals.push(mag[i]);
+        }
+        let noisesd = sd(noiseVals);
+        let noisemean = 0;
+        for (let i = 0; i < noiseVals.length; i++) noisemean += noiseVals[i];
+        noisemean /= noiseVals.length;
+
+        // iterative refinement
+        const iterations = Math.max(2, Math.round(2 * noisemean / noisesd));
+        for (let j = 0; j < iterations; j++) {
+            noisemean = 0;
+            let count = 0;
+            for (let i = 0; i < mag.length; i++) {
+                if (mag[i] <= thresh) { noisemean += mag[i]; count += 1; }
+            }
+            noisemean /= count;
+            noisesd = 0;
+            count = 0;
+            for (let i = 0; i < mag.length; i++) {
+                if (mag[i] <= thresh) { noisesd += (mag[i] - noisemean) * (mag[i] - noisemean); count += 1; }
+            }
+            noisesd = Math.pow(noisesd / count, 0.5);
+            thresh = noisemean + 2 * noisesd;
+        }
+
+        // logistic curve: multiply by confidence
+        for (let i = 0; i < mag.length; i++) {
+            const factor = (thresh - mag[i]) / noisesd;
+            mag[i] *= 1 / (1 + Math.pow(eConst, factor));
+        }
+
+        return ift(mag, phase).slice(0, N);
+    }
+
+    // Sort Denoiser — exact port of denoising.py sort()
+    function denoiseSort(x) {
+        const N = x.length;
+        const result = fft(x);
+        const mag = [...result.stren];
+        const phase = [...result.phase];
+        const originalmag = [...mag];
+
+        // sort descending
+        const sorted = [...mag].sort((a, b) => b - a);
+
+        // find differences
+        const differences = [];
+        for (let i = 1; i < sorted.length; i++) {
+            differences.push(sorted[i - 1] - sorted[i]);
+        }
+
+        let remove = 1;
+        const sdVal = sd(sorted);
+        let diff = 2 * sdVal;
+
+        // find last large drop-off
+        for (let i = 0; i < differences.length; i++) {
+            if (differences[i] > diff) remove = i + 1;
+        }
+
+        if (remove === 1) {
+            diff = 0;
+            for (let i = 0; i < differences.length; i++) {
+                if (differences[i] > diff) { diff = differences[i]; remove = i; }
             }
         }
-        const cleanx = ift(mag, phase).slice(0, N);
-        return cleanx;
+
+        // zero everything after drop-off
+        for (let i = remove; i < sorted.length; i++) sorted[i] = 0;
+
+        // unsort: zero original magnitudes that were removed
+        for (let i = 0; i < originalmag.length; i++) {
+            if (sorted.indexOf(originalmag[i]) === -1) originalmag[i] = 0;
+        }
+
+        return ift(originalmag, phase).slice(0, N);
+    }
+
+    // Wrapper that selects denoiser by name
+    function denoise(x, method) {
+        if (method === 'confidence') return denoiseConfidence(x);
+        if (method === 'sort') return denoiseSort(x);
+        return denoiseSpectral(x);
     }
 
     // =============================================================
@@ -624,17 +759,15 @@
     // =============================================================
     //  3. INTERACTIVE SPECTRAL DENOISER
     //  Original + Noisy update in real-time on any control change.
-    //  Denoise button only updates the third (denoised) panel.
+    //  Denoise button runs all 3 algorithms into the comparison grid.
     // =============================================================
     const denoiseOriginal = document.getElementById('denoise-original');
     const denoiseNoisy = document.getElementById('denoise-noisy');
-    const denoiseClean = document.getElementById('denoise-clean');
 
-    if (denoiseOriginal && denoiseNoisy && denoiseClean) {
+    if (denoiseOriginal && denoiseNoisy) {
         const DN = 200;
         let lastClean = null;
         let lastNoisy = null;
-        let lastDenoised = null;
 
         function getDenoiseCleanSignal() {
             const entries = document.querySelectorAll('#denoise-wave-rows .wave-entry');
@@ -651,69 +784,37 @@
 
             drawWave(denoiseOriginal, clean, '#ff4d00', false);
             drawWave(denoiseNoisy, noisy, '#ff6b6b', false);
+        }
 
-            // Clear the denoised panel and show waiting state
-            if (!lastDenoised) {
-                const dpr = window.devicePixelRatio || 1;
-                denoiseClean.width = denoiseClean.clientWidth * dpr;
-                denoiseClean.height = denoiseClean.clientHeight * dpr;
-                const ctx = denoiseClean.getContext('2d');
-                ctx.scale(dpr, dpr);
-                const w = denoiseClean.clientWidth;
-                const h = denoiseClean.clientHeight;
-                ctx.clearRect(0, 0, w, h);
-
-                // Grid
-                ctx.strokeStyle = 'rgba(255, 77, 0, 0.06)';
-                ctx.lineWidth = 1;
-                for (let x = 0; x < w; x += 30) {
-                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-                }
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
-
-                ctx.font = '11px "Space Mono", monospace';
-                ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
-                ctx.textAlign = 'center';
-                ctx.fillText('CLICK DENOISE TO RUN', w / 2, h / 2 + 4);
-                ctx.textAlign = 'start';
+        // Compute R² correlation
+        function computeR2(original, denoised, n) {
+            let sumA = 0, sumB = 0;
+            for (let i = 0; i < n; i++) { sumA += original[i]; sumB += denoised[i]; }
+            const mA = sumA / n, mB = sumB / n;
+            let num = 0, dA = 0, dB = 0;
+            for (let i = 0; i < n; i++) {
+                const a = original[i] - mA, b = denoised[i] - mB;
+                num += a * b; dA += a * a; dB += b * b;
             }
-
-            document.getElementById('denoise-error').textContent = '';
+            const r = (dA > 0 && dB > 0) ? num / Math.pow(dA * dB, 0.5) : 0;
+            return r * r;
         }
 
         function runDenoiser() {
             if (!lastNoisy) updateDenoisePreview();
 
-            let denoised = denoise(lastNoisy);
-
-            lastDenoised = denoised;
-
-            drawWave(denoiseClean, denoised, '#00f0ff', false);
-
-            // Compute Pearson correlation coefficient (R²)
-            // This shows how well the shape is preserved, not absolute error
-            let sumClean = 0, sumDen = 0;
-            for (let i = 0; i < DN; i++) {
-                sumClean += lastClean[i];
-                sumDen += denoised[i];
-            }
-            const meanClean = sumClean / DN;
-            const meanDen = sumDen / DN;
-
-            let num = 0, denomA = 0, denomB = 0;
-            for (let i = 0; i < DN; i++) {
-                const a = lastClean[i] - meanClean;
-                const b = denoised[i] - meanDen;
-                num += a * b;
-                denomA += a * a;
-                denomB += b * b;
-            }
-            const r = (denomA > 0 && denomB > 0) ? num / Math.pow(denomA * denomB, 0.5) : 0;
-            const r2 = r * r;
-
-            document.getElementById('denoise-error').textContent =
-                'CORRELATION: R\u00B2 = ' + r2.toFixed(4);
+            // Run all three algorithms into comparison cards
+            const methods = ['spectral', 'confidence', 'sort'];
+            methods.forEach((m) => {
+                const canvas = document.getElementById('compare-canvas-' + m);
+                const badge = document.getElementById('compare-r2-' + m);
+                if (canvas) {
+                    const result = denoise(lastNoisy, m);
+                    drawWave(canvas, result, '#ff8c00', false);
+                    const r2val = computeR2(lastClean, result, DN);
+                    if (badge) badge.textContent = 'R\u00B2 = ' + r2val.toFixed(4);
+                }
+            });
         }
 
         // Denoise wave builder controls
@@ -725,18 +826,15 @@
             if (e.target.classList.contains('wave-amp')) {
                 e.target.closest('.wave-entry').querySelector('.wave-amp-val').textContent = (parseInt(e.target.value) / 100).toFixed(2);
             }
-            lastDenoised = null;
             updateDenoisePreview();
         });
         denoiseRows.addEventListener('change', () => {
-            lastDenoised = null;
             updateDenoisePreview();
         });
 
         // Noise level slider
         document.getElementById('denoise-noise-level').addEventListener('input', (e) => {
             document.getElementById('denoise-noise-val').textContent = (parseInt(e.target.value) / 100).toFixed(2);
-            lastDenoised = null;
             updateDenoisePreview();
         });
 
@@ -771,11 +869,9 @@
 
             entry.querySelector('.wave-remove').addEventListener('click', () => {
                 entry.remove();
-                lastDenoised = null;
                 updateDenoisePreview();
             });
 
-            lastDenoised = null;
             updateDenoisePreview();
         });
 
@@ -822,7 +918,6 @@
         </div>
       `;
             denoiseWaveIdx = 2;
-            lastDenoised = null;
             updateDenoisePreview();
         });
 
@@ -831,10 +926,7 @@
 
         // Initial render
         setTimeout(updateDenoisePreview, 400);
-        window.addEventListener('resize', () => {
-            updateDenoisePreview();
-            if (lastDenoised) drawWave(denoiseClean, lastDenoised, '#00f0ff', false);
-        });
+        window.addEventListener('resize', updateDenoisePreview);
     }
 
     // =============================================================
@@ -884,47 +976,6 @@ iterations = <span class="number">25</span>
 <span class="keyword">def</span> <span class="function">tan</span>(x):
   y = sin(x)/cos(x)
   <span class="keyword">return</span> y`
-        },
-        'trig-arctan': {
-            title: 'trig.py — arctan() / arccos()',
-            code: `<span class="comment">#arccos function</span>
-<span class="keyword">def</span> <span class="function">arccos</span>(x, y):
-  b = abs((x**<span class="number">2</span>-y**<span class="number">2</span>))**.<span class="number">5</span>/y
-  c = arctan(y, b)
-  <span class="keyword">return</span> c
-
-<span class="comment">#inverse tangent</span>
-<span class="keyword">def</span> <span class="function">arctan</span>(x, y):
-  <span class="keyword">global</span> iterations
-  <span class="comment">#if denominator is zero returns corresponding angle</span>
-  <span class="keyword">if</span> x == <span class="number">0</span>:
-    <span class="keyword">if</span> y &gt; <span class="number">0</span>: <span class="keyword">return</span> (pi/<span class="number">2</span>)
-    <span class="keyword">if</span> y &lt; <span class="number">0</span>: <span class="keyword">return</span> (-pi/<span class="number">2</span>)
-    <span class="keyword">return</span> <span class="number">0.0</span>
-  u = y / x
-
-  <span class="comment">#determines sign of angle</span>
-  sgn = <span class="number">1.0</span> <span class="keyword">if</span> u &gt;= <span class="number">0</span> <span class="keyword">else</span> -<span class="number">1.0</span>
-  t = abs(u)
-  inv = False
-
-  <span class="comment">#if y&gt;x flips it or easier compute and signals for unflip later on</span>
-  <span class="keyword">if</span> t &gt; <span class="number">1.0</span>:
-    inv = True
-    t = <span class="number">1.0</span> / t
-  a = <span class="number">0.0</span>
-
-  <span class="comment">#does taylor series</span>
-  <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):
-    a += ((-<span class="number">1</span>)**i) * (t**(<span class="number">2</span>*i + <span class="number">1</span>)) / (<span class="number">2</span>*i + <span class="number">1</span>)
-
-  <span class="comment">#adjusts for sign</span>
-  a = sgn * ( (pi/<span class="number">2</span>) - a ) <span class="keyword">if</span> inv <span class="keyword">else</span> sgn * a
-
-  <span class="comment">#puts in correct quadrant</span>
-  <span class="keyword">if</span> x &lt; <span class="number">0</span> <span class="keyword">and</span> y &gt;= <span class="number">0</span>: a += pi
-  <span class="keyword">elif</span> x &lt; <span class="number">0</span> <span class="keyword">and</span> y &lt; <span class="number">0</span>: a -= pi
-  <span class="keyword">return</span> a`
         },
         'trig-generators': {
             title: 'trig.py — Signal Generators',
@@ -1113,48 +1164,189 @@ iterations = <span class="number">25</span>
     <span class="keyword">return</span> [a, b]`
         },
         'signals-ift': {
-            title: 'signals.py — ift() / denoise()',
-            code: `<span class="comment">#Inverse Fourier Transform</span>
+            title: 'signals.py — ift()',
+            code: `<span class="comment">#inverse fourier transform</span>
 <span class="keyword">def</span> <span class="function">ift</span>(mag, phase):
+
+    <span class="comment">#defines our variables</span>
     signal = []
     length = len(mag)
-    <span class="comment">#cycles through each time-domain sample</span>
+
+    <span class="comment">#cycles through every x frequency</span>
     <span class="keyword">for</span> j <span class="keyword">in</span> range(length):
         x = <span class="number">0</span>
-        <span class="comment">#sums contribution from each frequency bin</span>
+
+        <span class="comment">#cycles through every x coordinate</span>
         <span class="keyword">for</span> i <span class="keyword">in</span> range(len(mag)):
             x += mag[i] * trig.cos(i * j * <span class="number">2</span> * trig.pi / length + phase[i])
         signal.append(x / length)
-    <span class="keyword">return</span> signal
+    <span class="keyword">return</span> signal`
+        },
+        'denoise-spectral': {
+            title: 'denoising.py — spectral()',
+            code: `<span class="keyword">import</span> trig
+<span class="keyword">from</span> signals <span class="keyword">import</span> fft, ift, noise
 
-<span class="comment">#Spectral Denoiser</span>
-<span class="keyword">def</span> <span class="function">denoise</span>(x):
+<span class="comment">#iteratively finds a noise threshold and zeros all magnitudes below that</span>
+<span class="comment">#and then subtracts average noise magnitude from existing signals</span>
+<span class="keyword">def</span> <span class="function">spectral</span>(x):
+
+    <span class="comment">#defines variables</span>
     N = len(x)
-    <span class="comment">#transform to frequency domain</span>
+    mean = <span class="number">0</span>
+
+    <span class="comment">#finds magnitude</span>
     mag, phase = fft(x)
-    <span class="comment">#compute mean magnitude</span>
+
+    <span class="comment">#finds average magnitude</span>
     mean = <span class="number">0</span>
     <span class="keyword">for</span> i <span class="keyword">in</span> mag:
         mean += i
-    mean /= N
-    <span class="comment">#threshold is 7x mean — weak bins are noise</span>
+    mean /= len(mag)
+
+    <span class="comment">#finds standard deviation and defines threshold</span>
+    sd = trig.sd(mag)
     thresh = mean * <span class="number">7</span>
-    meanmag = <span class="number">0</span>
+
+    <span class="comment">#finds average noise magnitude and standard deviation</span>
+    noise = []
     count = <span class="number">0</span>
-    <span class="comment">#zero out bins below threshold</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> mag:
+        <span class="keyword">if</span> i &lt;= thresh:
+            noise.append(i)
+    noisesd = trig.sd(noise)
+    noisemean = sum(noise) / len(noise)
+
+    thresh = noisemean + <span class="number">3</span> * noisesd
+
+    <span class="comment">#continues to find average noise magnitude with recursive threshold</span>
+    iterations = <span class="number">5</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> range(iterations):
+
+        <span class="comment">#creates threshold</span>
+        thresh = mean * <span class="number">7</span>
+        mean = <span class="number">0</span>
+
+        <span class="comment">#cycles through all points</span>
+        count = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
+            <span class="keyword">if</span> mag[i] &lt; thresh:
+                mean += mag[i]
+                count += <span class="number">1</span>
+        <span class="keyword">if</span> count != <span class="number">0</span>:
+            mean /= count
+
+    <span class="comment">#subtracts mean noise magnitude from all frequencies remaining</span>
     <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
-        <span class="keyword">if</span> mag[i] &lt; thresh:
-            meanmag += mag[i]
-            count += <span class="number">1</span>
-            mag[i], phase[i] = <span class="number">0</span>, <span class="number">0</span>
-    meanmag /= count
-    <span class="comment">#subtract noise floor from surviving bins</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):
-        <span class="keyword">if</span> mag[i] &gt; meanmag:
-            mag[i] -= meanmag
-    <span class="comment">#reconstruct clean signal via IFT</span>
+        <span class="keyword">if</span> mag[i] &gt; mean:
+            mag[i] -= mean
+        <span class="keyword">else</span>:
+            mag[i] = <span class="number">0</span>
+
+    <span class="comment">#runs cleaned frequency and phase list through an IFT</span>
     cleanx = ift(mag, phase)[:N]
     <span class="keyword">return</span> cleanx`
+        },
+        'denoise-confidence': {
+            title: 'denoising.py — confidence()',
+            code: `<span class="comment">#multiplies magnitudes by a confidence coefficient based off of</span>
+<span class="comment">#a logistic curve based off of distance from a threshold</span>
+<span class="keyword">def</span> <span class="function">confidence</span>(x):
+
+    <span class="comment">#fetches frequency list</span>
+    mag, phase = fft(x)
+
+    <span class="comment">#calculates generous noise threshold</span>
+    mean = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> mag:
+        mean += i
+    mean /= len(mag)
+    sd = trig.sd(mag)
+    thresh = mean + <span class="number">5</span> * sd
+
+    <span class="comment">#calculates mean and standard deviation below threshold (noise)</span>
+    noise = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> mag:
+        <span class="keyword">if</span> i &lt;= thresh:
+            noise.append(i)
+    noisesd = trig.sd(noise)
+    noisemean = sum(noise) / len(noise)
+
+    <span class="comment">#recalculates noise threshold iteratively</span>
+    iterations = max(<span class="number">2</span>, round(<span class="number">2</span> * noisemean / noisesd))
+    <span class="keyword">for</span> j <span class="keyword">in</span> range(iterations):
+        noisemean = <span class="number">0</span>
+        count = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> mag:
+            <span class="keyword">if</span> i &lt;= thresh:
+                noisemean += i
+                count += <span class="number">1</span>
+        noisemean /= count
+        noisesd = <span class="number">0</span>
+        count = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> mag:
+            <span class="keyword">if</span> i &lt;= thresh:
+                noisesd += (i - noisemean) ** <span class="number">2</span>
+                count += <span class="number">1</span>
+        noisesd = (noisesd / count) ** <span class="number">0.5</span>
+        thresh = noisemean + <span class="number">2</span> * noisesd
+
+    <span class="comment">#uses a logistic plot to multiply all frequencies by confidence</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(mag)):
+        factor = ((thresh) - mag[i]) / (noisesd)
+        mag[i] *= ( <span class="number">1</span> )/ (<span class="number">1</span> + trig.e ** (factor))
+
+    <span class="comment">#runs cleaned magnitude and phase lists through an ift</span>
+    cleanx = ift(mag, phase)
+    <span class="keyword">return</span> cleanx[:len(x)]`
+        },
+        'denoise-sort': {
+            title: 'denoising.py — sort()',
+            code: `<span class="comment">#orders frequencies by strength, finds the largest drop off,</span>
+<span class="comment">#and removes all after said drop off</span>
+<span class="keyword">def</span> <span class="function">sort</span>(x):
+
+    <span class="comment">#defines variables</span>
+    N = len(x)
+    mag, phase = fft(x)
+
+    <span class="comment">#sorts magnitude while preserving old list</span>
+    originalmag = list(mag)
+    mag = sorted(mag, reverse = True)
+
+    <span class="comment">#finds differences between each magnitude</span>
+    differences = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(mag)):
+        k = mag[i -<span class="number">1</span>] - mag[i]
+        differences.append(k)
+
+    remove = <span class="number">1</span>
+    sd = trig.sd(mag)
+    <span class="comment">#finds last large drop off in magnitude</span>
+    diff = <span class="number">2</span> * sd
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(differences)):
+        <span class="keyword">if</span> differences[i] &gt; diff:
+            remove = i + <span class="number">1</span>
+
+    <span class="keyword">if</span> remove == <span class="number">1</span>:
+        diff = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(differences)):
+            <span class="keyword">if</span> differences[i] &gt; diff:
+                diff = differences[i]
+                remove = i
+
+    <span class="comment">#removes all frequencies after big drop off</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(remove, N):
+        mag[i] = <span class="number">0</span>
+
+    <span class="comment">#unsorts magnitude list by mapping saved magnitudes</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(originalmag)):
+        <span class="keyword">if</span> originalmag[i] <span class="keyword">not</span> <span class="keyword">in</span> mag:
+            originalmag[i] = <span class="number">0</span>
+
+    <span class="comment">#runs cleaned magnitude list through an IFT</span>
+    cleanx = ift(originalmag, phase)[:N]
+    <span class="keyword">return</span> cleanx[:len(x)]`
         }
     };
 

@@ -15,7 +15,6 @@
     --muted: #c9c9c9;
     --primary: #ff4d00;
     --accent: #ff8c00;
-    --cyan: #00f0ff;
     --radius-lg: 0;
     --radius-md: 0;
     --font: 'Inter', sans-serif;
@@ -305,10 +304,6 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.denoise-label {
-    color: var(--cyan);
-}
-
 .dft-arrow {
     display: flex;
     flex-direction: column;
@@ -329,55 +324,104 @@ a:hover {
 }
 
 /* ==========================================================
-   Spectral Denoiser Section
+   Denoiser — Full-width layout (mirrors DFT section)
    ========================================================== */
-.denoise-params {
-    display: grid;
-    grid-template-columns: 1fr;
+.denoise-noise-row {
+    display: flex;
+    align-items: center;
     gap: 16px;
+    margin-top: 16px;
     padding: 12px 16px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 0;
 }
 
-.denoise-action-btn {
-    background: rgba(255, 77, 0, 0.1);
-    border-color: rgba(255, 77, 0, 0.3);
+.denoise-noise-row .wave-param {
+    flex: 1;
+}
+
+.denoise-run-btn {
+    padding: 10px 24px;
+    background: rgba(255, 77, 0, 0.15);
+    border: 1px solid rgba(255, 77, 0, 0.4);
     color: var(--primary);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
 }
 
-.denoise-action-btn:hover {
-    background: rgba(255, 77, 0, 0.2);
+.denoise-run-btn:hover {
+    background: rgba(255, 77, 0, 0.25);
     border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(255, 77, 0, 0.15);
 }
 
 .denoise-display {
-    border: 1px solid rgba(255, 77, 0, 0.2);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.5);
+    margin-bottom: 16px;
 }
 
-.denoise-canvas-group {
+/* ==========================================================
+   Algorithm Comparison Grid
+   ========================================================== */
+.compare-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0;
+    gap: 10px;
 }
 
-.denoise-canvas-group .dft-canvas-wrap {
-    border-right: 1px solid rgba(255, 77, 0, 0.1);
+.compare-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px;
+    transition: all 0.25s ease;
 }
 
-.denoise-canvas-group .dft-canvas-wrap:last-child {
-    border-right: none;
+.compare-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.denoise-canvas-group canvas {
+.compare-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.compare-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+}
+
+.compare-r2 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+}
+
+.compare-card canvas {
     display: block;
     width: 100%;
-    height: 180px;
+    height: 140px;
     background: rgba(0, 0, 0, 0.3);
+}
+
+.compare-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+    opacity: 0.7;
 }
 
 /* ==========================================================
@@ -412,7 +456,7 @@ a:hover {
 }
 
 .fn-card[data-fn^="signals"]::before {
-    background: var(--cyan);
+    background: var(--accent);
 }
 
 .fn-card::after {
@@ -437,7 +481,7 @@ a:hover {
 }
 
 .fn-card[data-fn^="signals"]:hover::after {
-    color: var(--cyan);
+    color: var(--accent);
 }
 
 .fn-card:hover {
@@ -466,9 +510,9 @@ a:hover {
 }
 
 .fn-card[data-fn^="signals"] .fn-file {
-    border-color: rgba(0, 240, 255, 0.25);
-    color: var(--cyan);
-    background: rgba(0, 240, 255, 0.06);
+    border-color: rgba(255, 140, 0, 0.3);
+    color: var(--accent);
+    background: rgba(255, 140, 0, 0.08);
 }
 
 .fn-name {
@@ -502,6 +546,21 @@ a:hover {
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* denoising.py source card accent */
+.fn-card[data-fn^="denoise"]::before {
+    background: var(--accent);
+}
+
+.fn-card[data-fn^="denoise"] .fn-file {
+    border-color: rgba(255, 140, 0, 0.3);
+    color: var(--accent);
+    background: rgba(255, 140, 0, 0.08);
+}
+
+.fn-card[data-fn^="denoise"]:hover::after {
+    color: var(--accent);
 }
 
 /* ==========================================================
@@ -610,34 +669,67 @@ a:hover {
     color: #f1fa8c;
 }
 
+
+
 /* ==========================================================
-   Equation Grid
+   Module Grid & Planned Tags
    ========================================================== */
-.equation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px;
+.module-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.equation-card {
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 77, 0, 0.12);
-    padding: 24px;
+.module-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: border-color 0.2s ease;
 }
 
-.equation-card h4 {
-    color: var(--accent);
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 0.06em;
+.module-item:hover {
+    border-color: rgba(255, 77, 0, 0.15);
 }
 
-.equation-card p {
+.module-item span {
+    font-size: 0.82rem;
     color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.6;
-    margin-top: 14px;
+}
+
+.module-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    color: var(--primary) !important;
+    background: rgba(255, 77, 0, 0.06);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.planned-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.planned-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    padding: 6px 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    color: var(--muted);
+    transition: all 0.2s ease;
+}
+
+.planned-tag:hover {
+    border-color: rgba(255, 77, 0, 0.3);
+    color: var(--primary);
 }
 
 /* ==========================================================
@@ -687,27 +779,6 @@ a:hover {
     gap: var(--spacing-lg, 40px);
 }
 
-.equation-block {
-    background: rgba(0, 0, 0, 0.55);
-    border: 1px solid rgba(255, 77, 0, 0.3);
-    border-radius: 0;
-    padding: 14px 16px;
-    margin-top: 10px;
-    overflow: hidden;
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 0.78rem;
-    line-height: 1.7;
-    color: var(--text);
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-.equation-block code {
-    background: none;
-    padding: 0;
-    font-size: inherit;
-    color: inherit;
-}
 
 .narrative-section p,
 .project-writeup p,
@@ -801,19 +872,6 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
-    .denoise-canvas-group {
-        grid-template-columns: 1fr;
-    }
-
-    .denoise-canvas-group .dft-canvas-wrap {
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 77, 0, 0.1);
-    }
-
-    .denoise-canvas-group .dft-canvas-wrap:last-child {
-        border-bottom: none;
-    }
-
     .dft-arrow {
         flex-direction: row;
         padding: 12px 0;
@@ -827,8 +885,12 @@ a:hover {
         transform: rotate(90deg);
     }
 
-    .equation-grid {
+    .compare-grid {
         grid-template-columns: 1fr;
+    }
+
+    .denoise-noise-row {
+        flex-direction: column;
     }
 }
 
@@ -861,4 +923,5 @@ a:hover {
         max-height: 100vh;
         border: none;
     }
+
 }

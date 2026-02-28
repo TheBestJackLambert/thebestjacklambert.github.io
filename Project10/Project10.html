@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Interactive DFT calculator, spectral denoiser, and digital signal processing tools built from scratch — no libraries.">
+        content="Interactive DFT calculator, three denoising algorithms, and digital signal processing tools built from scratch — no libraries.">
     <title>PROJECT_10 // DSP ENGINE | Jack Lambert</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,12 +64,13 @@
             <h1 data-aos="fade-up" data-aos-delay="50">DSP ENGINE</h1>
             <p class="lead" data-aos="fade-up" data-aos-delay="100">
                 Custom digital signal processing algorithms built from scratch — no black-box libraries.
-                FFT, spectral denoising, and real-time frequency analysis, all from first principles.
+                FFT, three denoising algorithms, and real-time frequency analysis, all from first principles.
             </p>
             <div class="tech-stack" data-aos="fade-up" data-aos-delay="150">
                 <span class="authority-tag">PERSONAL PROJECT</span>
                 <span class="tech-tag">DSP</span>
                 <span class="tech-tag">FFT</span>
+                <span class="tech-tag">DENOISING</span>
                 <span class="tech-tag">ALGORITHMS</span>
                 <span class="tech-tag">PYTHON</span>
                 <span class="tech-tag">JAVASCRIPT</span>
@@ -87,16 +88,16 @@
         <div class="container">
             <div class="project-outcome" data-aos="fade-up">
                 <div class="project-outcome-item">
-                    <div class="project-outcome-value">O(N&#178;)</div>
-                    <div class="project-outcome-label">DFT Complexity</div>
-                </div>
-                <div class="project-outcome-item">
                     <div class="project-outcome-value">O(N log N)</div>
                     <div class="project-outcome-label">FFT Complexity</div>
                 </div>
                 <div class="project-outcome-item">
-                    <div class="project-outcome-value">Spectral</div>
-                    <div class="project-outcome-label">Denoiser (IFT)</div>
+                    <div class="project-outcome-value">3</div>
+                    <div class="project-outcome-label">Denoising Algorithms</div>
+                </div>
+                <div class="project-outcome-item">
+                    <div class="project-outcome-value">R&#178;</div>
+                    <div class="project-outcome-label">Correlation Metric</div>
                 </div>
                 <div class="project-outcome-item">
                     <div class="project-outcome-value">0</div>
@@ -169,14 +170,15 @@
         </div>
     </section>
 
-    <!-- ==================== INTERACTIVE: Spectral Denoiser ==================== -->
+    <!-- ==================== INTERACTIVE: Signal Denoiser ==================== -->
     <section class="project-section denoise-section" data-aos="fade-up">
         <div class="container">
-            <h2 class="section-header">// SPECTRAL_DENOISER <span class="interactive-badge">INTERACTIVE</span></h2>
-            <p class="section-intro">Build a composite signal, inject noise, then watch the FFT-based denoiser strip it
-                away — thresholding weak frequency bins and reconstructing via Inverse Fourier Transform.</p>
+            <h2 class="section-header">// SIGNAL_DENOISER <span class="interactive-badge">INTERACTIVE</span></h2>
+            <p class="section-intro">Three denoising algorithms, one noisy signal. Build a waveform, crank the noise,
+                then compare how each algorithm recovers the original — measured by R&#178; correlation.</p>
 
-            <div class="denoise-controls">
+            <!-- Signal Builder — full width, same pattern as DFT -->
+            <div class="dft-controls">
                 <div class="signal-builder">
                     <h3>// SIGNAL BUILDER</h3>
                     <div class="wave-row" id="denoise-wave-rows">
@@ -220,59 +222,77 @@
                         </div>
                     </div>
                     <div class="builder-actions">
-                        <button id="denoise-add-wave" class="control-btn"><i class="fas fa-plus"></i> ADD
-                            HARMONIC</button>
+                        <button id="denoise-add-wave" class="control-btn"><i class="fas fa-plus"></i> ADD HARMONIC</button>
                         <button id="denoise-reset" class="control-btn"><i class="fas fa-redo"></i> RESET</button>
                     </div>
-
-                    <h3 style="margin-top: 20px;">// NOISE INJECTION</h3>
-                    <div class="denoise-params">
+                    <div class="denoise-noise-row">
                         <div class="wave-param">
-                            <label>Noise Level</label>
+                            <label>Noise</label>
                             <input type="range" class="styled-slider" id="denoise-noise-level" min="5" max="100"
                                 value="40">
                             <span id="denoise-noise-val">0.40</span>
                         </div>
-                    </div>
-
-                    <div class="builder-actions">
-                        <button id="run-denoise" class="control-btn denoise-action-btn"><i class="fas fa-broom"></i>
-                            RUN DENOISER</button>
+                        <button id="run-denoise" class="control-btn denoise-run-btn"><i class="fas fa-broom"></i>
+                            DENOISE</button>
                     </div>
                     <div class="sample-info">
                         <span>N = <strong>200</strong> samples</span>
-                        <span id="denoise-error" style="color: var(--primary);"></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Denoise Canvases -->
-            <div class="denoise-display">
-                <div class="denoise-canvas-group">
-                    <div class="dft-canvas-wrap">
-                        <div class="canvas-label">ORIGINAL SIGNAL</div>
-                        <canvas id="denoise-original" width="600" height="180"></canvas>
+            <!-- Original vs Noisy — side by side like DFT display -->
+            <div class="dft-display denoise-display">
+                <div class="dft-canvas-wrap">
+                    <div class="canvas-label">ORIGINAL SIGNAL</div>
+                    <canvas id="denoise-original" width="600" height="200"></canvas>
+                </div>
+                <div class="dft-arrow">
+                    <span>NOISE</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="dft-canvas-wrap">
+                    <div class="canvas-label">NOISY SIGNAL</div>
+                    <canvas id="denoise-noisy" width="600" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Three algorithm results -->
+            <div class="compare-grid" id="compare-grid">
+                <div class="compare-card">
+                    <div class="compare-header">
+                        <span class="compare-title">SPECTRAL</span>
+                        <span class="compare-r2" id="compare-r2-spectral">--</span>
                     </div>
-                    <div class="dft-canvas-wrap">
-                        <div class="canvas-label">NOISY SIGNAL</div>
-                        <canvas id="denoise-noisy" width="600" height="180"></canvas>
+                    <canvas id="compare-canvas-spectral" width="400" height="140"></canvas>
+                    <p class="compare-desc">Iterative threshold — zeros weak bins, subtracts noise floor</p>
+                </div>
+                <div class="compare-card">
+                    <div class="compare-header">
+                        <span class="compare-title">CONFIDENCE</span>
+                        <span class="compare-r2" id="compare-r2-confidence">--</span>
                     </div>
-                    <div class="dft-canvas-wrap">
-                        <div class="canvas-label denoise-label">DENOISED OUTPUT</div>
-                        <canvas id="denoise-clean" width="600" height="180"></canvas>
+                    <canvas id="compare-canvas-confidence" width="400" height="140"></canvas>
+                    <p class="compare-desc">Logistic curve — soft probability gating per frequency bin</p>
+                </div>
+                <div class="compare-card">
+                    <div class="compare-header">
+                        <span class="compare-title">SORT</span>
+                        <span class="compare-r2" id="compare-r2-sort">--</span>
                     </div>
+                    <canvas id="compare-canvas-sort" width="400" height="140"></canvas>
+                    <p class="compare-desc">Magnitude cliff — sorts frequencies, cuts below the drop-off</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ==================== SOURCE CODE — Function Cards ==================== -->
+    <!-- ==================== Under the Hood ==================== -->
     <section class="project-section" data-aos="fade-up">
         <div class="container">
-            <h2 class="section-header">// SOURCE_CODE</h2>
-            <p class="section-intro">The actual Python powering both interactives — ported line-by-line to JavaScript.
-                No Math.sin, no Math.cos. Every trig function computed from Taylor series. Click any function to inspect
-                the full source.</p>
+            <h2 class="section-header">// UNDER_THE_HOOD</h2>
+            <p class="section-intro">Everything above runs on code written from scratch — no NumPy, no SciPy, not even
+                <code>Math.sin</code>. Click any card to inspect the full source.</p>
 
             <div class="fn-card-grid">
                 <div class="fn-card" data-fn="trig-constants">
@@ -294,17 +314,6 @@ iterations = 25</code></div>
                     <div class="fn-card-preview"><code>def cos(x):
   for i in range(iterations):
     y += 1/(fac(2*i)) * x**(2*i) * (-1)**i</code></div>
-                </div>
-
-                <div class="fn-card" data-fn="trig-arctan">
-                    <div class="fn-card-header">
-                        <span class="fn-file">trig.py</span>
-                        <span class="fn-name">arctan() / arccos()</span>
-                    </div>
-                    <div class="fn-card-desc">Inverse trig with quadrant handling and convergence tricks</div>
-                    <div class="fn-card-preview"><code>def arctan(x, y):
-  for i in range(iterations):
-    a += ((-1)**i) * (t**(2*i+1)) / (2*i+1)</code></div>
                 </div>
 
                 <div class="fn-card" data-fn="trig-generators">
@@ -334,8 +343,7 @@ iterations = 25</code></div>
                         <span class="fn-file">signals.py</span>
                         <span class="fn-name">dft()</span>
                     </div>
-                    <div class="fn-card-desc">O(N&#178;) Discrete Fourier Transform — real-valued sin/cos correlation
-                    </div>
+                    <div class="fn-card-desc">O(N&#178;) Discrete Fourier Transform — real-valued sin/cos correlation</div>
                     <div class="fn-card-preview"><code>def dft(x):
     for j in range(N):
         a += x[j] * trig.cos(2*pi*j*i/N)</code></div>
@@ -355,14 +363,48 @@ iterations = 25</code></div>
                 <div class="fn-card" data-fn="signals-ift">
                     <div class="fn-card-header">
                         <span class="fn-file">signals.py</span>
-                        <span class="fn-name">ift() / denoise()</span>
+                        <span class="fn-name">ift()</span>
                     </div>
-                    <div class="fn-card-desc">Inverse FFT reconstruction and spectral threshold denoiser</div>
-                    <div class="fn-card-preview"><code>def denoise(x):
-    mag, phase = fft(x)
-    thresh = mean * 7</code></div>
+                    <div class="fn-card-desc">Inverse Fourier Transform — reconstructs time-domain from magnitude + phase</div>
+                    <div class="fn-card-preview"><code>def ift(mag, phase):
+    for j in range(length):
+        x += mag[i] * cos(i*j*2π/N + φ[i])</code></div>
+                </div>
+
+                <div class="fn-card" data-fn="denoise-spectral">
+                    <div class="fn-card-header">
+                        <span class="fn-file">denoising.py</span>
+                        <span class="fn-name">spectral()</span>
+                    </div>
+                    <div class="fn-card-desc">Iterative threshold denoiser — zeros weak bins, subtracts noise floor</div>
+                    <div class="fn-card-preview"><code>def spectral(x):
+    thresh = noisemean + 3 * noisesd
+    mag[i] -= mean  # subtract floor</code></div>
+                </div>
+
+                <div class="fn-card" data-fn="denoise-confidence">
+                    <div class="fn-card-header">
+                        <span class="fn-file">denoising.py</span>
+                        <span class="fn-name">confidence()</span>
+                    </div>
+                    <div class="fn-card-desc">Logistic confidence gating — soft probability curve per frequency bin</div>
+                    <div class="fn-card-preview"><code>def confidence(x):
+    factor = (thresh - mag[i]) / noisesd
+    mag[i] *= 1 / (1 + e ** factor)</code></div>
+                </div>
+
+                <div class="fn-card" data-fn="denoise-sort">
+                    <div class="fn-card-header">
+                        <span class="fn-file">denoising.py</span>
+                        <span class="fn-name">sort()</span>
+                    </div>
+                    <div class="fn-card-desc">Magnitude drop-off detector — sorts frequencies, finds the cliff, cuts below</div>
+                    <div class="fn-card-preview"><code>def sort(x):
+    mag = sorted(mag, reverse=True)
+    if differences[i] > 2*sd: remove = i</code></div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -380,77 +422,79 @@ iterations = 25</code></div>
         </div>
     </div>
 
-    <!-- ==================== Math & Architecture ==================== -->
+    <!-- ==================== Design & Architecture ==================== -->
     <section class="project-section" data-aos="fade-up">
         <div class="container">
-            <h2 class="section-header">// THE_MATH</h2>
-            <div class="equation-grid">
-                <div class="equation-card" data-aos="fade-up" data-aos-delay="0">
-                    <h4>// DFT EQUATION</h4>
-                    <pre class="equation-block"><code>X[k] = Σ x[n] · e^(-j·2π·k·n/N)
+            <h2 class="section-header">// DESIGN</h2>
 
-     = Σ x[n] · [cos(2πkn/N) - j·sin(2πkn/N)]
-
-for k = 0, 1, ..., N-1</code></pre>
-                    <p>The magnitude |X[k]| tells us how much of frequency k is present. Try adding a 5 Hz sine in the
-                        interactive above — you'll see a single spike at bin 5.</p>
-                </div>
-                <div class="equation-card" data-aos="fade-up" data-aos-delay="50">
-                    <h4>// INVERSE FOURIER TRANSFORM</h4>
-                    <pre class="equation-block"><code>x[n] = (1/N) Σ |X[k]| · cos(2πkn/N + φ[k])
-
-for n = 0, 1, ..., N-1</code></pre>
-                    <p>Reconstructs a time-domain signal from its frequency components — undoing what the DFT computed.
-                    </p>
-                </div>
-                <div class="equation-card" data-aos="fade-up" data-aos-delay="100">
-                    <h4>// SPECTRAL DENOISING PIPELINE</h4>
-                    <pre class="equation-block"><code>1. mag, phase = FFT(noisy_signal)
-2. threshold = mean(mag) × 7
-3. zero bins where mag[k] < threshold
-4. subtract noise floor from remaining bins
-5. clean_signal = IFT(mag, phase)[:N]</code></pre>
-                    <p>Weak frequency bins are typically noise. Strong ones are signal. The threshold separates them.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== Architecture & Status ==================== -->
-    <section class="project-section" data-aos="fade-up">
-        <div class="container">
             <div class="two-col">
                 <div class="column left" data-aos="fade-right">
                     <div class="project-writeup">
                         <h3>// GOAL</h3>
-                        <p>Build digital signal processing tools with no external libraries or copying any external code
-                        </p>
+                        <p>Build digital signal processing tools with no external libraries or copying any external code.
+                            Every operation is transparent, computed from first principles.</p>
 
                         <h3>// ARCHITECTURE</h3>
-                        <p>The library has a clean two-file separation: <code>trig.py</code> implements low-level math
-                            primitives (sin, cos, arctan) from Taylor series, and <code>signals.py</code> builds
-                            high-level DSP applications on top. Everything is pure Python arithmetic — no NumPy, no
+                        <p>Three-file stack: <code>trig.py</code> implements low-level math
+                            primitives from Taylor series, <code>signals.py</code> builds
+                            core DSP on top, and <code>denoising.py</code> layers three
+                            distinct denoising strategies. Everything is pure Python arithmetic — no NumPy, no
                             SciPy, no math module. The JavaScript port mirrors this 1:1.</p>
+
+                        <h3>// DENOISING PHILOSOPHY</h3>
+                        <p>Each algorithm approaches the same problem differently: <strong>spectral</strong> uses
+                            brute-force thresholding, <strong>confidence</strong> applies probabilistic soft gating,
+                            and <strong>sort</strong> exploits the magnitude distribution. The R&#178; comparison
+                            shows that no single approach is universally best.</p>
                     </div>
                 </div>
                 <div class="column right" data-aos="fade-left">
                     <div class="key-features tech-panel">
                         <h3>// IMPLEMENTED MODULES</h3>
-                        <ul>
-                            <li>Discrete Fourier Transform (DFT)</li>
-                            <li>Fast Fourier Transform (FFT) — O(N log N)</li>
-                            <li>Inverse Fourier Transform (IFT)</li>
-                            <li>Spectral Denoiser (FFT threshold + IFT reconstruct)</li>
-                            <li>Signal Generator (sine, cosine, square, sawtooth)</li>
-                            <li>Custom Noise Generator (LCG-based)</li>
-                        </ul>
+                        <div class="module-grid">
+                            <div class="module-item">
+                                <span class="module-tag">trig.py</span>
+                                <span>sin / cos / tan — Taylor series</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">trig.py</span>
+                                <span>arctan / arccos — inverse trig</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">signals.py</span>
+                                <span>DFT — O(N&#178;) brute force</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">signals.py</span>
+                                <span>FFT — O(N log N) Cooley-Tukey</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">signals.py</span>
+                                <span>IFT — inverse reconstruction</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">signals.py</span>
+                                <span>Noise — LCG pseudorandom</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">denoising.py</span>
+                                <span>Spectral — iterative threshold</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">denoising.py</span>
+                                <span>Confidence — logistic gating</span>
+                            </div>
+                            <div class="module-item">
+                                <span class="module-tag">denoising.py</span>
+                                <span>Sort — magnitude drop-off</span>
+                            </div>
+                        </div>
                         <h3>// PLANNED</h3>
-                        <ul>
-                            <li>FIR / IIR Filter Design</li>
-                            <li>Windowing Functions (Hamming, Hann, Blackman)</li>
-                            <li>Z-Transform & Transfer Functions</li>
-                        </ul>
+                        <div class="planned-tags">
+                            <span class="planned-tag">FIR / IIR Filters</span>
+                            <span class="planned-tag">Windowing Functions</span>
+                            <span class="planned-tag">Z-Transform</span>
+                        </div>
                         <h3>// PROJECT STATUS</h3>
                         <div class="status-badge-info">
                             <span class="status-dot"></span> ACTIVE DEVELOPMENT
@@ -468,7 +512,7 @@ for n = 0, 1, ..., N-1</code></pre>
                 <a href="../index.html" class="btn-tech">&larr; RETURN_TO_SCHEMATICS</a>
                 <div class="footer-meta">
                     <p>SYSTEM DESIGN: JACK LAMBERT // 2025</p>
-                    <p class="footer-sub">DSP ENGINE v2.0 — TAYLOR SERIES TRIG / FFT / IFT / DENOISE</p>
+                    <p class="footer-sub">DSP ENGINE v3.0 — TAYLOR SERIES TRIG / FFT / IFT / 3-MODE DENOISER</p>
                 </div>
             </div>
         </div>
